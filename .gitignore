@@ -1,0 +1,32 @@
+# 유니티 임시 및 빌드 폴더 무시
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+
+# IDE 및 자동 생성 파일 무시
+.vs/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+sysinfo.txt
+
+# OS 생성 파일 무시
+.DS_Store
+Thumbs.db
