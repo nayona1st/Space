@@ -24,12 +24,23 @@ namespace Dev.CSU.Scripts
         [FormerlySerializedAs("rightTurnAngle")]
         private float rightMaxAngle = 30f;
 
-        [Header("Response")]
+        [Header("Tilt Speed")]
         [SerializeField]
         [Min(0f)]
-        [Tooltip("Exponential response strength while turning. Higher values respond faster.")]
-        private float turnResponse = 7f;
+        [Tooltip("Tilt speed in degrees per second when A or D is first pressed.")]
+        private float initialTiltSpeed = 30f;
 
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("Maximum tilt speed in degrees per second while A or D is held.")]
+        private float maximumTiltSpeed = 120f;
+
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("Amount the tilt speed increases per second while A or D is held.")]
+        private float tiltAcceleration = 60f;
+
+        [Header("Response")]
         [SerializeField]
         [Min(0f)]
         [Tooltip("Exponential response strength while returning to the base direction.")]
@@ -40,6 +51,8 @@ namespace Dev.CSU.Scripts
         private Vector2 _baseTravelDirection;
         private float _baseRotation;
         private float _currentTilt;
+        private float _currentTiltSpeed;
+        private int _lastTurnDirection;
         private bool _hasBaseTravelDirection;
 
         private void Awake()
@@ -47,6 +60,7 @@ namespace Dev.CSU.Scripts
             _rigidbody = GetComponent<Rigidbody2D>();
             _turnInput = GetComponent<RocketTurnInput>();
             _baseRotation = _rigidbody.rotation;
+            ResetTurnAcceleration();
         }
 
         private void FixedUpdate()
@@ -59,14 +73,38 @@ namespace Dev.CSU.Scripts
                 _hasBaseTravelDirection = true;
             }
 
-            float targetTilt = GetTargetTilt();
-            float response = Mathf.Approximately(targetTilt, 0f)
-                ? returnResponse
-                : turnResponse;
+            float turnInput = _turnInput.TurnInput;
+            float targetTilt = GetTargetTilt(turnInput);
+            float deltaTime = Time.deltaTime;
 
-            float alpha = 1f - Mathf.Exp(-response * Time.fixedDeltaTime);
-            float angleDelta = Mathf.DeltaAngle(_currentTilt, targetTilt);
-            _currentTilt += angleDelta * alpha;
+            if (Mathf.Approximately(turnInput, 0f))
+            {
+                ResetTurnAcceleration();
+
+                float alpha = 1f - Mathf.Exp(-returnResponse * deltaTime);
+                float angleDelta = Mathf.DeltaAngle(_currentTilt, targetTilt);
+                _currentTilt += angleDelta * alpha;
+            }
+            else
+            {
+                int turnDirection = turnInput < 0f ? -1 : 1;
+                if (turnDirection != _lastTurnDirection)
+                {
+                    _currentTiltSpeed = initialTiltSpeed;
+                }
+
+                _currentTilt = Mathf.MoveTowards(
+                    _currentTilt,
+                    targetTilt,
+                    _currentTiltSpeed * deltaTime);
+
+                _currentTiltSpeed = Mathf.MoveTowards(
+                    _currentTiltSpeed,
+                    maximumTiltSpeed,
+                    tiltAcceleration * deltaTime);
+
+                _lastTurnDirection = turnDirection;
+            }
 
             if (Mathf.Abs(Mathf.DeltaAngle(_currentTilt, targetTilt)) <= SnapEpsilon)
             {
@@ -84,19 +122,25 @@ namespace Dev.CSU.Scripts
             }
         }
 
-        private float GetTargetTilt()
+        private float GetTargetTilt(float turnInput)
         {
-            if (_turnInput.TurnInput < 0f)
+            if (turnInput < 0f)
             {
                 return leftMaxAngle;
             }
 
-            if (_turnInput.TurnInput > 0f)
+            if (turnInput > 0f)
             {
                 return -rightMaxAngle;
             }
 
             return 0f;
+        }
+
+        private void ResetTurnAcceleration()
+        {
+            _currentTiltSpeed = initialTiltSpeed;
+            _lastTurnDirection = 0;
         }
 
         private static Vector2 Rotate(Vector2 direction, float degrees)
@@ -114,8 +158,14 @@ namespace Dev.CSU.Scripts
         {
             leftMaxAngle = Mathf.Max(0f, leftMaxAngle);
             rightMaxAngle = Mathf.Max(0f, rightMaxAngle);
-            turnResponse = Mathf.Max(0f, turnResponse);
+            initialTiltSpeed = Mathf.Max(0f, initialTiltSpeed);
+            maximumTiltSpeed = Mathf.Max(initialTiltSpeed, maximumTiltSpeed);
+            tiltAcceleration = Mathf.Max(0f, tiltAcceleration);
             returnResponse = Mathf.Max(0f, returnResponse);
+            _currentTiltSpeed = Mathf.Clamp(
+                _currentTiltSpeed,
+                initialTiltSpeed,
+                maximumTiltSpeed);
         }
     }
 }

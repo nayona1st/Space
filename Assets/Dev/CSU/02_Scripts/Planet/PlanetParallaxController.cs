@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Dev.CSU.Scripts.Stage;
 using UnityEngine;
 
 namespace Dev.CSU.Scripts.Planet
@@ -12,6 +13,33 @@ namespace Dev.CSU.Scripts.Planet
         {
             PassBy,
             FollowForDistance
+        }
+
+        private enum StagePresentation
+        {
+            PlanetSequence,
+            StarCloud,
+            UfoAura
+        }
+
+        [Serializable]
+        private sealed class StageFormat
+        {
+            [Tooltip("Stage number that uses this presentation format.")]
+            [Min(1)]
+            [SerializeField] private int stageNumber = 1;
+
+            [Tooltip("Presentation system enabled while this stage is active.")]
+            [SerializeField] private StagePresentation presentation =
+                StagePresentation.PlanetSequence;
+
+            public int StageNumber => stageNumber;
+            public StagePresentation Presentation => presentation;
+
+            public void Validate()
+            {
+                stageNumber = Mathf.Max(1, stageNumber);
+            }
         }
 
         [Serializable]
@@ -81,12 +109,25 @@ namespace Dev.CSU.Scripts.Planet
             }
         }
 
+        [Header("Stage Routing")]
+        [Tooltip("Maps each stage number to its dedicated presentation system.")]
+        [SerializeField] private StageFormat[] stageFormats;
+
+        [Tooltip("Stage 2 Star Cloud presentation component.")]
+        [SerializeField] private StarCloudParallax starCloudParallax;
+
+        [Tooltip("Stage 3 UFO and Aura presentation component.")]
+        [SerializeField] private UfoAuraParallax ufoAuraParallax;
+
+        [Header("Stage 1 Planets")]
         [Tooltip("Per-planet Prefab, stage and parallax settings.")]
         [SerializeField] private PlanetSetting[] planetSettings;
 
+        [Header("Common References")]
         [Tooltip("Camera used to calculate parallax movement. Camera.main is used when this is empty.")]
         [SerializeField] private Camera targetCamera;
 
+        [Header("Startup")]
         [Tooltip("Stage started when Play Mode begins.")]
         [Min(1)]
         [SerializeField] private int initialStageNumber = 1;
@@ -106,6 +147,8 @@ namespace Dev.CSU.Scripts.Planet
 
         private ParallaxPlanet _activePlanet;
         private PlanetSetting _currentPlanetSetting;
+        private StageParallaxDecoration _activeDecoration;
+        private StagePresentation _currentPresentation;
         private int _nextStageSequenceIndex;
         private float _previousCameraX;
         private float _distanceSinceLastSpawn;
@@ -118,20 +161,21 @@ namespace Dev.CSU.Scripts.Planet
         private bool _isFollowingCamera;
         private bool _warnedMissingCamera;
         private bool _warnedMissingPrefabs;
-        private bool _warnedOverlappingStageRequest;
 
         public int CurrentStageNumber { get; private set; }
 
         public event Action<int, GameObject> PlanetChanged;
-        public event Action<int> StagePlanetsCompleted;
+        public event Action<int> StageCompleted;
+
+        private void OnEnable()
+        {
+            _hasCameraSample = false;
+            SubscribeDecorationEvents();
+        }
 
         private void Start()
         {
             _poolReady = BuildPool();
-            if (!_poolReady)
-            {
-                return;
-            }
 
             if (TryResolveCamera())
             {
@@ -141,14 +185,18 @@ namespace Dev.CSU.Scripts.Planet
             StartStageInternal(initialStageNumber, spawnFirstImmediately);
         }
 
-        private void OnEnable()
+        private void OnDisable()
         {
-            _hasCameraSample = false;
+            UnsubscribeDecorationEvents();
+            StopActivePresentation();
         }
 
         private void LateUpdate()
         {
-            if (!_poolReady || !_stageRunning || !TryResolveCamera())
+            if (_currentPresentation != StagePresentation.PlanetSequence
+                || !_poolReady
+                || !_stageRunning
+                || !TryResolveCamera())
             {
                 return;
             }
@@ -182,7 +230,8 @@ namespace Dev.CSU.Scripts.Planet
                     _activePlanet.ReturnToPool();
                     _activePlanet = null;
 
-                    if (_nextStageSequenceIndex >= _currentStagePoolIndices.Count)
+                    if (_nextStageSequenceIndex
+                        >= _currentStagePoolIndices.Count)
                     {
                         CompleteCurrentStage();
                         return;
@@ -191,7 +240,8 @@ namespace Dev.CSU.Scripts.Planet
             }
 
             if (_activePlanet != null
-                || _nextStageSequenceIndex >= _currentStagePoolIndices.Count)
+                || _nextStageSequenceIndex
+                >= _currentStagePoolIndices.Count)
             {
                 return;
             }
@@ -206,32 +256,9 @@ namespace Dev.CSU.Scripts.Planet
             }
         }
 
-        private void UpdateActivePlanet(float cameraDeltaX)
+        public bool HasStage(int stageNumber)
         {
-            if (_currentPlanetSetting.FollowsForDistance
-                && _isFollowingCamera)
-            {
-                _followedDistance += Mathf.Max(0f, cameraDeltaX);
-                _activePlanet.AlignCenterToViewport(
-                    targetCamera,
-                    _currentPlanetSetting.FollowViewportX,
-                    _currentPlanetSetting.ViewportY);
-
-                if (_followedDistance
-                    >= _currentPlanetSetting.FollowDistance)
-                {
-                    _isFollowingCamera = false;
-                }
-
-                return;
-            }
-
-            _activePlanet.ApplyParallax(
-                cameraDeltaX,
-                _currentPlanetSetting.ParallaxFollow);
-            _activePlanet.MaintainViewportY(
-                targetCamera,
-                _currentPlanetSetting.ViewportY);
+            return FindStageFormat(Mathf.Max(1, stageNumber)) != null;
         }
 
         public void StartStage(int stageNumber)
@@ -239,34 +266,114 @@ namespace Dev.CSU.Scripts.Planet
             StartStageInternal(stageNumber, true);
         }
 
-        private void StartStageInternal(int stageNumber, bool spawnImmediately)
+        private void StartStageInternal(
+            int stageNumber,
+            bool spawnImmediately)
         {
             stageNumber = Mathf.Max(1, stageNumber);
+            StageFormat format = FindStageFormat(stageNumber);
 
-            if (!_poolReady)
+            if (format == null)
             {
                 WarnMissingStageOnce(
                     stageNumber,
-                    "The planet pool is not ready.");
+                    "No Stage Format is assigned.");
                 return;
             }
 
-            if (_activePlanet != null)
+            if (!CanStartPresentation(stageNumber, format.Presentation))
             {
-                if (!_warnedOverlappingStageRequest)
-                {
-                    Debug.LogWarning(
-                        $"{nameof(PlanetParallaxController)} on '{name}' ignored "
-                        + $"stage {stageNumber} because another stage planet is active.",
-                        this);
-                    _warnedOverlappingStageRequest = true;
-                }
-
                 return;
             }
 
+            StopActivePresentation();
+            CurrentStageNumber = stageNumber;
+            _currentPresentation = format.Presentation;
+            _stageRunning = true;
+            _stageCompletionRaised = false;
+
+            switch (_currentPresentation)
+            {
+                case StagePresentation.PlanetSequence:
+                    BeginPlanetSequence(stageNumber, spawnImmediately);
+                    break;
+
+                case StagePresentation.StarCloud:
+                    BeginDecoration(starCloudParallax, stageNumber);
+                    break;
+
+                case StagePresentation.UfoAura:
+                    BeginDecoration(ufoAuraParallax, stageNumber);
+                    break;
+            }
+        }
+
+        private bool CanStartPresentation(
+            int stageNumber,
+            StagePresentation presentation)
+        {
+            switch (presentation)
+            {
+                case StagePresentation.PlanetSequence:
+                    if (!_poolReady)
+                    {
+                        WarnMissingStageOnce(
+                            stageNumber,
+                            "The Stage 1 planet pool is not ready.");
+                        return false;
+                    }
+
+                    if (!HasPlanetSettingForStage(stageNumber))
+                    {
+                        WarnMissingStageOnce(
+                            stageNumber,
+                            "No usable Planet Settings are assigned.");
+                        return false;
+                    }
+
+                    return true;
+
+                case StagePresentation.StarCloud:
+                    return ValidateDecoration(
+                        stageNumber,
+                        starCloudParallax,
+                        "Star Cloud");
+
+                case StagePresentation.UfoAura:
+                    return ValidateDecoration(
+                        stageNumber,
+                        ufoAuraParallax,
+                        "UFO and Aura");
+
+                default:
+                    return false;
+            }
+        }
+
+        private bool ValidateDecoration(
+            int stageNumber,
+            StageParallaxDecoration decoration,
+            string label)
+        {
+            if (decoration != null && decoration.IsConfigured)
+            {
+                return true;
+            }
+
+            WarnMissingStageOnce(
+                stageNumber,
+                $"{label} presentation is not configured.");
+            return false;
+        }
+
+        private void BeginPlanetSequence(
+            int stageNumber,
+            bool spawnImmediately)
+        {
             _currentStagePoolIndices.Clear();
-            for (int poolIndex = 0; poolIndex < _poolSettings.Count; poolIndex++)
+            for (int poolIndex = 0;
+                 poolIndex < _poolSettings.Count;
+                 poolIndex++)
             {
                 if (_poolSettings[poolIndex].StageNumber == stageNumber)
                 {
@@ -274,24 +381,12 @@ namespace Dev.CSU.Scripts.Planet
                 }
             }
 
-            if (_currentStagePoolIndices.Count == 0)
-            {
-                WarnMissingStageOnce(
-                    stageNumber,
-                    "No usable Planet Settings are assigned to this stage.");
-                return;
-            }
-
-            CurrentStageNumber = stageNumber;
             _nextStageSequenceIndex = 0;
             _distanceSinceLastSpawn = 0f;
             _followedDistance = 0f;
             _currentPlanetSetting = null;
             _isFollowingCamera = false;
-            _stageRunning = true;
-            _stageCompletionRaised = false;
             _spawnFirstWhenCameraReady = spawnImmediately;
-            _warnedOverlappingStageRequest = false;
 
             if (!TryResolveCamera())
             {
@@ -306,6 +401,48 @@ namespace Dev.CSU.Scripts.Planet
                 _spawnFirstWhenCameraReady = false;
                 ActivateNextPlanet();
             }
+        }
+
+        private void BeginDecoration(
+            StageParallaxDecoration decoration,
+            int stageNumber)
+        {
+            if (decoration.BeginStage(targetCamera))
+            {
+                _activeDecoration = decoration;
+                return;
+            }
+
+            _stageRunning = false;
+            WarnMissingStageOnce(
+                stageNumber,
+                "The assigned decoration could not start.");
+        }
+
+        private void StopActivePresentation()
+        {
+            if (_activePlanet != null)
+            {
+                _activePlanet.ReturnToPool();
+                _activePlanet = null;
+            }
+
+            if (starCloudParallax != null)
+            {
+                starCloudParallax.StopStage();
+            }
+
+            if (ufoAuraParallax != null)
+            {
+                ufoAuraParallax.StopStage();
+            }
+
+            _activeDecoration = null;
+            _currentPlanetSetting = null;
+            _currentStagePoolIndices.Clear();
+            _isFollowingCamera = false;
+            _spawnFirstWhenCameraReady = false;
+            _stageRunning = false;
         }
 
         private bool BuildPool()
@@ -373,6 +510,38 @@ namespace Dev.CSU.Scripts.Planet
             return true;
         }
 
+        private bool HasPlanetSettingForStage(int stageNumber)
+        {
+            for (int index = 0; index < _poolSettings.Count; index++)
+            {
+                if (_poolSettings[index].StageNumber == stageNumber)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private StageFormat FindStageFormat(int stageNumber)
+        {
+            if (stageFormats == null)
+            {
+                return null;
+            }
+
+            for (int index = 0; index < stageFormats.Length; index++)
+            {
+                StageFormat format = stageFormats[index];
+                if (format != null && format.StageNumber == stageNumber)
+                {
+                    return format;
+                }
+            }
+
+            return null;
+        }
+
         private void BeginCameraTracking()
         {
             _previousCameraX = targetCamera.transform.position.x;
@@ -381,7 +550,8 @@ namespace Dev.CSU.Scripts.Planet
 
         private PlanetSetting GetNextSetting()
         {
-            int poolIndex = _currentStagePoolIndices[_nextStageSequenceIndex];
+            int poolIndex =
+                _currentStagePoolIndices[_nextStageSequenceIndex];
             return _poolSettings[poolIndex];
         }
 
@@ -389,12 +559,14 @@ namespace Dev.CSU.Scripts.Planet
         {
             if (!_stageRunning
                 || _activePlanet != null
-                || _nextStageSequenceIndex >= _currentStagePoolIndices.Count)
+                || _nextStageSequenceIndex
+                >= _currentStagePoolIndices.Count)
             {
                 return;
             }
 
-            int poolIndex = _currentStagePoolIndices[_nextStageSequenceIndex];
+            int poolIndex =
+                _currentStagePoolIndices[_nextStageSequenceIndex];
             ParallaxPlanet planet = _planetPool[poolIndex];
             PlanetSetting setting = _poolSettings[poolIndex];
             int sourcePrefabIndex = _sourcePrefabIndices[poolIndex];
@@ -425,6 +597,50 @@ namespace Dev.CSU.Scripts.Planet
             PlanetChanged?.Invoke(sourcePrefabIndex, planet.RootObject);
         }
 
+        private void UpdateActivePlanet(float cameraDeltaX)
+        {
+            if (_currentPlanetSetting.FollowsForDistance
+                && _isFollowingCamera)
+            {
+                _followedDistance += Mathf.Max(0f, cameraDeltaX);
+                _activePlanet.AlignCenterToViewport(
+                    targetCamera,
+                    _currentPlanetSetting.FollowViewportX,
+                    _currentPlanetSetting.ViewportY);
+
+                if (_followedDistance
+                    >= _currentPlanetSetting.FollowDistance)
+                {
+                    _isFollowingCamera = false;
+                }
+
+                return;
+            }
+
+            _activePlanet.ApplyParallax(
+                cameraDeltaX,
+                _currentPlanetSetting.ParallaxFollow);
+            _activePlanet.MaintainViewportY(
+                targetCamera,
+                _currentPlanetSetting.ViewportY);
+        }
+
+        private void HandleStarCloudCompleted()
+        {
+            if (_activeDecoration == starCloudParallax)
+            {
+                CompleteCurrentStage();
+            }
+        }
+
+        private void HandleUfoAuraCompleted()
+        {
+            if (_activeDecoration == ufoAuraParallax)
+            {
+                CompleteCurrentStage();
+            }
+        }
+
         private void CompleteCurrentStage()
         {
             if (_stageCompletionRaised)
@@ -434,11 +650,44 @@ namespace Dev.CSU.Scripts.Planet
 
             _stageRunning = false;
             _stageCompletionRaised = true;
+            _activeDecoration = null;
             _currentPlanetSetting = null;
             _isFollowingCamera = false;
             _spawnFirstWhenCameraReady = false;
 
-            StagePlanetsCompleted?.Invoke(CurrentStageNumber);
+            StageCompleted?.Invoke(CurrentStageNumber);
+        }
+
+        private void SubscribeDecorationEvents()
+        {
+            UnsubscribeDecorationEvents();
+
+            if (starCloudParallax != null)
+            {
+                starCloudParallax.Completed +=
+                    HandleStarCloudCompleted;
+            }
+
+            if (ufoAuraParallax != null)
+            {
+                ufoAuraParallax.Completed +=
+                    HandleUfoAuraCompleted;
+            }
+        }
+
+        private void UnsubscribeDecorationEvents()
+        {
+            if (starCloudParallax != null)
+            {
+                starCloudParallax.Completed -=
+                    HandleStarCloudCompleted;
+            }
+
+            if (ufoAuraParallax != null)
+            {
+                ufoAuraParallax.Completed -=
+                    HandleUfoAuraCompleted;
+            }
         }
 
         private bool TryResolveCamera()
@@ -457,7 +706,8 @@ namespace Dev.CSU.Scripts.Planet
             if (!_warnedMissingCamera)
             {
                 Debug.LogWarning(
-                    $"{nameof(PlanetParallaxController)} on '{name}' could not find a camera.",
+                    $"{nameof(PlanetParallaxController)} on '{name}' could not "
+                    + "find a camera.",
                     this);
                 _warnedMissingCamera = true;
             }
@@ -473,12 +723,15 @@ namespace Dev.CSU.Scripts.Planet
             }
 
             Debug.LogWarning(
-                $"{nameof(PlanetParallaxController)} on '{name}' is inactive: {reason}",
+                $"{nameof(PlanetParallaxController)} on '{name}' is inactive: "
+                + reason,
                 this);
             _warnedMissingPrefabs = true;
         }
 
-        private void WarnMissingStageOnce(int stageNumber, string reason)
+        private void WarnMissingStageOnce(
+            int stageNumber,
+            string reason)
         {
             if (!_warnedMissingStages.Add(stageNumber))
             {
@@ -486,8 +739,8 @@ namespace Dev.CSU.Scripts.Planet
             }
 
             Debug.LogWarning(
-                $"{nameof(PlanetParallaxController)} on '{name}' could not start "
-                + $"stage {stageNumber}: {reason}",
+                $"{nameof(PlanetParallaxController)} on '{name}' could not "
+                + $"start stage {stageNumber}: {reason}",
                 this);
         }
 
@@ -495,14 +748,20 @@ namespace Dev.CSU.Scripts.Planet
         {
             initialStageNumber = Mathf.Max(1, initialStageNumber);
 
-            if (planetSettings == null)
+            if (stageFormats != null)
             {
-                return;
+                foreach (StageFormat format in stageFormats)
+                {
+                    format?.Validate();
+                }
             }
 
-            foreach (PlanetSetting setting in planetSettings)
+            if (planetSettings != null)
             {
-                setting?.Validate();
+                foreach (PlanetSetting setting in planetSettings)
+                {
+                    setting?.Validate();
+                }
             }
         }
     }
