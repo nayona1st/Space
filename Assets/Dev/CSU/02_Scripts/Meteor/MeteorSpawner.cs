@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Dev.CSU.Scripts.Meteor
 {
+    public enum MeteorRotationDirection
+    {
+        Clockwise,
+        CounterClockwise,
+        Random
+    }
+
     [DisallowMultipleComponent]
     public sealed class MeteorSpawner : MonoBehaviour
     {
@@ -28,6 +35,35 @@ namespace Dev.CSU.Scripts.Meteor
         [Tooltip("운석의 최대 이동 속도입니다.")]
         [Min(0f)]
         [SerializeField] private float maximumSpeed = 8f;
+
+        [Header("Meteor Rotation")]
+        [Tooltip("생성된 각 운석이 회전할 확률입니다.")]
+        [Range(0f, 100f)]
+        [SerializeField] private float rotationChance = 50f;
+
+        [Tooltip("회전하는 운석의 최소 회전 속도입니다. 단위는 초당 각도입니다.")]
+        [Min(0f)]
+        [SerializeField] private float minimumRotationSpeed = 30f;
+
+        [Tooltip("회전하는 운석의 최대 회전 속도입니다. 단위는 초당 각도입니다.")]
+        [Min(0f)]
+        [SerializeField] private float maximumRotationSpeed = 120f;
+
+        [Tooltip("회전하는 운석에 적용할 회전 방향입니다.")]
+        [SerializeField] private MeteorRotationDirection rotationDirection =
+            MeteorRotationDirection.Random;
+
+        [Tooltip("생성될 때마다 무작위 초기 Z축 회전값을 사용할지 결정합니다.")]
+        [SerializeField] private bool randomizeSpawnRotation = true;
+
+        [Tooltip("무작위 초기 회전을 사용하지 않을 때 적용할 Z축 각도입니다.")]
+        [SerializeField] private float fixedSpawnRotation;
+
+        [Tooltip("무작위 초기 Z축 회전값의 최솟값입니다.")]
+        [SerializeField] private float minimumSpawnRotation;
+
+        [Tooltip("무작위 초기 Z축 회전값의 최댓값입니다.")]
+        [SerializeField] private float maximumSpawnRotation = 360f;
 
         [Header("Wave Probability Weights")]
         [Tooltip("한 Wave에 운석 1개가 선택될 가중치입니다.")]
@@ -260,12 +296,68 @@ namespace Dev.CSU.Scripts.Meteor
             meteor.transform.localScale = Vector3.one * scale;
 
             float speed = Random.Range(minimumSpeed, maximumSpeed);
+            float spawnRotation = ChooseSpawnRotation();
+            float rotationSpeed = ChooseRotationSpeed();
+
             if (!meteor.TryGetComponent(out MeteorMover mover))
             {
                 mover = meteor.AddComponent<MeteorMover>();
             }
 
-            mover.Initialize(movementDirection, speed, meteorLifetime);
+            mover.Initialize(
+                movementDirection,
+                speed,
+                meteorLifetime,
+                rotationSpeed,
+                spawnRotation);
+        }
+
+        private float ChooseRotationSpeed()
+        {
+            if (!ShouldRotateMeteor())
+            {
+                return 0f;
+            }
+
+            float speed = Random.Range(minimumRotationSpeed, maximumRotationSpeed);
+            return speed * ChooseRotationDirectionSign();
+        }
+
+        private bool ShouldRotateMeteor()
+        {
+            if (rotationChance <= 0f)
+            {
+                return false;
+            }
+
+            if (rotationChance >= 100f)
+            {
+                return true;
+            }
+
+            return Random.value < rotationChance / 100f;
+        }
+
+        private float ChooseRotationDirectionSign()
+        {
+            switch (rotationDirection)
+            {
+                case MeteorRotationDirection.Clockwise:
+                    return -1f;
+
+                case MeteorRotationDirection.CounterClockwise:
+                    return 1f;
+
+                default:
+                    return Random.value < 0.5f ? -1f : 1f;
+            }
+        }
+
+        private float ChooseSpawnRotation()
+        {
+            return randomizeSpawnRotation
+                ? Random.Range(minimumSpawnRotation, maximumSpawnRotation)
+                : fixedSpawnRotation;
         }
 
         private GameObject ChooseMeteorVariant()
@@ -354,6 +446,10 @@ namespace Dev.CSU.Scripts.Meteor
             maximumScale = Mathf.Max(minimumScale, maximumScale);
             minimumSpeed = Mathf.Max(0f, minimumSpeed);
             maximumSpeed = Mathf.Max(minimumSpeed, maximumSpeed);
+            rotationChance = Mathf.Clamp(rotationChance, 0f, 100f);
+            minimumRotationSpeed = Mathf.Max(0f, minimumRotationSpeed);
+            maximumRotationSpeed = Mathf.Max(minimumRotationSpeed, maximumRotationSpeed);
+            maximumSpawnRotation = Mathf.Max(minimumSpawnRotation, maximumSpawnRotation);
             oneMeteorProbability = Mathf.Max(0f, oneMeteorProbability);
             twoMeteorsProbability = Mathf.Max(0f, twoMeteorsProbability);
             threeMeteorsProbability = Mathf.Max(0f, threeMeteorsProbability);
