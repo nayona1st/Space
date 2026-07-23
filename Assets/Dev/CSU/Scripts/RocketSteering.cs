@@ -9,6 +9,7 @@ namespace Dev.CSU.Scripts
     public sealed class RocketSteering : MonoBehaviour
     {
         private const float MinimumSpeed = 0.0001f;
+        private const float SnapEpsilon = 0.05f;
 
         [Header("Tilt Settings")]
         [SerializeField]
@@ -23,33 +24,22 @@ namespace Dev.CSU.Scripts
         [FormerlySerializedAs("rightTurnAngle")]
         private float rightMaxAngle = 30f;
 
+        [Header("Response")]
         [SerializeField]
         [Min(0f)]
-        [Tooltip("Maximum tilt speed in degrees per second while A or D is held.")]
-        private float tiltSpeed = 90f;
+        [Tooltip("Exponential response strength while turning. Higher values respond faster.")]
+        private float turnResponse = 7f;
 
         [SerializeField]
         [Min(0f)]
-        [Tooltip("Maximum return speed in degrees per second when the input is neutral.")]
-        private float returnSpeed = 120f;
-
-        [Header("Smoothing")]
-        [SerializeField]
-        [Min(0.01f)]
-        [Tooltip("Time in seconds used to ease into a turn. Higher values feel softer.")]
-        private float tiltSmoothTime = 0.18f;
-
-        [SerializeField]
-        [Min(0.01f)]
-        [Tooltip("Time in seconds used to ease back to the base direction.")]
-        private float returnSmoothTime = 0.24f;
+        [Tooltip("Exponential response strength while returning to the base direction.")]
+        private float returnResponse = 9f;
 
         private Rigidbody2D _rigidbody;
         private RocketTurnInput _turnInput;
         private Vector2 _baseTravelDirection;
         private float _baseRotation;
         private float _currentTilt;
-        private float _tiltVelocity;
         private bool _hasBaseTravelDirection;
 
         private void Awake()
@@ -70,21 +60,19 @@ namespace Dev.CSU.Scripts
             }
 
             float targetTilt = GetTargetTilt();
-            bool isReturning = Mathf.Approximately(targetTilt, 0f);
-            float maxSpeed = isReturning
-                ? returnSpeed
-                : tiltSpeed;
-            float smoothTime = isReturning
-                ? returnSmoothTime
-                : tiltSmoothTime;
+            float response = Mathf.Approximately(targetTilt, 0f)
+                ? returnResponse
+                : turnResponse;
 
-            _currentTilt = Mathf.SmoothDampAngle(
-                _currentTilt,
-                targetTilt,
-                ref _tiltVelocity,
-                smoothTime,
-                maxSpeed,
-                Time.fixedDeltaTime);
+            float alpha = 1f - Mathf.Exp(-response * Time.fixedDeltaTime);
+            float angleDelta = Mathf.DeltaAngle(_currentTilt, targetTilt);
+            _currentTilt += angleDelta * alpha;
+
+            if (Mathf.Abs(Mathf.DeltaAngle(_currentTilt, targetTilt)) <= SnapEpsilon)
+            {
+                _currentTilt = targetTilt;
+            }
+
             _currentTilt = Mathf.Clamp(_currentTilt, -rightMaxAngle, leftMaxAngle);
 
             _rigidbody.MoveRotation(_baseRotation + _currentTilt);
@@ -126,10 +114,8 @@ namespace Dev.CSU.Scripts
         {
             leftMaxAngle = Mathf.Max(0f, leftMaxAngle);
             rightMaxAngle = Mathf.Max(0f, rightMaxAngle);
-            tiltSpeed = Mathf.Max(0f, tiltSpeed);
-            returnSpeed = Mathf.Max(0f, returnSpeed);
-            tiltSmoothTime = Mathf.Max(0.01f, tiltSmoothTime);
-            returnSmoothTime = Mathf.Max(0.01f, returnSmoothTime);
+            turnResponse = Mathf.Max(0f, turnResponse);
+            returnResponse = Mathf.Max(0f, returnResponse);
         }
     }
 }
