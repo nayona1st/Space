@@ -16,9 +16,9 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 0.5}
   cameraDepth: 9.8
   localScale: {x: 1.6, y: 1.6}
-  moveSpeed: 1.08
+  moveSpeed: 1.05
   spawnRightPadding: 1
   despawnLeftPadding: 1
   sortingLayerName: Default
   sortingOrder: -1
-  opacity: 1
+  opacity: 0

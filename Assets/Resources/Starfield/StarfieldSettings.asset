@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d13999f1b28c4a67b62a8ac2e57e190a, type: 3}
+  m_Name: StarfieldSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.VisualEffects.Starfield.StarfieldSettings
+  systemEnabled: 1
+  prewarm: 1
+  particleMaterial: {fileID: 2100000, guid: 30719da7aa6b90544a3474844255049c, type: 2}
+  starSprites:
+  - {fileID: 8903608049025104197, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: -7678458166956771760, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 1222489850116747820, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 908394461399428893, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 6356170700173641542, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: -7166871409661841802, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 5552329641660927838, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 3303582094287134650, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  - {fileID: 8135986748720822029, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+  referenceOrthographicSize: 5
+  emitterWidth: 0.2
+  verticalPadding: 2
+  spawnRightPadding: 1
+  despawnLeftPadding: 1
+  visibilityMode: 0
+  visibleStageNumbers: 
+  farLayer:
+    layerName: StarField_Far
+    layerEnabled: 1
+    sizeRange: {x: 0.0225, y: 0.06}
+    minimumColor: {r: 0.82, g: 0.91, b: 1, a: 0.2}
+    maximumColor: {r: 1, g: 1, b: 1, a: 0.5}
+    horizontalVelocityRange: {x: -0.3, y: -0.23}
+    lifetimeRange: {x: 70, y: 90}
+    emissionRate: 3
+    maximumParticles: 200
+    sortingLayerName: Default
+    sortingOrder: -1
+    cameraDepth: 15
+  nearLayer:
+    layerName: StarField_Near
+    layerEnabled: 1
+    sizeRange: {x: 0.06, y: 0.135}
+    minimumColor: {r: 0.88, g: 0.94, b: 1, a: 0.45}
+    maximumColor: {r: 1, g: 1, b: 1, a: 0.8}
+    horizontalVelocityRange: {x: -0.7, y: -0.45}
+    lifetimeRange: {x: 35, y: 50}
+    emissionRate: 1
+    maximumParticles: 100
+    sortingLayerName: Default
+    sortingOrder: -1
+    cameraDepth: 14.5

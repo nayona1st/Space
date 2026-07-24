@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6505538787244337288}
   - component: {fileID: 5509143392957947369}
+  - component: {fileID: 8613236968145621454}
   m_Layer: 0
   m_Name: UFO Bckground_0
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 999805f1e6580ab4d9f417b6db4ef6ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,3 +92,18 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &8613236968145621454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161306422810468114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759d6cd0a8b7fe544b5c673b6a06c210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CSU.VisualEffects.EmissiveSprites.EmissiveSpritePresenter
+  profile: {fileID: 11400000, guid: df48da3a37f1af444b223133f40004f3, type: 2}
+  targetRenderers:
+  - {fileID: 5509143392957947369}

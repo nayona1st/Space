@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b2ce42e10361484582218812336a5a1, type: 3}
+  m_Name: UfoAuraEmissionProfile
+  m_EditorClassIdentifier: Assembly-CSharp::CSU.VisualEffects.EmissiveSprites.EmissiveSpriteProfile
+  target: 1
+  effectEnabled: 1
+  sharedMaterial: {fileID: 2100000, guid: 999805f1e6580ab4d9f417b6db4ef6ab, type: 2}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  emissionColor: {r: 0.12, g: 0.85, b: 0.65, a: 1}
+  emissionStrength: 3.5
+  overallOpacity: 1
+  maskMode: 1
+  brightnessThreshold: 0.55
+  thresholdSoftness: 0.13
+  outputClamp: 4.5
+  bodyEmissionStrength: 1.6
+  bodyCenter: {x: 0.5, y: 0.55}
+  bodyHalfSize: {x: 0.3, y: 0.24}
+  pulseSpeed: 1.1
+  pulseAmount: 0.15
+  preserveRendererSorting: 1
+  sortingLayerName: Default
+  sortingOrder: 0
+  previewEmissionMultiplier: 1

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b2ce42e10361484582218812336a5a1, type: 3}
+  m_Name: StarCloudEmissionProfile
+  m_EditorClassIdentifier: Assembly-CSharp::CSU.VisualEffects.EmissiveSprites.EmissiveSpriteProfile
+  target: 0
+  effectEnabled: 1
+  sharedMaterial: {fileID: 2100000, guid: 999805f1e6580ab4d9f417b6db4ef6ab, type: 2}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  emissionColor: {r: 0.22, g: 0.55, b: 0.95, a: 1}
+  emissionStrength: 2
+  overallOpacity: 1
+  maskMode: 0
+  brightnessThreshold: 0.58
+  thresholdSoftness: 0.14
+  outputClamp: 3.5
+  bodyEmissionStrength: 2
+  bodyCenter: {x: 0.5, y: 0.55}
+  bodyHalfSize: {x: 0.3, y: 0.24}
+  pulseSpeed: 0
+  pulseAmount: 0
+  preserveRendererSorting: 1
+  sortingLayerName: Default
+  sortingOrder: 0
+  previewEmissionMultiplier: 1
