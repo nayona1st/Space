@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8968a2c44ba4056a6112041a542c297, type: 3}
+  m_Name: BlockList
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.BlockDataList
+  blocks:
+  - {fileID: 11400000, guid: 3d609a6bc34855f46b3fe131ea32a144, type: 2}
+  - {fileID: 11400000, guid: 73bcbb82af2797349b214350605d3af2, type: 2}
+  - {fileID: 11400000, guid: 1aad44ea1a9f9e34d8266c27de3454e7, type: 2}
+  - {fileID: 11400000, guid: 29bc087d17d777a44988060e0a0b48e2, type: 2}
+  - {fileID: 11400000, guid: 5dd45f1ba4a0abd4cb02d8058b545736, type: 2}
+  - {fileID: 11400000, guid: 69e570c1a0d8bdd4da6cf222d78548ad, type: 2}
+  - {fileID: 11400000, guid: ad327fdf00b580e4fb5f8e3e0466e3f7, type: 2}
+  - {fileID: 11400000, guid: 8052b74ec31510f47ba443c2202b22a3, type: 2}
+  - {fileID: 11400000, guid: d1289f8572111a04592324f4dc338e68, type: 2}
+  - {fileID: 11400000, guid: a29af82fd3c66414cb1421a627f53514, type: 2}
