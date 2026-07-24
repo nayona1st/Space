@@ -4,16 +4,25 @@ using UnityEngine;
 
 namespace Dev.NKY.Scripts
 {
+    [Serializable]
+    public struct BaseStats
+    {
+        public StatType Type;
+        public float Value;
+    }
     public class PlayerStats : MonoBehaviour
     {
         [SerializeField] private InventoryGrid grid; // ★ 그리드 자동 연동용 참조
-        [SerializeField] private List<float> baseStats = new List<float>(); // 인스펙터 기본값 목록
+        [SerializeField] private List<BaseStats> baseStats; // 인스펙터 기본값 목록
+        [SerializeField] private List<BaseStats> minValues;
  
         private readonly Dictionary<StatType, float> baseValues = new Dictionary<StatType, float>();
         private readonly Dictionary<StatType, float> flatSum = new Dictionary<StatType, float>();
         private readonly Dictionary<StatType, float> percentSum = new Dictionary<StatType, float>();
-        
-        public Dictionary<StatType, float> finalStats =  new Dictionary<StatType, float>();
+
+
+        public Dictionary<StatType, float> FinalStats { get; private set; } =
+            new Dictionary<StatType, float>();
  
         public event Action<StatType, float> OnStatChanged;
         public event Action<Dictionary<StatType, float>> OnAllStatsUpdated;
@@ -34,8 +43,8 @@ namespace Dev.NKY.Scripts
             for (int i = 0; i < types.Length; i++)
             {
                 // 인스펙터에 작성된 값이 있으면 사용하고, 모자라면 기본값 100f 할당
-                float initialValue = (i < baseStats.Count) ? baseStats[i] : 100f;
-                baseValues[types[i]] = initialValue;
+                float initialValue = (i < baseStats.Count) ? baseStats[i].Value : 100f;
+                baseValues[baseStats[i].Type] = initialValue;
             }
         }
  
@@ -44,20 +53,31 @@ namespace Dev.NKY.Scripts
             float baseVal = baseValues.TryGetValue(type, out var bv) ? bv : 0f;
             float flat = flatSum.TryGetValue(type, out var f) ? f : 0f;
             float percent = percentSum.TryGetValue(type, out var p) ? p : 0f;
+
+            float finalVal = (baseVal + flat) * (1f + percent);
+
+            foreach (var minValue in minValues)
+            {
+                if (type == minValue.Type)
+                {
+                    if(finalVal < minValue.Value)
+                        finalVal = minValue.Value;
+                }
+            }
             
-            return (baseVal + flat) * (1f + percent);
+            return finalVal;
         }
 
         public Dictionary<StatType, float> GetAllFinalStats()
         {
-            finalStats.Clear();
+            FinalStats.Clear();
 
             foreach (StatType type in Enum.GetValues(typeof(StatType)))
             {
-                finalStats[type] = GetStat(type);
+                FinalStats[type] = GetStat(type);
             }
             
-            return finalStats;
+            return FinalStats;
         }
  
         public void ApplyModifiers(BlockInstance instance)
