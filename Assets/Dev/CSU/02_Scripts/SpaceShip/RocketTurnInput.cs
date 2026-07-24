@@ -1,10 +1,7 @@
 using UnityEngine;
-
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-#endif
 
-namespace Dev.CSU.Scripts
+namespace Dev.CSU._02_Scripts.SpaceShip
 {
     [DisallowMultipleComponent]
     public sealed class RocketTurnInput : MonoBehaviour

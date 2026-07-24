@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Background
+namespace Dev.CSU._02_Scripts.Background
 {
     [DisallowMultipleComponent]
     public sealed class InfiniteBackgroundLooper : MonoBehaviour

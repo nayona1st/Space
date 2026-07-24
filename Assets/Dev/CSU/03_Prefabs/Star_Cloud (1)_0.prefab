@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4705393867604663820}
   - component: {fileID: 9139228131626494380}
+  - component: {fileID: 7334572016101764631}
   m_Layer: 0
   m_Name: Star_Cloud (1)_0
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 0699c9c2ad8a4929b1c35bb6c9a72628, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,3 +92,25 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7334572016101764631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6174336502827407964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d10dbe6b6c341de9d8f0a64e44d6372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectEnabled: 1
+  effectMaterial: {fileID: 2100000, guid: 0699c9c2ad8a4929b1c35bb6c9a72628, type: 2}
+  cloudTint: {r: 0.78, g: 0.9, b: 1, a: 1}
+  emissionColor: {r: 0.1, g: 0.65, b: 1.2, a: 1}
+  emissionStrength: 0.28
+  horizontalFlowSpeed: 0.008
+  verticalFlowSpeed: 0.003
+  distortionStrength: 0.002
+  noiseScale: 3.5
+  overallOpacity: 0.95

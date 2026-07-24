@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1233101520933982444}
   - component: {fileID: 5566055855936694018}
+  - component: {fileID: 6469798793218206695}
   m_Layer: 0
   m_Name: UFO&Aura
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 891ddfffa5484e3e9fcb4e527d54988c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,3 +92,29 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &6469798793218206695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6078404463390567542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a66c667e0d3142d0a9cbe97df417ed37, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  effectEnabled: 1
+  effectMaterial: {fileID: 2100000, guid: 891ddfffa5484e3e9fcb4e527d54988c, type: 2}
+  auraColor: {r: 0.15, g: 1.15, b: 0.75, a: 1}
+  emissionStrength: 0.35
+  pulseSpeed: 1.1
+  pulseAmount: 0.18
+  minimumBrightness: 0.82
+  flowSpeed: 0.035
+  distortionStrength: 0.002
+  noiseScale: 4.5
+  edgeSoftness: 0.12
+  overallOpacity: 0.92
+  bodyCenter: {x: 0.5, y: 0.55}
+  bodyHalfSize: {x: 0.3, y: 0.24}
