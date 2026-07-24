@@ -1,198 +1,91 @@
 using System;
+using Dev.NKY.Scripts.Dev.NKY.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Dev.NKY.Scripts
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class DraggableBlockView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+    [RequireComponent(typeof(CanvasGroup), typeof(BlockVisualizer))]
+    public class DraggableBlockView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] private RectTransform dragLayer;
+        [SerializeField] private MachinePresent presentPrefab;
+
         private InventoryGrid grid;
         private InventoryGridView gridView;
-        [SerializeField] private Image cellImagePrefab;
-        [SerializeField] private RectTransform dragLayer;
-
         private BlockData data;
-        private StatModifierDataSo assignedStat;
+        private MachinePartsDataSo machinePartsData;
+        private Transform homeParent;
 
         public event Action<DraggableBlockView> OnPlaced;
+        public event Action<DraggableBlockView> OnUnplaced;
 
         private RectTransform rect;
         private CanvasGroup canvasGroup;
+        private BlockVisualizer visualizer;
         private BlockInstance instance;
+
         private Vector2 dragStartAnchoredPos;
+        private int dragStartRotation;
+        private bool dragStartIsPlaced;
+        private Vector2Int dragStartCell;
         private Transform originalParent;
         private Vector2 dragOffset;
         private int rotation;
         private bool isDragging;
+        private bool isPlaced;
         private PointerEventData currentEventData;
         private RectTransform dragParentRect;
+
+        private float CellSize => gridView != null ? gridView.CellSize : 64f;
 
         private void Awake()
         {
             rect = GetComponent<RectTransform>();
             canvasGroup = GetComponent<CanvasGroup>();
+            visualizer = GetComponent<BlockVisualizer>();
 
-            // 루트 객체의 Image 컴포넌트는 비활성화
-            if (TryGetComponent<Image>(out var rootImg))
-            {
-                rootImg.enabled = false;
-            }
-
-            // 중앙 피벗(0.5, 0.5) 고정
-            rect.pivot = new Vector2(0.5f, 0.5f);
+            if (TryGetComponent<Image>(out var rootImg)) rootImg.enabled = false;
         }
 
-        public void Initialize(BlockData blockData, StatModifierDataSo statData, InventoryGrid gridRef, InventoryGridView gridViewRef)
+        public void Initialize(BlockData blockData, MachinePartsDataSo statData, InventoryGrid gridRef, InventoryGridView gridViewRef, Transform home)
         {
             data = blockData;
-            assignedStat = statData;
+            machinePartsData = statData;
             grid = gridRef;
             gridView = gridViewRef;
-            RebuildBlockVisual();
-        }
+            homeParent = home;
+            isPlaced = false;
 
+            visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
+        }
+        
         private void Update()
         {
             if (isDragging && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
             {
-                rotation = (rotation + 1) % 4;
-                RebuildBlockVisual();
-
-                if (currentEventData != null)
-                {
-                    UpdatePreview(currentEventData);
-                }
+                RotateBlock();
             }
         }
 
-        public void RebuildBlockVisual()
+        private void RotateBlock()
         {
-            if (data == null || data.cells == null || data.cells.Count == 0) return;
+            rotation = (rotation + 1) % 4;
+            visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
+            Canvas.ForceUpdateCanvases();
 
-            // 1. 기존 자식 UI 즉시 분리 후 제거
-            for (int i = transform.childCount - 1; i >= 0; i--)
+            if (currentEventData != null && dragParentRect != null)
             {
-                var child = transform.GetChild(i);
-                child.SetParent(null);
-                if (Application.isPlaying) Destroy(child.gameObject);
-                else DestroyImmediate(child.gameObject);
-            }
-
-            float cellSize = gridView != null ? gridView.CellSize : 64f;
-            var rotatedCells = BlockShapeUtility.GetRotatedCells(data.cells, rotation);
-
-            // 2. 바운딩 박스 계산
-            int minX = int.MaxValue, maxX = int.MinValue;
-            int minY = int.MaxValue, maxY = int.MinValue;
-
-            foreach (var c in rotatedCells)
-            {
-                if (c.x < minX) minX = c.x;
-                if (c.x > maxX) maxX = c.x;
-                if (c.y < minY) minY = c.y;
-                if (c.y > maxY) maxY = c.y;
-            }
-
-            int widthCells = maxX - minX + 1;
-            int heightCells = maxY - minY + 1;
-            float blockWidth = widthCells * cellSize;
-            float blockHeight = heightCells * cellSize;
-
-            // 3. 중앙 피벗 및 RectTransform 크기 지정
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(blockWidth, blockHeight);
-
-            var layoutElement = GetComponent<LayoutElement>();
-            if (layoutElement == null) layoutElement = gameObject.AddComponent<LayoutElement>();
-            layoutElement.preferredWidth = blockWidth;
-            layoutElement.preferredHeight = blockHeight;
-
-            LayoutRebuilder.MarkLayoutForRebuild(rect);
-
-            Vector2 topLeftLocal = new Vector2(-blockWidth * 0.5f, blockHeight * 0.5f);
-
-            // 4. 자식 셀 생성 및 배치
-            foreach (var c in rotatedCells)
-            {
-                Image img;
-                if (cellImagePrefab != null)
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        dragParentRect, currentEventData.position, currentEventData.pressEventCamera, out var localMousePos))
                 {
-                    img = Instantiate(cellImagePrefab, transform);
-                }
-                else
-                {
-                    var cellObj = new GameObject($"Cell_({c.x},{c.y})", typeof(RectTransform), typeof(Image));
-                    cellObj.transform.SetParent(transform, false);
-                    img = cellObj.GetComponent<Image>();
-                    img.color = new Color(0.2f, 0.2f, 0.2f, 1f);
+                    dragOffset = rect.anchoredPosition - localMousePos;
                 }
 
-                // ★ [핵심 수정]: 마우스 클릭/드래그 이벤트를 받을 수 있도록 raycastTarget을 true로 변경
-                img.raycastTarget = true;
-
-                if (data.icon != null)
-                {
-                    img.sprite = data.icon;
-                    img.color = Color.white;
-                }
-
-                var cellRt = img.rectTransform;
-                cellRt.anchorMin = cellRt.anchorMax = cellRt.pivot = new Vector2(0.5f, 0.5f);
-                cellRt.sizeDelta = new Vector2(cellSize, cellSize);
-                cellRt.localScale = Vector3.one;
-
-                float cellLocalX = topLeftLocal.x + (c.x - minX + 0.5f) * cellSize;
-                float cellLocalY = topLeftLocal.y - (c.y - minY + 0.5f) * cellSize;
-                cellRt.anchoredPosition = new Vector2(cellLocalX, cellLocalY);
+                UpdatePreview(currentEventData);
             }
-        }
-
-        private Vector2 GetOriginCellScreenPos(Camera cam)
-        {
-            float cellSize = gridView != null ? gridView.CellSize : 64f;
-            var rotatedCells = BlockShapeUtility.GetRotatedCells(data.cells, rotation);
-
-            int minX = int.MaxValue, minY = int.MaxValue;
-            foreach (var c in rotatedCells)
-            {
-                if (c.x < minX) minX = c.x;
-                if (c.y < minY) minY = c.y;
-            }
-
-            Vector2 topLeftLocal = new Vector2(-rect.sizeDelta.x * 0.5f, rect.sizeDelta.y * 0.5f);
-            Vector2 originCellCenterLocal = new Vector2(
-                topLeftLocal.x + (0 - minX + 0.5f) * cellSize,
-                topLeftLocal.y - (0 - minY + 0.5f) * cellSize
-            );
-
-            Vector3 originWorldPos = rect.TransformPoint(originCellCenterLocal);
-            return RectTransformUtility.WorldToScreenPoint(cam, originWorldPos);
-        }
-
-        private Vector2 GetAnchoredPositionForGridCell(Vector2Int cell)
-        {
-            float cellSize = gridView.CellSize;
-            var rotatedCells = BlockShapeUtility.GetRotatedCells(data.cells, rotation);
-
-            int minX = int.MaxValue, minY = int.MaxValue;
-            foreach (var c in rotatedCells)
-            {
-                if (c.x < minX) minX = c.x;
-                if (c.y < minY) minY = c.y;
-            }
-
-            Vector2 originTopLeftGridPos = gridView.GridCellToAnchoredPosition(cell);
-
-            Vector2 topLeftLocal = new Vector2(-rect.sizeDelta.x * 0.5f, rect.sizeDelta.y * 0.5f);
-            Vector2 originCellTopLeftLocal = new Vector2(
-                topLeftLocal.x + (-minX * cellSize),
-                topLeftLocal.y - (minY * cellSize)
-            );
-
-            return originTopLeftGridPos - originCellTopLeftLocal;
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -200,34 +93,42 @@ namespace Dev.NKY.Scripts
             isDragging = true;
             currentEventData = eventData;
             dragStartAnchoredPos = rect.anchoredPosition;
+            dragStartRotation = rotation;
+            dragStartIsPlaced = isPlaced;
+            dragStartCell = instance != null ? instance.origin : Vector2Int.zero;
             originalParent = rect.parent;
-
-            canvasGroup.blocksRaycasts = false;
-
-            var layer = GetDragLayer();
-            rect.SetParent(layer, worldPositionStays: true);
-            rect.SetAsLastSibling();
-
-            dragParentRect = layer;
-
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    dragParentRect, eventData.position, eventData.pressEventCamera, out var localMousePos))
-            {
-                dragOffset = rect.anchoredPosition - localMousePos;
-            }
 
             if (instance != null)
             {
                 grid.Remove(instance);
                 instance = null;
             }
-        }
 
-        private RectTransform GetDragLayer()
-        {
-            if (dragLayer != null) return dragLayer;
-            var canvas = GetComponentInParent<Canvas>();
-            return canvas != null ? canvas.transform as RectTransform : originalParent as RectTransform;
+            dragParentRect = GetDragLayer();
+
+            if (isPlaced)
+            {
+                Vector3 worldCenter = rect.TransformPoint(rect.rect.center);
+                isPlaced = false;
+
+                visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
+
+                rect.SetParent(dragParentRect, worldPositionStays: false);
+                rect.position = worldCenter;
+            }
+            else
+            {
+                rect.SetParent(dragParentRect, worldPositionStays: true);
+            }
+
+            canvasGroup.blocksRaycasts = false;
+            rect.SetAsLastSibling();
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    dragParentRect, eventData.position, eventData.pressEventCamera, out var localMousePos))
+            {
+                dragOffset = rect.anchoredPosition - localMousePos;
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -250,38 +151,86 @@ namespace Dev.NKY.Scripts
             canvasGroup.blocksRaycasts = true;
             gridView.ClearPreview();
 
-            Vector2 originScreenPos = GetOriginCellScreenPos(eventData.pressEventCamera);
+            Vector2 originScreenPos = BlockLayoutCalculator.GetOriginCellScreenPos(
+                rect, BlockShapeUtility.GetRotatedCells(data.cells, rotation), CellSize, isPlaced, eventData.pressEventCamera);
 
+            // 1. 그리드 칸 위이며 장착 가능한 경우 -> 그리드 장착
             if (gridView.ScreenToGridCell(originScreenPos, eventData.pressEventCamera, out var cell))
             {
-                var candidate = new BlockInstance(data, assignedStat, cell, rotation);
+                var candidate = new BlockInstance(data, machinePartsData, cell, rotation);
+
                 if (grid.TryPlace(candidate))
                 {
                     instance = candidate;
+                    isPlaced = true;
+
+                    visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
                     rect.SetParent(gridView.transform, worldPositionStays: false);
-                    rect.anchoredPosition = GetAnchoredPositionForGridCell(cell);
+
+                    Vector2Int topLeftCell = BlockLayoutCalculator.GetTopLeftGridCell(cell, BlockShapeUtility.GetRotatedCells(data.cells, rotation));
+                    rect.anchoredPosition = gridView.GridCellToAnchoredPosition(topLeftCell);
+                    rect.localScale = Vector3.one;
+
                     OnPlaced?.Invoke(this);
                     return;
                 }
             }
 
-            rect.SetParent(originalParent, worldPositionStays: false);
-            rect.anchoredPosition = dragStartAnchoredPos;
+            ReturnToTray();
+        }
+
+        public void ReturnToTray()
+        {
+            if (instance != null)
+            {
+                grid.Remove(instance);
+                instance = null;
+            }
+
+            isPlaced = false;
+            rotation = dragStartRotation;
+            visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
+
+            rect.SetParent(homeParent, worldPositionStays: false);
+            rect.anchoredPosition = Vector2.zero;
+            rect.localScale = Vector3.one;
+
+            OnUnplaced?.Invoke(this);
         }
 
         private void UpdatePreview(PointerEventData eventData)
         {
-            Vector2 originScreenPos = GetOriginCellScreenPos(eventData.pressEventCamera);
+            Vector2 originScreenPos = BlockLayoutCalculator.GetOriginCellScreenPos(rect, BlockShapeUtility.GetRotatedCells(data.cells, rotation), CellSize, isPlaced, eventData.pressEventCamera);
 
             if (gridView.ScreenToGridCell(originScreenPos, eventData.pressEventCamera, out var cell))
             {
-                var preview = new BlockInstance(data, assignedStat, cell, rotation);
+                var preview = new BlockInstance(data, machinePartsData, cell, rotation);
                 gridView.ShowPreview(preview, grid.CanPlace(preview));
             }
             else
             {
                 gridView.ClearPreview();
             }
+        }
+
+        private RectTransform GetDragLayer()
+        {
+            if (dragLayer != null) return dragLayer;
+            var canvas = GetComponentInParent<Canvas>();
+            return canvas != null ? canvas.transform as RectTransform : originalParent as RectTransform;
+        }
+
+        private MachinePresent _present;
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _present = Instantiate(presentPrefab, transform);
+            _present.Initialize(machinePartsData);
+            _present.Show(transform.position);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _present.Hide();
         }
     }
 }

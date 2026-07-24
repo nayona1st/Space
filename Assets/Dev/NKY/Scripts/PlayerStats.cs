@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Dev.NKY.Scripts
 {
@@ -57,16 +58,22 @@ namespace Dev.NKY.Scripts
  
         public void ApplyModifiers(BlockInstance instance)
         {
-            AccumulateModifier(instance.statData.stat, +1f);
+            foreach (var stat in instance.partsData.statData)
+                AccumulateModifier(stat, +1f);
         }
  
         public void RemoveModifiers(BlockInstance instance)
         {
-            AccumulateModifier(instance.statData.stat, -1f);
+            foreach (var stat in instance.partsData.statData)
+                AccumulateModifier(stat, -1f);
         }
  
         private void AccumulateModifier(StatModifier mod, float sign)
         {
+            if (mod.isRandom)
+            {
+                mod.value = Random.Range(mod.minValue, mod.maxValue);
+            }
             float val = mod.value;
 
             if (mod.modifierType == ModifierType.Flat)

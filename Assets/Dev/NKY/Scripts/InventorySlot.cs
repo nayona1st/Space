@@ -1,26 +1,21 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Dev.NKY.Scripts
 {
-    // 대기 영역의 슬롯 하나. "어떤 블록/스탯을 줄지" 결정하고,
-    // 배치되면 새 블록으로 다시 채우는 역할만 함.
-    // DraggableBlockView가 어떻게 그려지고 드래그되는지는 전혀 모름 (SRP)
     [RequireComponent(typeof(RectTransform))]
     public class InventorySlot : MonoBehaviour
     {
         [SerializeField] private DraggableBlockView blockPrefab;
-        [SerializeField] private BlockDataList blockDataList;
-        [SerializeField] private StatDataListSo statDataList;
-        [SerializeField] private UnityEngine.UI.Image background; // 슬롯 테두리/배경 (선택, 없어도 동작함)
+        [SerializeField] private InventoryTray tray;
+        [SerializeField] private UnityEngine.UI.Image background;
 
-        // 씬 오브젝트라 여기엔 정상적으로 연결 가능. 블록 생성 시 이걸 넘겨줌.
         [SerializeField] private InventoryGrid grid;
         [SerializeField] private InventoryGridView gridView;
 
-        private DraggableBlockView current;
+        private readonly List<DraggableBlockView> blockList = new List<DraggableBlockView>();
 
-        // 동적으로 생성될 때(스포너가 Instantiate) 씬 참조를 나중에 채워 넣기 위한 용도.
-        // 씬에 직접 배치해서 Inspector로 연결한 경우엔 안 써도 됨.
         public void SetGridReferences(InventoryGrid gridRef, InventoryGridView gridViewRef)
         {
             grid = gridRef;
@@ -32,24 +27,109 @@ namespace Dev.NKY.Scripts
             SpawnNewBlock();
         }
 
-        private void SpawnNewBlock()
+        public void SpawnNewBlock()
         {
-            if (blockDataList == null || blockDataList.blocks.Count == 0) return;
-            if (statDataList == null || statDataList.statDataList.Count == 0) return;
+            if (tray == null) return;
+            if (!tray.TryTakeRandom(out var blockData, out var statData)) return;
 
-            var blockData = blockDataList.blocks[Random.Range(0, blockDataList.blocks.Count)];
-            var statData = statDataList.statDataList[Random.Range(0, statDataList.statDataList.Count)];
+            var newBlock = Instantiate(blockPrefab, transform);
+            newBlock.Initialize(blockData, statData, grid, gridView, transform);
 
-            current = Instantiate(blockPrefab, transform);
-            current.Initialize(blockData, statData, grid, gridView);
-            current.OnPlaced += HandleBlockPlaced;
+            RegisterBlock(newBlock);
         }
 
+        private void RegisterBlock(DraggableBlockView block)
+        {
+            if (!blockList.Contains(block))
+            {
+                blockList.Add(block);
+            }
+
+            block.OnPlaced -= HandleBlockPlaced;
+            block.OnPlaced += HandleBlockPlaced;
+            block.OnUnplaced -= HandleBlockUnplaced;
+            block.OnUnplaced += HandleBlockUnplaced;
+
+            UpdateSlotDisplay();
+        }
+
+        // 그리드 배치 성공 -> 슬롯 목록에서만 제거
         private void HandleBlockPlaced(DraggableBlockView view)
         {
+            view.OnPlaced -= HandleBlockPlaced; 
+            // ★ 중요: OnUnplaced 해제 구문을 제거했습니다!
+            // 나중에 그리드에서 슬롯으로 다시 되돌아올 때 OnUnplaced 이벤트를 받아야 하기 때문입니다.
+
+            blockList.Remove(view);
+
+            if (blockList.Count == 0)
+            {
+                SpawnNewBlock();
+            }
+            else
+            {
+                UpdateSlotDisplay();
+            }
+        }
+
+        // 배치 실패 또는 그리드에서 슬롯으로 복귀했을 때 실행
+        private void HandleBlockUnplaced(DraggableBlockView view)
+        {
+            if (!blockList.Contains(view))
+            {
+                blockList.Add(view);
+            }
+
+            // 슬롯으로 되돌아왔으므로 다시 그리드에 장착할 수 있도록 OnPlaced 재연결
             view.OnPlaced -= HandleBlockPlaced;
-            current = null;
-            SpawnNewBlock();
+            view.OnPlaced += HandleBlockPlaced;
+
+            UpdateSlotDisplay();
+        }
+
+        private void UpdateSlotDisplay()
+        {
+            for (int i = 0; i < blockList.Count; i++)
+            {
+                if (blockList[i] == null) continue;
+
+                // 맨 마지막(리스트 상단) 블록만 켜고, 밑에 깔린 기존 블록들은 SetActive(false)로 가립니다.
+                bool isTop = (i == blockList.Count - 1);
+                blockList[i].gameObject.SetActive(isTop);
+
+                if (isTop)
+                {
+                    var rt = blockList[i].GetComponent<RectTransform>();
+                    rt.anchoredPosition = Vector2.zero;
+                    rt.localScale = Vector3.one;
+                }
+            }
+        }
+        
+        public void OnClickNextBlock()
+        {
+            // 보관된 블록이 2개 이상일 때만 순환
+            if (blockList.Count <= 1) return;
+
+            // 맨 위에 있는 블록(마지막 인덱스)을 맨 아래(0번)로 이동
+            var topBlock = blockList[blockList.Count - 1];
+            blockList.RemoveAt(blockList.Count - 1);
+            blockList.Insert(0, topBlock);
+
+            // 화면 갱신
+            UpdateSlotDisplay();
+        }
+        
+        public void OnClickPreviousBlock()
+        {
+            if (blockList.Count <= 1) return;
+
+            // 맨 아래(0번) 블록을 꺼내서 맨 위(마지막 인덱스)로 이동
+            var bottomBlock = blockList[0];
+            blockList.RemoveAt(0);
+            blockList.Add(bottomBlock); // Add는 리스트 맨 끝(상단)으로 추가됨
+
+            UpdateSlotDisplay();
         }
     }
 }

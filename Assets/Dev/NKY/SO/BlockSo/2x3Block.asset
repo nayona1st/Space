@@ -14,16 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.BlockData
   blockName: LBlock
   icon: {fileID: 0}
-  shapePattern: 'XX
+  shapePattern: 'XXX
 
-    XX
-
-    XX'
+    XXX'
   cells:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
+  - {x: 2, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
-  - {x: 0, y: 2}
-  - {x: 1, y: 2}
-  modifiers: {fileID: 0}
+  - {x: 2, y: 1}

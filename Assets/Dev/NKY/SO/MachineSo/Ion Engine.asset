@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
+  m_Name: Ion Engine
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
+  icon: {fileID: 0}
+  partName: "\uC774\uC628 \uC5D4\uC9C4"
+  partDescription: "\uCD94\uC9C4 \uD6A8\uC728\uC744 \uADF9\uB300\uD654\uD55C \uC5D4\uC9C4."
+  statData:
+  - type: 0
+    modifierType: 0
+    isRandom: 1
+    minValue: 5
+    maxValue: 10
+    value: 0
+  - type: 0
+    modifierType: 1
+    isRandom: 0
+    minValue: 0
+    maxValue: 0
+    value: 0.15
+  - type: 1
+    modifierType: 0
+    isRandom: 1
+    minValue: -30
+    maxValue: -10
+    value: 0

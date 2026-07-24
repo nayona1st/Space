@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4231618461633624981}
   - component: {fileID: 8190519818481846584}
   - component: {fileID: 5040100612140300149}
+  - component: {fileID: 4025354848873837524}
   - component: {fileID: 9116097074672830353}
   - component: {fileID: -4481367870990357387}
   m_Layer: 5
@@ -90,6 +91,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4009dbd20064b7c80050e877784274c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.DraggableBlockView
+  dragLayer: {fileID: 0}
+  presentPrefab: {fileID: 2872147798625521043, guid: 229719617d1c74c4387cd1fc0eda2997, type: 3}
+--- !u!114 &4025354848873837524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8166577245174541283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5061f36b2f40f184137f91d701a63d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.Dev.NKY.Scripts.BlockVisualizer
   cellImagePrefab: {fileID: 845409699011796142, guid: 76e8c4d91e533364b82a92dcfda51a19, type: 3}
 --- !u!225 &9116097074672830353
 CanvasGroup:

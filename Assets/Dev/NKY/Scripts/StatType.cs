@@ -5,6 +5,7 @@ namespace Dev.NKY.Scripts
         Engine,
         Fuel,
         Armor,
-        Insulation
+        Insulation,
+        Drill
     }
 }
