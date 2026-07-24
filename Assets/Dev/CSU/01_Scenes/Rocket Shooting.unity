@@ -4060,7 +4060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.RocketShooting.RocketShootingDirector
   rocketView: {fileID: 1395490846}
   backgroundScroller: {fileID: 786190607}
-  autoStart: 1
+  autoStart: 0
   ignitionDuration: 1.56
   liftOffDuration: 2
   startScrollSpeed: 6
@@ -4559,7 +4559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.RocketShooting.RocketBackgroundPassTransitionTrigger
   transitionEnabled: 1
-  requiredBackgroundPasses: 18
+  requiredBackgroundPasses: 8
   targetSceneName: InGame
   backgroundScroller: {fileID: 786190607}
   launchDirector: {fileID: 1673556046}

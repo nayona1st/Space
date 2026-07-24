@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace Dev.NKY.Scripts
@@ -6,12 +7,16 @@ namespace Dev.NKY.Scripts
     public class ResourceManager : MonoBehaviour
     {
         [field: SerializeField] public int CurrentResource { get; set; } = 1000; // 보유 자원 (기본 1000)
+        
+        [SerializeField] private TextMeshProUGUI resourceText;
 
         public event Action<int> OnResourceChanged;
 
         private void Start()
         {
             // 시작 시 UI 갱신용 이벤트 발송
+            OnResourceChanged += Resource;
+            
             OnResourceChanged?.Invoke(CurrentResource);
         }
 
@@ -42,6 +47,11 @@ namespace Dev.NKY.Scripts
         {
             CurrentResource += amount;
             OnResourceChanged?.Invoke(CurrentResource);
+        }
+
+        public void Resource(int amount)
+        {
+            resourceText.text = amount.ToString();
         }
     }
 }

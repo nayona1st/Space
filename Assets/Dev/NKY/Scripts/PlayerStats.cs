@@ -38,13 +38,20 @@ namespace Dev.NKY.Scripts
         private void InitializeBaseValues()
         {
             baseValues.Clear();
-            var types = (StatType[])Enum.GetValues(typeof(StatType));
 
-            for (int i = 0; i < types.Length; i++)
+            // 1. 모든 StatType의 기본값을 먼저 100f로 안전하게 초기화
+            foreach (StatType type in Enum.GetValues(typeof(StatType)))
             {
-                // 인스펙터에 작성된 값이 있으면 사용하고, 모자라면 기본값 100f 할당
-                float initialValue = (i < baseStats.Count) ? baseStats[i].Value : 100f;
-                baseValues[baseStats[i].Type] = initialValue;
+                baseValues[type] = 100f;
+            }
+
+            // 2. 인스펙터의 baseStats 리스트에 설정된 데이터가 있다면 덮어쓰기
+            if (baseStats != null)
+            {
+                foreach (var stat in baseStats)
+                {
+                    baseValues[stat.Type] = stat.Value;
+                }
             }
         }
  
