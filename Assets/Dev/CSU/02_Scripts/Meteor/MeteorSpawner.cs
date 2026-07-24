@@ -94,6 +94,10 @@ namespace Dev.CSU._02_Scripts.Meteor
         [Min(0f)]
         [SerializeField] private float meteorLifetime = 15f;
 
+        [Header("Pooling")]
+        [Tooltip("MonoBehaviour that implements IMeteorPool and owns meteor instances.")]
+        [SerializeField] private MonoBehaviour meteorPoolSource;
+
         private readonly List<Transform> _resolvedSpawnPoints = new List<Transform>();
         private readonly List<int[]> _validCombinations = new List<int[]>();
         private readonly List<int> _combinationBuffer = new List<int>(3);
@@ -104,15 +108,25 @@ namespace Dev.CSU._02_Scripts.Meteor
         private bool _warnedZeroWeights;
         private bool _warnedMissingVariants;
         private bool _warnedMissingSpawnPoints;
+        private bool _warnedMissingPool;
+        private IMeteorPool _meteorPool;
+
+        public int ActiveMeteorCount => _meteorPool != null ? _meteorPool.ActiveCount : 0;
+
+        public int InactiveMeteorCount => _meteorPool != null ? _meteorPool.InactiveCount : 0;
+
+        public int TotalMeteorCount => _meteorPool != null ? _meteorPool.TotalCount : 0;
 
         private void Awake()
         {
             ResolveSpawnPoints();
+            ResolveAndPreparePool();
         }
 
         private void OnEnable()
         {
             ResolveSpawnPoints();
+            ResolveAndPreparePool();
             ScheduleNextWave();
         }
 
@@ -160,6 +174,12 @@ namespace Dev.CSU._02_Scripts.Meteor
             if (!HasUsableMeteorVariant())
             {
                 WarnMissingVariantsOnce();
+                return;
+            }
+
+            if (!ResolveAndPreparePool())
+            {
+                WarnMissingPoolOnce();
                 return;
             }
 
@@ -287,22 +307,21 @@ namespace Dev.CSU._02_Scripts.Meteor
                 return;
             }
 
-            GameObject meteor = Instantiate(
-                selectedPrefab,
-                spawnPoint.position,
-                spawnPoint.rotation);
+            if (!_meteorPool.TryRent(
+                    selectedPrefab,
+                    spawnPoint.position,
+                    spawnPoint.rotation,
+                    out MeteorMover mover))
+            {
+                return;
+            }
 
             float scale = Random.Range(minimumScale, maximumScale);
-            meteor.transform.localScale = Vector3.one * scale;
+            mover.transform.localScale = Vector3.one * scale;
 
             float speed = Random.Range(minimumSpeed, maximumSpeed);
             float spawnRotation = ChooseSpawnRotation();
             float rotationSpeed = ChooseRotationSpeed();
-
-            if (!meteor.TryGetComponent(out MeteorMover mover))
-            {
-                mover = meteor.AddComponent<MeteorMover>();
-            }
 
             mover.Initialize(
                 movementDirection,
@@ -408,6 +427,28 @@ namespace Dev.CSU._02_Scripts.Meteor
             return false;
         }
 
+        private bool ResolveAndPreparePool()
+        {
+            if (_meteorPool is Object poolObject && poolObject == null)
+            {
+                _meteorPool = null;
+            }
+
+            if (_meteorPool == null)
+            {
+                _meteorPool = meteorPoolSource as IMeteorPool;
+            }
+
+            if (_meteorPool == null)
+            {
+                return false;
+            }
+
+            _meteorPool.Prepare(meteorVariants);
+            _warnedMissingPool = false;
+            return true;
+        }
+
         private void ScheduleNextWave()
         {
             _nextSpawnTime = Time.time + Random.Range(minimumSpawnInterval, maximumSpawnInterval);
@@ -438,6 +479,23 @@ namespace Dev.CSU._02_Scripts.Meteor
                 $"{nameof(MeteorSpawner)} on '{name}' has no usable spawn points.",
                 this);
             _warnedMissingSpawnPoints = true;
+        }
+
+        private void WarnMissingPoolOnce()
+        {
+            if (_warnedMissingPool)
+            {
+                return;
+            }
+
+            string sourceDescription = meteorPoolSource == null
+                ? "no pool source is assigned"
+                : $"'{meteorPoolSource.GetType().Name}' does not implement {nameof(IMeteorPool)}";
+
+            Debug.LogWarning(
+                $"{nameof(MeteorSpawner)} on '{name}' cannot spawn because {sourceDescription}.",
+                this);
+            _warnedMissingPool = true;
         }
 
         private void OnValidate()

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d70073b26485a9488c5249ba71a4c5b, type: 3}
+  m_Name: MainTutorialSequence
+  m_EditorClassIdentifier: Space.CommonUI.Runtime::SpaceGame.CommonUI.Tutorial.TutorialSequenceData
+  sequenceId: main
+  pages:
+  - {fileID: 11400000, guid: 5244103da1f350a409fffa293772b986, type: 2}
+  - {fileID: 11400000, guid: 5ef0ed799316dc24d811c51a010acf3c, type: 2}
+  - {fileID: 11400000, guid: 1cc42d91485f0f848b7043d7895dadfa, type: 2}

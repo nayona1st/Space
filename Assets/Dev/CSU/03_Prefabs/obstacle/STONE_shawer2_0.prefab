@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5442745038892339493}
   - component: {fileID: 8864436893789864321}
   - component: {fileID: 1418483741858621339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: STONE_shawer2_0
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -863613061
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3666936279785876929, guid: 33816312978a1224997f6b8a2d34d814, type: 3}

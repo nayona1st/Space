@@ -11,10 +11,26 @@ namespace Dev.CSU._02_Scripts.Meteor
         private float _rotationSpeed;
         private float _remainingLifetime;
         private bool _initialized;
+        private bool _isRented;
+        private bool _warnedMissingPool;
+        private IMeteorPool _ownerPool;
+        private GameObject _variant;
+
+        public bool IsRented => _isRented;
+
+        public GameObject Variant => _variant;
 
         private void Awake()
         {
-            TryGetComponent(out _rigidbody2D);
+            CacheRigidbody();
+        }
+
+        internal void BindPool(IMeteorPool owner, GameObject variant)
+        {
+            _ownerPool = owner;
+            _variant = variant;
+            _isRented = false;
+            _warnedMissingPool = false;
         }
 
         public void Initialize(
@@ -24,12 +40,16 @@ namespace Dev.CSU._02_Scripts.Meteor
             float rotationSpeed,
             float spawnRotation)
         {
+            CacheRigidbody();
+            ResetRigidbody();
+
             _direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.left;
             _speed = Mathf.Max(0f, speed);
             _rotationSpeed = rotationSpeed;
             _remainingLifetime = Mathf.Max(0f, lifetime);
             SetZRotation(spawnRotation);
             _initialized = true;
+            _isRented = true;
 
             if (_rigidbody2D != null)
             {
@@ -54,22 +74,76 @@ namespace Dev.CSU._02_Scripts.Meteor
             _remainingLifetime -= Time.deltaTime;
             if (_remainingLifetime <= 0f)
             {
-                Destroy(gameObject);
+                ReturnToPool();
             }
         }
 
+        public void ReturnToPool()
+        {
+            if (_ownerPool is Object ownerObject && ownerObject == null)
+            {
+                _ownerPool = null;
+            }
+
+            if (_ownerPool != null)
+            {
+                _isRented = false;
+                _initialized = false;
+                _ownerPool.Return(this);
+                return;
+            }
+
+            if (!_isRented)
+            {
+                return;
+            }
+
+            _isRented = false;
+            _initialized = false;
+
+            if (!_warnedMissingPool)
+            {
+                Debug.LogWarning(
+                    $"{nameof(MeteorMover)} on '{name}' cannot return because it has no pool owner.",
+                    this);
+                _warnedMissingPool = true;
+            }
+
+            ResetRuntimeState();
+            gameObject.SetActive(false);
+        }
+
         private void OnDisable()
+        {
+            ResetRuntimeState();
+        }
+
+        private void ResetRuntimeState()
         {
             _direction = Vector2.left;
             _speed = 0f;
             _rotationSpeed = 0f;
             _remainingLifetime = 0f;
             _initialized = false;
+            _isRented = false;
             SetZRotation(0f);
+            ResetRigidbody();
+        }
 
+        private void CacheRigidbody()
+        {
+            if (_rigidbody2D == null)
+            {
+                TryGetComponent(out _rigidbody2D);
+            }
+        }
+
+        private void ResetRigidbody()
+        {
             if (_rigidbody2D != null)
             {
                 _rigidbody2D.linearVelocity = Vector2.zero;
+                _rigidbody2D.angularVelocity = 0f;
             }
         }
 

@@ -1,0 +1,12 @@
+{
+    "name": "Space.CommonUI.Tests",
+    "rootNamespace": "SpaceGame.CommonUI.Tests",
+    "references": [
+        "Space.CommonUI.Runtime",
+        "Unity.InputSystem"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "autoReferenced": false
+}

@@ -2,8 +2,9 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - UI
   - Player
   - PlayerBoundary
-  - 
+  - Obstacle
   - 
   - 
   - 
@@ -41,3 +42,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1867931825
+    locked: 0
+  - name: SpaceShip
+    uniqueID: 719251769
+    locked: 0
+  - name: Obstacle
+    uniqueID: 3431354235
+    locked: 0
+  m_RenderingLayers:
+  - Default

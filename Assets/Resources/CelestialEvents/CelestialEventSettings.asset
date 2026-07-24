@@ -1,0 +1,337 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdeaafe97e1ed404b93a01563250e433, type: 3}
+  m_Name: CelestialEventSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.VisualEffects.CelestialEvents.CelestialEventSettings
+  systemEnabled: 1
+  useUnscaledTime: 0
+  enableCameraPostProcessing: 1
+  spawnOutsideMargin: 1.5
+  despawnOutsideMargin: 1.5
+  visibilityMode: 0
+  visibleStageNumbers: 
+  shootingStar:
+    displayName: Shooting Star
+    effectType: 0
+    enabled: 1
+    prefab: {fileID: 8744368517228146925, guid: 184fdb98c3fe33b4c9be3148e486cf8b, type: 3}
+    checkIntervalRange: {x: 3, y: 8}
+    spawnProbability: 0.12
+    maximumActive: 2
+    poolCapacity: 3
+    spawnEdgeMode: 2
+    normalizedVerticalStartRange: {x: 0.2, y: 1}
+    normalizedTopStartRange: {x: 0.35, y: 1}
+    downwardSlopeRange: {x: 0.35, y: 0.75}
+    crossingDurationRange: {x: 0.8, y: 1.8}
+    scaleRange: {x: 0.8, y: 1.25}
+    headSprites:
+    - {fileID: 8903608049025104197, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: -7678458166956771760, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 1222489850116747820, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 908394461399428893, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 6356170700173641542, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: -7166871409661841802, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 5552329641660927838, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 3303582094287134650, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 8135986748720822029, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    headMaterial: {fileID: 2100000, guid: 647f47b50d6144948a0bd40bda163dbd, type: 2}
+    minimumHeadColor: {r: 0.9, g: 0.97, b: 1, a: 1}
+    maximumHeadColor: {r: 1, g: 1, b: 1, a: 1}
+    headEmissionColor: {r: 0.88, g: 0.97, b: 1, a: 1}
+    headEmissionStrengthRange: {x: 4, y: 7}
+    coreTrail:
+      enabled: 1
+      material: {fileID: 2100000, guid: 27dc052b42772434ab62e16126beefd0, type: 2}
+      timeRange: {x: 0.25, y: 0.7}
+      widthCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: -1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      widthMultiplier: 0.18
+      minimumVertexDistance: 0.08
+      colorGradient:
+        serializedVersion: 2
+        key0: {r: 0.92, g: 0.98, b: 1, a: 0.95}
+        key1: {r: 0.66, g: 0.88, b: 1, a: 0.5}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 29491
+        atime2: 65535
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 3
+      emissionColor: {r: 0.85, g: 0.96, b: 1, a: 1}
+      emissionStrengthRange: {x: 4, y: 7}
+    outerTrail:
+      enabled: 0
+      material: {fileID: 2100000, guid: 27dc052b42772434ab62e16126beefd0, type: 2}
+      timeRange: {x: 0.25, y: 0.7}
+      widthCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: -1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      widthMultiplier: 0.28
+      minimumVertexDistance: 0.1
+      colorGradient:
+        serializedVersion: 2
+        key0: {r: 0.75, g: 0.93, b: 1, a: 0.35}
+        key1: {r: 0.4, g: 0.75, b: 1, a: 0.35}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 29491
+        atime2: 65535
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 3
+      emissionColor: {r: 0.45, g: 0.82, b: 1, a: 1}
+      emissionStrengthRange: {x: 2, y: 4}
+    sortingLayerName: Default
+    sortingOrder: 0
+    cameraDepth: 13
+  comet:
+    displayName: Comet
+    effectType: 1
+    enabled: 1
+    prefab: {fileID: 5552162099443075174, guid: 74ba9e9c592554541b3049ba6b06a0c1, type: 3}
+    checkIntervalRange: {x: 5, y: 12}
+    spawnProbability: 0.02
+    maximumActive: 1
+    poolCapacity: 1
+    spawnEdgeMode: 2
+    normalizedVerticalStartRange: {x: 0.45, y: 1}
+    normalizedTopStartRange: {x: 0.65, y: 1}
+    downwardSlopeRange: {x: 0.12, y: 0.32}
+    crossingDurationRange: {x: 4, y: 8}
+    scaleRange: {x: 1.5, y: 2.25}
+    headSprites:
+    - {fileID: 8903608049025104197, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: -7678458166956771760, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 1222489850116747820, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 908394461399428893, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 6356170700173641542, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: -7166871409661841802, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 5552329641660927838, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 3303582094287134650, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    - {fileID: 8135986748720822029, guid: 439197df1ae067745821404cc96c8dc1, type: 3}
+    headMaterial: {fileID: 2100000, guid: ff186237d1a4f814ab1c84046544d4ea, type: 2}
+    minimumHeadColor: {r: 0.91764706, g: 0.9843137, b: 1, a: 1}
+    maximumHeadColor: {r: 1, g: 1, b: 1, a: 1}
+    headEmissionColor: {r: 0.7411765, g: 0.9372549, b: 1, a: 1}
+    headEmissionStrengthRange: {x: 6, y: 10}
+    coreTrail:
+      enabled: 1
+      material: {fileID: 2100000, guid: 20cbb89734226774d9fc40ea1ef6f90a, type: 2}
+      timeRange: {x: 1.5, y: 3}
+      widthCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: -1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      widthMultiplier: 0.34
+      minimumVertexDistance: 0.12
+      colorGradient:
+        serializedVersion: 2
+        key0: {r: 0.7411765, g: 0.9372549, b: 1, a: 0.95}
+        key1: {r: 0.40392157, g: 0.8117647, b: 1, a: 0.5}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 29491
+        atime2: 65535
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 3
+      emissionColor: {r: 0.7411765, g: 0.9372549, b: 1, a: 1}
+      emissionStrengthRange: {x: 6, y: 10}
+    outerTrail:
+      enabled: 1
+      material: {fileID: 2100000, guid: c9b5dc06800ead54e99812cfed8cfa9b, type: 2}
+      timeRange: {x: 1.8, y: 3}
+      widthCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: -1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      widthMultiplier: 0.82
+      minimumVertexDistance: 0.18
+      colorGradient:
+        serializedVersion: 2
+        key0: {r: 0.40392157, g: 0.8117647, b: 1, a: 0.42}
+        key1: {r: 0.40392157, g: 0.8117647, b: 1, a: 0.42}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 29491
+        atime2: 65535
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 3
+      emissionColor: {r: 0.40392157, g: 0.8117647, b: 1, a: 1}
+      emissionStrengthRange: {x: 2, y: 5}
+    sortingLayerName: Default
+    sortingOrder: 0
+    cameraDepth: 12.75
+  testMode: 0
+  testProbabilityMultiplier: 25.75
