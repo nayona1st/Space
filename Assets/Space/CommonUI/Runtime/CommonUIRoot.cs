@@ -32,6 +32,7 @@ namespace SpaceGame.CommonUI
 
         private CommonUIContext context;
 
+        public CommonUIContext Context => context;
         public SettingsWindow SettingsWindow => settingsWindow;
         public KeyInfoWindow KeyInfoWindow => keyInfoWindow;
         public TutorialPanel TutorialPanel => tutorialPanel;

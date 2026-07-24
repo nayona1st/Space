@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Dev.CSU._02_Scripts.SceneTransition;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 #if ENABLE_INPUT_SYSTEM
@@ -116,22 +116,23 @@ namespace PortableEndingSystem
                 return;
             }
 
-            if (Application.CanStreamedLevelBeLoaded(sceneName) == false)
+            isExiting = true;
+            if (!SceneTransitions.TryLoadScene(sceneName))
             {
-                Debug.LogWarning(
-                    $"Cannot load '{sceneName}'. Add it to Build Settings or change Ending Credits Data.",
-                    data);
+                isExiting = false;
+                Debug.LogError(
+                    $"{nameof(EndingCreditsPlayer)} on '{name}' could not "
+                    + $"request the shared fade transition to "
+                    + $"'{sceneName}'.",
+                    this);
                 return;
             }
 
-            isExiting = true;
             if (creditsRoutine != null)
             {
                 StopCoroutine(creditsRoutine);
                 creditsRoutine = null;
             }
-
-            StartCoroutine(ExitRoutine(sceneName));
         }
 
         public bool ValidateSetup(out string message)
@@ -285,60 +286,6 @@ namespace PortableEndingSystem
             {
                 sceneFadeOverlay.alpha = 0f;
                 sceneFadeOverlay.blocksRaycasts = false;
-            }
-        }
-
-        private IEnumerator ExitRoutine(string sceneName)
-        {
-            if (sceneFadeOverlay != null)
-            {
-                sceneFadeOverlay.gameObject.SetActive(true);
-                sceneFadeOverlay.transform.SetAsLastSibling();
-                sceneFadeOverlay.interactable = true;
-                sceneFadeOverlay.blocksRaycasts = true;
-            }
-
-            float screenDuration = data.ScreenFadeOutDuration;
-            float bgmDuration = data.BgmFadeOutDuration;
-            float totalDuration = Mathf.Max(screenDuration, bgmDuration);
-            float screenStart = sceneFadeOverlay != null ? sceneFadeOverlay.alpha : 0f;
-            float bgmStart = bgmSource != null ? bgmSource.volume : 0f;
-            float elapsed = 0f;
-
-            while (elapsed < totalDuration)
-            {
-                elapsed += Time.unscaledDeltaTime;
-
-                if (sceneFadeOverlay != null)
-                {
-                    float screenT = screenDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / screenDuration);
-                    sceneFadeOverlay.alpha = Mathf.Lerp(screenStart, 1f, screenT);
-                }
-
-                if (bgmSource != null && bgmSource.isPlaying)
-                {
-                    float bgmT = bgmDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / bgmDuration);
-                    bgmSource.volume = Mathf.Lerp(bgmStart, 0f, bgmT);
-                }
-
-                yield return null;
-            }
-
-            if (sceneFadeOverlay != null)
-            {
-                sceneFadeOverlay.alpha = 1f;
-            }
-
-            if (bgmSource != null)
-            {
-                bgmSource.Stop();
-            }
-
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-            if (operation == null)
-            {
-                Debug.LogWarning($"Could not start loading scene '{sceneName}'.", this);
-                isExiting = false;
             }
         }
 
