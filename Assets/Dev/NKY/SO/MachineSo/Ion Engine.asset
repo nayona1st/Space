@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
   m_Name: Ion Engine
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
-  icon: {fileID: 0}
+  icon: {fileID: 2973312190601776421, guid: 04f38ae1e273e6e4fad625e51a37b248, type: 3}
   partName: "\uC774\uC628 \uC5D4\uC9C4"
   partDescription: "\uCD94\uC9C4 \uD6A8\uC728\uC744 \uADF9\uB300\uD654\uD55C \uC5D4\uC9C4."
   statData:

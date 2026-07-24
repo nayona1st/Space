@@ -10,27 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
-  m_Name: Overdrive Booster
+  m_Name: sensing protocol
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
-  icon: {fileID: 8499823047808182768, guid: 04f38ae1e273e6e4fad625e51a37b248, type: 3}
-  partName: "\uACFC\uBD80\uD558 \uBD80\uC2A4\uD130"
-  partDescription: "\uCD9C\uB825\uC744 \uD55C\uACC4 \uC774\uC0C1\uC73C\uB85C \uB04C\uC5B4\uC62C\uB9B0\uB2E4."
+  icon: {fileID: -6931339683150358059, guid: 5b4d569b620a93e429364b4467085858, type: 3}
+  partName: "\uD0D0\uC9C0 \uD504\uB85C\uD1A0\uCF5C"
+  partDescription: "\uB354 \uB9CE\uC740 \uC790\uC6D0\uC744 \uD0D0\uC9C0\uD558\uB294
+    \uAE30\uAE30."
   statData:
-  - type: 0
+  - type: 3
     modifierType: 1
-    isRandom: 0
-    minValue: 0
-    maxValue: 0
-    value: 0.35
+    isRandom: 1
+    minValue: 0.1
+    maxValue: 0.25
+    value: 0
   - type: 1
+    modifierType: 1
+    isRandom: 1
+    minValue: -0.1
+    maxValue: -0.05
+    value: 0
+  - type: 0
     modifierType: 0
     isRandom: 1
-    minValue: -40
-    maxValue: -15
+    minValue: -8
+    maxValue: -2
     value: 0
-  - type: 2
-    modifierType: 1
-    isRandom: 0
-    minValue: 0
-    maxValue: 0
-    value: -0.15

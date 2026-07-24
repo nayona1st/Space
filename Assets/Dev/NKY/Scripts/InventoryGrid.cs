@@ -27,6 +27,7 @@ namespace Dev.NKY.Scripts
  
         public bool CanPlace(BlockInstance instance)
         {
+            
             foreach (var cell in instance.GetOccupiedCells())
             {
                 if (!IsInside(cell)) return false;
@@ -38,10 +39,10 @@ namespace Dev.NKY.Scripts
         public bool TryPlace(BlockInstance instance)
         {
             if (!CanPlace(instance)) return false;
- 
+            
             foreach (var cell in instance.GetOccupiedCells())
                 cellOwner[cell.x, cell.y] = instance;
- 
+
             OnBlockPlaced?.Invoke(instance);
             return true;
         }

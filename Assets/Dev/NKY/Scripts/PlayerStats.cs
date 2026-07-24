@@ -1,79 +1,83 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Dev.NKY.Scripts
 {
     public class PlayerStats : MonoBehaviour
     {
-        [SerializeField] private List<StatModifier> baseStats = new List<StatModifier>();
+        [SerializeField] private InventoryGrid grid; // ★ 그리드 자동 연동용 참조
+        [SerializeField] private List<float> baseStats = new List<float>(); // 인스펙터 기본값 목록
  
         private readonly Dictionary<StatType, float> baseValues = new Dictionary<StatType, float>();
         private readonly Dictionary<StatType, float> flatSum = new Dictionary<StatType, float>();
         private readonly Dictionary<StatType, float> percentSum = new Dictionary<StatType, float>();
- 
-        // 1. 개별 스탯 변경 이벤트
-        public event Action<StatType, float> OnStatChanged;
         
-        // 2. [추가] 모든 스탯의 최종 합산 결과를 한 번에 전달하는 이벤트
-        public event Action<Dictionary<StatType, float>> OnAllStatsUpdated;
+        public Dictionary<StatType, float> finalStats =  new Dictionary<StatType, float>();
  
+        public event Action<StatType, float> OnStatChanged;
+        public event Action<Dictionary<StatType, float>> OnAllStatsUpdated;
+
         private void Awake()
         {
-            foreach (var b in baseStats)
+            InitializeBaseValues();
+        }
+
+        /// <summary>
+        /// ★ [핵심] baseStats 리스트의 값들을 StatType Enum에 맞춰 baseValues Dictionary에 넣어줍니다.
+        /// </summary>
+        private void InitializeBaseValues()
+        {
+            baseValues.Clear();
+            var types = (StatType[])Enum.GetValues(typeof(StatType));
+
+            for (int i = 0; i < types.Length; i++)
             {
-                float val = b.isRandom ? UnityEngine.Random.Range(b.minValue, b.maxValue) : b.value;
-                baseValues[b.type] = val;
+                // 인스펙터에 작성된 값이 있으면 사용하고, 모자라면 기본값 100f 할당
+                float initialValue = (i < baseStats.Count) ? baseStats[i] : 100f;
+                baseValues[types[i]] = initialValue;
             }
         }
  
-        /// <summary>
-        /// 단일 스탯의 최종 수치를 계산합니다.
-        /// 공식: (기본값 + 고정 스탯 합) * (1 + 퍼센트 스탯 합)
-        /// </summary>
         public float GetStat(StatType type)
         {
             float baseVal = baseValues.TryGetValue(type, out var bv) ? bv : 0f;
             float flat = flatSum.TryGetValue(type, out var f) ? f : 0f;
             float percent = percentSum.TryGetValue(type, out var p) ? p : 0f;
- 
+            
             return (baseVal + flat) * (1f + percent);
         }
 
-        /// <summary>
-        /// [핵심] 모든 스탯의 최종 합산 수치를 계산하여 Dictionary 형태로 반환합니다.
-        /// </summary>
         public Dictionary<StatType, float> GetAllFinalStats()
         {
-            var finalStats = new Dictionary<StatType, float>();
+            finalStats.Clear();
 
             foreach (StatType type in Enum.GetValues(typeof(StatType)))
             {
                 finalStats[type] = GetStat(type);
             }
-
+            
             return finalStats;
         }
  
         public void ApplyModifiers(BlockInstance instance)
         {
+            if (instance.partsData?.statData == null) return;
+
             foreach (var stat in instance.partsData.statData)
                 AccumulateModifier(stat, +1f);
         }
  
         public void RemoveModifiers(BlockInstance instance)
         {
+            if (instance?.partsData?.statData == null) return;
+
             foreach (var stat in instance.partsData.statData)
                 AccumulateModifier(stat, -1f);
         }
  
         private void AccumulateModifier(StatModifier mod, float sign)
         {
-            if (mod.isRandom)
-            {
-                mod.value = Random.Range(mod.minValue, mod.maxValue);
-            }
             float val = mod.value;
 
             if (mod.modifierType == ModifierType.Flat)
@@ -87,7 +91,25 @@ namespace Dev.NKY.Scripts
                 percentSum[mod.type] = cur + val * sign;
             }
  
+            // 개별 및 전체 스탯 변경 이벤트 발송
             OnStatChanged?.Invoke(mod.type, GetStat(mod.type));
+            OnAllStatsUpdated?.Invoke(GetAllFinalStats()); // ★ 전체 스탯 업데이트 이벤트 추가
+        }
+        
+        public void UpgradeBaseStat(StatType type, float amount)
+        {
+            if (baseValues.ContainsKey(type))
+            {
+                baseValues[type] += amount;
+            }
+            else
+            {
+                baseValues[type] = amount;
+            }
+
+            // ★ 스탯 변경 이벤트 발송 (UI 및 타 시스템 자동 갱신)
+            OnStatChanged?.Invoke(type, GetStat(type));
+            OnAllStatsUpdated?.Invoke(GetAllFinalStats());
         }
     }
 }

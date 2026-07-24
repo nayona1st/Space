@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
   m_Name: drop tank
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
-  icon: {fileID: 0}
+  icon: {fileID: 1310546014018925063, guid: 04f38ae1e273e6e4fad625e51a37b248, type: 3}
   partName: "\uD655\uC7A5 \uC5F0\uB8CC\uD0F1\uD06C"
   partDescription: "\uD56D\uC18D \uB2A5\uB825\uC744 \uD06C\uAC8C \uD5A5\uC0C1\uC2DC\uD0A8\uB2E4."
   statData:

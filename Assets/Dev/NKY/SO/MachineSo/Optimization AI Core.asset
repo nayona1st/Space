@@ -10,27 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
-  m_Name: Overdrive Booster
+  m_Name: Optimization AI Core
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
-  icon: {fileID: 8499823047808182768, guid: 04f38ae1e273e6e4fad625e51a37b248, type: 3}
-  partName: "\uACFC\uBD80\uD558 \uBD80\uC2A4\uD130"
-  partDescription: "\uCD9C\uB825\uC744 \uD55C\uACC4 \uC774\uC0C1\uC73C\uB85C \uB04C\uC5B4\uC62C\uB9B0\uB2E4."
+  icon: {fileID: 184950751378207249, guid: 5b4d569b620a93e429364b4467085858, type: 3}
+  partName: "\uCD5C\uC801\uD654 AI \uCF54\uC5B4"
+  partDescription: "\uBAA8\uB4E0 \uC2DC\uC2A4\uD15C\uC744 \uADE0\uD615 \uC788\uAC8C
+    \uD5A5\uC0C1\uC2DC\uD0A8\uB2E4."
   statData:
   - type: 0
-    modifierType: 1
+    modifierType: 0
     isRandom: 0
     minValue: 0
     maxValue: 0
-    value: 0.35
+    value: 2
   - type: 1
     modifierType: 0
-    isRandom: 1
-    minValue: -40
-    maxValue: -15
-    value: 0
+    isRandom: 0
+    minValue: 0
+    maxValue: 0
+    value: 20
   - type: 2
+    modifierType: 0
+    isRandom: 0
+    minValue: 0
+    maxValue: 0
+    value: 10
+  - type: 3
     modifierType: 1
     isRandom: 0
     minValue: 0
     maxValue: 0
-    value: -0.15
+    value: 0.1

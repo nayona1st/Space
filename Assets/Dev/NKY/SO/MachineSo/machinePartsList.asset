@@ -13,10 +13,23 @@ MonoBehaviour:
   m_Name: machinePartsList
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsListSo
   machineParts:
+  - {fileID: 11400000, guid: 86f3b05b991dfd145b9c78ec1d3d62e7, type: 2}
   - {fileID: 11400000, guid: 8a0f97de91a235a4f81960c0efcbdef2, type: 2}
+  - {fileID: 11400000, guid: 5362eaf989e112d42a30a1493a6ec57c, type: 2}
+  - {fileID: 11400000, guid: d180c5e5b5443074f9d64537856b2b21, type: 2}
   - {fileID: 11400000, guid: 99efcf399b93d0742ba8dafe513d94ed, type: 2}
   - {fileID: 11400000, guid: e8041caee4faded4785fd96e8c61eba0, type: 2}
+  - {fileID: 11400000, guid: c9b8cab565219bc41991a80ee1fc15e0, type: 2}
+  - {fileID: 11400000, guid: a950938f66db0694692fffc63614fd17, type: 2}
   - {fileID: 11400000, guid: aebd3f253820a66468249c0a129b7a08, type: 2}
   - {fileID: 11400000, guid: 8ac12970f5519d14fadbf02b3000fba7, type: 2}
+  - {fileID: 11400000, guid: 2f03cfab56af1cc41bbba09f8c4eb03b, type: 2}
+  - {fileID: 11400000, guid: ea945ed5c53240345af2946aa78a02f4, type: 2}
+  - {fileID: 11400000, guid: 74563a83e038eeb4d8775d852d95d48f, type: 2}
+  - {fileID: 11400000, guid: 96bd1e645a9e29c4f94219afd9009a57, type: 2}
   - {fileID: 11400000, guid: e406bfba792fb8a4aaedfefcbe3003fe, type: 2}
+  - {fileID: 11400000, guid: 2dcce8a9ca58c0d4d8f5df5e7746ce52, type: 2}
   - {fileID: 11400000, guid: 2434a4135a1119e47bb2787d9ef22cbe, type: 2}
+  - {fileID: 11400000, guid: 2e40401a532c181448a1ff0b6ea3deec, type: 2}
+  - {fileID: 11400000, guid: f5a30503f08f85d4b84e1bd50c06f633, type: 2}
+  - {fileID: 11400000, guid: 932161dc456977141ae6be8e904088c4, type: 2}

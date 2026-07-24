@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Dev.NKY.Scripts
 {
@@ -10,6 +12,8 @@ namespace Dev.NKY.Scripts
         [SerializeField] private DraggableBlockView blockPrefab;
         [SerializeField] private InventoryTray tray;
         [SerializeField] private UnityEngine.UI.Image background;
+        [SerializeField] private MachinePresent present;
+        [SerializeField] private TextMeshProUGUI numberText;
 
         [SerializeField] private InventoryGrid grid;
         [SerializeField] private InventoryGridView gridView;
@@ -25,6 +29,14 @@ namespace Dev.NKY.Scripts
         private void Start()
         {
             SpawnNewBlock();
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current.jKey.wasPressedThisFrame)
+            {
+                SpawnNewBlock();
+            }
         }
 
         public void SpawnNewBlock()
@@ -49,6 +61,10 @@ namespace Dev.NKY.Scripts
             block.OnPlaced += HandleBlockPlaced;
             block.OnUnplaced -= HandleBlockUnplaced;
             block.OnUnplaced += HandleBlockUnplaced;
+    
+            // ★ 삭제 이벤트 연결
+            block.OnDiscarded -= HandleBlockDiscarded;
+            block.OnDiscarded += HandleBlockDiscarded;
 
             UpdateSlotDisplay();
         }
@@ -61,15 +77,8 @@ namespace Dev.NKY.Scripts
             // 나중에 그리드에서 슬롯으로 다시 되돌아올 때 OnUnplaced 이벤트를 받아야 하기 때문입니다.
 
             blockList.Remove(view);
-
-            if (blockList.Count == 0)
-            {
-                SpawnNewBlock();
-            }
-            else
-            {
-                UpdateSlotDisplay();
-            }
+            
+            UpdateSlotDisplay();
         }
 
         // 배치 실패 또는 그리드에서 슬롯으로 복귀했을 때 실행
@@ -87,14 +96,33 @@ namespace Dev.NKY.Scripts
             UpdateSlotDisplay();
         }
 
+        private int currentIndex = 0; // ★ 현재 보고 있는 블록의 번호 (0부터 시작)
+
         private void UpdateSlotDisplay()
         {
+            if (blockList.Count == 0)
+            {
+                numberText.text = "0 / 0";
+                present.NothingPart();
+                return;
+            }
+
+            // 블록이 삭제되거나 해서 인덱스가 범위를 벗어나는 것 방지
+            if (currentIndex >= blockList.Count)
+            {
+                currentIndex = blockList.Count - 1;
+            }
+            if (currentIndex < 0)
+            {
+                currentIndex = 0;
+            }
+
             for (int i = 0; i < blockList.Count; i++)
             {
                 if (blockList[i] == null) continue;
 
-                // 맨 마지막(리스트 상단) 블록만 켜고, 밑에 깔린 기존 블록들은 SetActive(false)로 가립니다.
-                bool isTop = (i == blockList.Count - 1);
+                // ★ 현재 선택된 currentIndex 위치의 블록만 활성화
+                bool isTop = (i == currentIndex);
                 blockList[i].gameObject.SetActive(isTop);
 
                 if (isTop)
@@ -102,33 +130,42 @@ namespace Dev.NKY.Scripts
                     var rt = blockList[i].GetComponent<RectTransform>();
                     rt.anchoredPosition = Vector2.zero;
                     rt.localScale = Vector3.one;
+                    present.Initialize(blockList[i].MachinePartsData);
                 }
             }
+            
+
+            numberText.text = $"{currentIndex + 1} / {blockList.Count}";
         }
-        
+
         public void OnClickNextBlock()
         {
-            // 보관된 블록이 2개 이상일 때만 순환
             if (blockList.Count <= 1) return;
 
-            // 맨 위에 있는 블록(마지막 인덱스)을 맨 아래(0번)로 이동
-            var topBlock = blockList[blockList.Count - 1];
-            blockList.RemoveAt(blockList.Count - 1);
-            blockList.Insert(0, topBlock);
+            // 다음 위치로 이동 (마지막에 도달하면 0으로 돌아옴)
+            currentIndex = (currentIndex + 1) % blockList.Count;
 
-            // 화면 갱신
             UpdateSlotDisplay();
         }
-        
+
         public void OnClickPreviousBlock()
         {
             if (blockList.Count <= 1) return;
 
-            // 맨 아래(0번) 블록을 꺼내서 맨 위(마지막 인덱스)로 이동
-            var bottomBlock = blockList[0];
-            blockList.RemoveAt(0);
-            blockList.Add(bottomBlock); // Add는 리스트 맨 끝(상단)으로 추가됨
+            // 이전 위치로 이동 (0보다 작아지면 마지막 번호로 돌아옴)
+            currentIndex = (currentIndex - 1 + blockList.Count) % blockList.Count;
 
+            UpdateSlotDisplay();
+        }
+        
+        private void HandleBlockDiscarded(DraggableBlockView view)
+        {
+            view.OnPlaced -= HandleBlockPlaced;
+            view.OnUnplaced -= HandleBlockUnplaced;
+            view.OnDiscarded -= HandleBlockDiscarded;
+
+            blockList.Remove(view);
+            
             UpdateSlotDisplay();
         }
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cd9a903d724f9eb91a86e4037b87fb, type: 3}
   m_Name: steel cladding
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.MachinePartsDataSo
-  icon: {fileID: 0}
+  icon: {fileID: 8934766394004037281, guid: 04f38ae1e273e6e4fad625e51a37b248, type: 3}
   partName: "\uAC15\uCCA0 \uC678\uC7A5\uD310"
   partDescription: "\uBB34\uAC70\uC6B4 \uB300\uC2E0 \uB9E4\uC6B0 \uB2E8\uB2E8\uD558\uB2E4."
   statData:

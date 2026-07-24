@@ -21,4 +21,4 @@ MonoBehaviour:
   despawnLeftPadding: 1
   sortingLayerName: Default
   sortingOrder: -1
-  opacity: 1
+  opacity: 0.5

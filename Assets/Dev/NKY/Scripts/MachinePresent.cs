@@ -13,6 +13,7 @@ namespace Dev.NKY.Scripts
         private string _description;
         private List<StatModifier> _statModifier;
 
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image icon;
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI descriptionText;
@@ -28,26 +29,36 @@ namespace Dev.NKY.Scripts
             Apply();
         }
 
-        public void Apply()
+        public void NothingPart()
         {
-            if(_icon != null) icon.sprite = _icon;
+            canvasGroup.alpha = 0;
+        }
+
+        private void Apply()
+        {
+            canvasGroup.alpha = 1;
+            
+            icon.sprite = _icon;
             nameText.text = _name;
             descriptionText.text = _description;
 
+            statText.text = "";
             foreach (var stat in _statModifier)
             {
+                string pn = stat.value >= 0 ? "+" : "";
                 if (stat.modifierType == ModifierType.Flat)
                 {
-                    statText.text += $"타입:{stat.type}\n" +
-                                    $"스텟:{(int)stat.value}\n";
+                    statText.text += $"타입:{stat.type.ToString()}\n" +
+                                    $"스텟:{pn}{(int)stat.value}\n";
                 }
                 else
                 {
-                    float percent = (float)Math.Round(stat.value, 2) * 100f;
-                    statText.text += $"타입:{stat.type}\n" +
-                                    $"스텟:{percent}%\n";
+                    double percent = Math.Round(stat.value * 100, 1);
+                    statText.text += $"타입:{stat.type.ToString()}\n" +
+                                    $"스텟:{pn}{percent}%\n";
                 }
 
+                statText.text += $"\n";
             }
         }
         
@@ -60,7 +71,6 @@ namespace Dev.NKY.Scripts
         public void Hide()
         {
             gameObject.SetActive(false);
-            Destroy(gameObject);
         }
         
         

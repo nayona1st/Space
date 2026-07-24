@@ -105,7 +105,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5061f36b2f40f184137f91d701a63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.Dev.NKY.Scripts.BlockVisualizer
-  cellImagePrefab: {fileID: 845409699011796142, guid: 76e8c4d91e533364b82a92dcfda51a19, type: 3}
+  cellPrefab: {fileID: 845409699011796142, guid: 76e8c4d91e533364b82a92dcfda51a19, type: 3}
+  borderLineColor: {r: 0.029162295, g: 0, b: 0.40392157, a: 1}
+  borderWidth: 5
 --- !u!225 &9116097074672830353
 CanvasGroup:
   m_ObjectHideFlags: 0

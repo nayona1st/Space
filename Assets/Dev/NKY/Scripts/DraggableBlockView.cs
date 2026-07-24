@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Dev.NKY.Scripts
 {
@@ -16,11 +17,12 @@ namespace Dev.NKY.Scripts
         private InventoryGrid grid;
         private InventoryGridView gridView;
         private BlockData data;
-        private MachinePartsDataSo machinePartsData;
+        public MachinePartsDataSo MachinePartsData { get; set; }
         private Transform homeParent;
 
         public event Action<DraggableBlockView> OnPlaced;
         public event Action<DraggableBlockView> OnUnplaced;
+        public event Action<DraggableBlockView> OnDiscarded;
 
         private RectTransform rect;
         private CanvasGroup canvasGroup;
@@ -53,13 +55,45 @@ namespace Dev.NKY.Scripts
         public void Initialize(BlockData blockData, MachinePartsDataSo statData, InventoryGrid gridRef, InventoryGridView gridViewRef, Transform home)
         {
             data = blockData;
-            machinePartsData = statData;
+
+            // ★ 1. ScriptableObject를 복제하여 이 블록만의 독자적인 스탯 인스턴스를 만듭니다.
+            if (statData != null)
+            {
+                MachinePartsData = Instantiate(statData);
+            }
+
             grid = gridRef;
             gridView = gridViewRef;
             homeParent = home;
             isPlaced = false;
 
             visualizer.RebuildVisual(rect, data, rotation, CellSize, isPlaced);
+
+
+            if (MachinePartsData != null && MachinePartsData.statData != null)
+            {
+                for (int i = 0; i < MachinePartsData.statData.Count; i++)
+                {
+                    var stat = MachinePartsData.statData[i];
+            
+                    // Random.Range (float/int 판별하여 무작위 값 할당)
+                    if (stat.isRandom) 
+                    {
+                        stat.value = Random.Range(stat.minValue, stat.maxValue);
+                    }
+            
+                    // struct일 경우 대비하여 원본 리스트에 다시 덮어쓰기
+                    MachinePartsData.statData[i] = stat;
+                }
+            }
+
+            // 툴팁 UI 초기화 (최상단 레이어 생성 방식 적용)
+            var present = GetOrCreatePresent();
+            if (present != null)
+            {
+                present.Initialize(MachinePartsData);
+                present.Hide();
+            }
         }
         
         private void Update()
@@ -90,6 +124,11 @@ namespace Dev.NKY.Scripts
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            if (_present != null)
+            {
+                _present.Hide();
+            }
+            
             isDragging = true;
             currentEventData = eventData;
             dragStartAnchoredPos = rect.anchoredPosition;
@@ -157,7 +196,7 @@ namespace Dev.NKY.Scripts
             // 1. 그리드 칸 위이며 장착 가능한 경우 -> 그리드 장착
             if (gridView.ScreenToGridCell(originScreenPos, eventData.pressEventCamera, out var cell))
             {
-                var candidate = new BlockInstance(data, machinePartsData, cell, rotation);
+                var candidate = new BlockInstance(data, MachinePartsData, cell, rotation);
 
                 if (grid.TryPlace(candidate))
                 {
@@ -176,6 +215,16 @@ namespace Dev.NKY.Scripts
                 }
             }
 
+            // ★ 2. 마우스 아래에 휴지통이 있는지 검사 -> 휴지통으로 버리기
+            TrashCanUI trashCan = GetTrashCanUnderPointer(eventData);
+            if (trashCan != null)
+            {
+                trashCan.ResetVisual();
+                DiscardBlock();
+                return;
+            }
+
+            // 3. 실패 시 슬롯으로 복귀
             ReturnToTray();
         }
 
@@ -204,7 +253,7 @@ namespace Dev.NKY.Scripts
 
             if (gridView.ScreenToGridCell(originScreenPos, eventData.pressEventCamera, out var cell))
             {
-                var preview = new BlockInstance(data, machinePartsData, cell, rotation);
+                var preview = new BlockInstance(data, MachinePartsData, cell, rotation);
                 gridView.ShowPreview(preview, grid.CanPlace(preview));
             }
             else
@@ -221,16 +270,80 @@ namespace Dev.NKY.Scripts
         }
 
         private MachinePresent _present;
+        private MachinePresent GetOrCreatePresent()
+        {
+            // 삭제되었거나 아직 없는 경우 최상단 DragLayer에 생성
+            if (_present == null && presentPrefab != null)
+            {
+                Transform targetLayer = GetDragLayer();
+                _present = Instantiate(presentPrefab, targetLayer);
+                _present.Initialize(MachinePartsData);
+                _present.Hide();
+            }
+            return _present;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _present = Instantiate(presentPrefab, transform);
-            _present.Initialize(machinePartsData);
-            _present.Show(transform.position);
+            // 드래그 중이 아닐 때만 툴팁 표시
+            if (isDragging) return;
+
+            var present = GetOrCreatePresent();
+            if (present != null)
+            {
+                present.Show(transform.position);
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _present.Hide();
+            if (_present != null)
+            {
+                _present.Hide();
+            }
         }
+        
+        private TrashCanUI GetTrashCanUnderPointer(PointerEventData eventData)
+        {
+            if (eventData.pointerCurrentRaycast.gameObject != null)
+            {
+                return eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<TrashCanUI>();
+            }
+            return null;
+        }
+
+// ★ 블록 삭제 및 완전히 파괴하는 처리
+        public void DiscardBlock()
+        {
+            // 그리드에 장착되어 있던 블록이면 그리드에서 제거 (스탯 차감도 자동 동작)
+            if (instance != null)
+            {
+                grid.Remove(instance);
+                instance = null;
+            }
+
+            // 툴팁 UI 정리
+            if (_present != null)
+            {
+                Destroy(_present.gameObject);
+            }
+
+            // 슬롯 등 구독자들에게 버려짐 알림
+            OnDiscarded?.Invoke(this);
+
+            // 블록 오브젝트 완전 삭제
+            Destroy(gameObject);
+        }
+
+        // 오브젝트 파괴 시 툴팁도 함께 정리
+        private void OnDestroy()
+        {
+            if (_present != null)
+            {
+                Destroy(_present.gameObject);
+            }
+        }
+        
+        
     }
 }
