@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Dev.CSU._02_Scripts.RocketShooting
 {
@@ -16,6 +17,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
     public sealed class RocketShootingDirector : MonoBehaviour
     {
         private const int MaxPhaseStepsPerFrame = 4;
+        private const float MaxAccelerationIntegrationStep = 0.25f;
 
         [Header("References")]
         [Tooltip("Rocket presentation controlled by this launch sequence.")]
@@ -36,19 +38,35 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         [Min(0f)]
         [SerializeField] private float liftOffDuration = 2f;
 
-        [Tooltip("Background speed, in world units per second, after lift-off finishes.")]
+        [Header("Scroll Acceleration")]
+        [Tooltip("Background speed, in world units per second, when lift-off begins.")]
         [Min(0f)]
-        [SerializeField] private float cruiseSpeed = 8f;
+        [SerializeField] private float startScrollSpeed = 6f;
 
+        [Tooltip("Maximum background speed reached after the acceleration duration.")]
+        [Min(0f)]
+        [FormerlySerializedAs("cruiseSpeed")]
+        [SerializeField] private float maximumScrollSpeed = 18f;
+
+        [Tooltip("Seconds of active LiftOff and Cruise time required to reach maximum speed.")]
+        [Min(0.01f)]
+        [SerializeField] private float accelerationDuration = 12f;
+
+        [Tooltip("Normalized scroll-speed progression from the start speed to the maximum speed.")]
+        [FormerlySerializedAs("speedCurve")]
+        [SerializeField] private AnimationCurve accelerationCurve =
+            CreateDefaultAccelerationCurve();
+
+        [Tooltip("Restarts acceleration when changing between active scrolling phases. Keep disabled for seamless LiftOff-to-Cruise acceleration.")]
+        [SerializeField] private bool resetAccelerationOnPhaseChange;
+
+        [Header("Rocket Motion")]
         [Tooltip("Normalized vertical rocket movement during lift-off.")]
         [SerializeField] private AnimationCurve liftCurve =
             AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-        [Tooltip("Normalized background acceleration during lift-off.")]
-        [SerializeField] private AnimationCurve speedCurve =
-            AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-
         private float _phaseElapsed;
+        private float _accelerationElapsed;
         private float _currentScrollSpeed;
         private bool _launchStarted;
         private bool _warnedInvalidConfiguration;
@@ -56,14 +74,38 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         public LaunchPhase Phase { get; private set; } = LaunchPhase.Idle;
         public double Altitude { get; private set; }
         public float CurrentScrollSpeed => _currentScrollSpeed;
+        public float AccelerationElapsed => _accelerationElapsed;
+        public float AccelerationProgress =>
+            Mathf.Clamp01(
+                _accelerationElapsed
+                / Mathf.Max(0.01f, accelerationDuration));
+        public float StartScrollSpeed => startScrollSpeed;
+        public float MaximumScrollSpeed => maximumScrollSpeed;
+        public float AccelerationDuration => accelerationDuration;
 
         public event Action<LaunchPhase> PhaseChanged;
+
+        public float EvaluateConfiguredScrollSpeed(
+            float normalizedProgress)
+        {
+            float curveValue = EvaluateNormalizedCurve(
+                accelerationCurve,
+                Mathf.Clamp01(normalizedProgress));
+            return Mathf.Clamp(
+                Mathf.Lerp(
+                    startScrollSpeed,
+                    maximumScrollSpeed,
+                    curveValue),
+                0f,
+                maximumScrollSpeed);
+        }
 
         private void Awake()
         {
             Phase = LaunchPhase.Idle;
             Altitude = 0d;
             _phaseElapsed = 0f;
+            _accelerationElapsed = 0f;
             _currentScrollSpeed = 0f;
             _launchStarted = false;
 
@@ -93,10 +135,16 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
             if (backgroundScroller != null)
             {
-                float effectiveFrameSpeed = deltaTime > 0f
-                    ? (float)(frameDistance / deltaTime)
-                    : 0f;
-                backgroundScroller.SetScrollSpeed(effectiveFrameSpeed);
+                if (deltaTime > 0f)
+                {
+                    _currentScrollSpeed = Mathf.Clamp(
+                        (float)(frameDistance / deltaTime),
+                        0f,
+                        maximumScrollSpeed);
+                }
+
+                backgroundScroller.SetScrollSpeed(
+                    deltaTime > 0f ? _currentScrollSpeed : 0f);
             }
 
             Altitude += frameDistance;
@@ -126,6 +174,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             _warnedInvalidConfiguration = false;
             _launchStarted = true;
             Altitude = 0d;
+            _accelerationElapsed = 0f;
             _currentScrollSpeed = 0f;
 
             backgroundScroller.ResetPassedBackgroundCount();
@@ -202,10 +251,10 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         private void EnterLiftOff()
         {
+            _accelerationElapsed = 0f;
             TransitionTo(LaunchPhase.LiftOff);
             rocketView.SetLiftProgress(0f, liftCurve);
-            _currentScrollSpeed =
-                cruiseSpeed * EvaluateNormalizedCurve(speedCurve, 0f);
+            _currentScrollSpeed = EvaluateScrollSpeed(0f);
         }
 
         private double ConsumeLiftOffTime(ref float remainingDelta)
@@ -214,7 +263,6 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             {
                 rocketView.SetLiftProgress(1f, liftCurve);
                 rocketView.SnapToCruiseAnchor();
-                _currentScrollSpeed = cruiseSpeed;
                 TransitionTo(LaunchPhase.Cruise);
                 return 0d;
             }
@@ -224,7 +272,6 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             if (phaseRemaining <= 0f)
             {
                 rocketView.SnapToCruiseAnchor();
-                _currentScrollSpeed = cruiseSpeed;
                 TransitionTo(LaunchPhase.Cruise);
                 return 0d;
             }
@@ -238,28 +285,17 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             float endNormalizedTime =
                 Mathf.Clamp01(endElapsed / liftOffDuration);
 
-            float startSpeed = cruiseSpeed
-                * EvaluateNormalizedCurve(
-                    speedCurve,
-                    startNormalizedTime);
-            float endSpeed = cruiseSpeed
-                * EvaluateNormalizedCurve(
-                    speedCurve,
-                    endNormalizedTime);
-
             double travelledDistance =
-                (double)(startSpeed + endSpeed) * 0.5d * consumedDelta;
+                ConsumeAccelerationTime(consumedDelta);
 
             _phaseElapsed = endElapsed;
             remainingDelta =
                 Mathf.Max(0f, remainingDelta - consumedDelta);
-            _currentScrollSpeed = endSpeed;
             rocketView.SetLiftProgress(endNormalizedTime, liftCurve);
 
             if (consumedDelta >= phaseRemaining)
             {
                 rocketView.SnapToCruiseAnchor();
-                _currentScrollSpeed = cruiseSpeed;
                 TransitionTo(LaunchPhase.Cruise);
             }
 
@@ -268,9 +304,68 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         private double ConsumeCruiseTime(float deltaTime)
         {
-            _currentScrollSpeed = cruiseSpeed;
             rocketView.SnapToCruiseAnchor();
-            return (double)cruiseSpeed * deltaTime;
+            return ConsumeAccelerationTime(deltaTime);
+        }
+
+        private double ConsumeAccelerationTime(float deltaTime)
+        {
+            float remainingDeltaTime = Mathf.Max(0f, deltaTime);
+            if (remainingDeltaTime <= 0f)
+            {
+                _currentScrollSpeed =
+                    EvaluateScrollSpeed(_accelerationElapsed);
+                return 0d;
+            }
+
+            float safeAccelerationDuration =
+                Mathf.Max(0.01f, accelerationDuration);
+            double travelledDistance = 0d;
+
+            while (remainingDeltaTime > 0f
+                   && _accelerationElapsed
+                       < safeAccelerationDuration)
+            {
+                float accelerationTimeRemaining =
+                    safeAccelerationDuration - _accelerationElapsed;
+                float step = Mathf.Min(
+                    remainingDeltaTime,
+                    Mathf.Min(
+                        accelerationTimeRemaining,
+                        MaxAccelerationIntegrationStep));
+                float startSpeed =
+                    EvaluateScrollSpeed(_accelerationElapsed);
+                _accelerationElapsed += step;
+                float endSpeed =
+                    EvaluateScrollSpeed(_accelerationElapsed);
+
+                travelledDistance +=
+                    (double)(startSpeed + endSpeed)
+                    * 0.5d
+                    * step;
+                remainingDeltaTime =
+                    Mathf.Max(0f, remainingDeltaTime - step);
+            }
+
+            if (remainingDeltaTime > 0f)
+            {
+                _accelerationElapsed = safeAccelerationDuration;
+                travelledDistance +=
+                    (double)maximumScrollSpeed
+                    * remainingDeltaTime;
+            }
+
+            _currentScrollSpeed =
+                EvaluateScrollSpeed(_accelerationElapsed);
+            return travelledDistance;
+        }
+
+        private float EvaluateScrollSpeed(float elapsedTime)
+        {
+            float normalizedTime = Mathf.Clamp01(
+                elapsedTime
+                / Mathf.Max(0.01f, accelerationDuration));
+            return EvaluateConfiguredScrollSpeed(normalizedTime);
         }
 
         private void TransitionTo(LaunchPhase nextPhase)
@@ -280,10 +375,26 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                 return;
             }
 
+            LaunchPhase previousPhase = Phase;
             Phase = nextPhase;
             _phaseElapsed = 0f;
+
+            if (resetAccelerationOnPhaseChange
+                && IsScrollingPhase(previousPhase)
+                && IsScrollingPhase(nextPhase))
+            {
+                _accelerationElapsed = 0f;
+                _currentScrollSpeed = EvaluateScrollSpeed(0f);
+            }
+
             rocketView.SetPresentationPhase(nextPhase);
             PhaseChanged?.Invoke(nextPhase);
+        }
+
+        private static bool IsScrollingPhase(LaunchPhase phase)
+        {
+            return phase == LaunchPhase.LiftOff
+                || phase == LaunchPhase.Cruise;
         }
 
         private bool HasValidConfiguration()
@@ -321,20 +432,35 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             return Mathf.Clamp01(value);
         }
 
+        private static AnimationCurve CreateDefaultAccelerationCurve()
+        {
+            return new AnimationCurve(
+                new Keyframe(0f, 0f, 0f, 0f),
+                new Keyframe(0.3f, 0.05f, 0.35f, 0.35f),
+                new Keyframe(0.75f, 0.62f, 1.55f, 1.55f),
+                new Keyframe(1f, 1f, 0f, 0f));
+        }
+
         private void OnValidate()
         {
             ignitionDuration = Mathf.Max(0f, ignitionDuration);
             liftOffDuration = Mathf.Max(0f, liftOffDuration);
-            cruiseSpeed = Mathf.Max(0f, cruiseSpeed);
+            startScrollSpeed = Mathf.Max(0f, startScrollSpeed);
+            maximumScrollSpeed = Mathf.Max(
+                startScrollSpeed,
+                maximumScrollSpeed);
+            accelerationDuration =
+                Mathf.Max(0.01f, accelerationDuration);
 
             if (liftCurve == null || liftCurve.length == 0)
             {
                 liftCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
             }
 
-            if (speedCurve == null || speedCurve.length == 0)
+            if (accelerationCurve == null
+                || accelerationCurve.length == 0)
             {
-                speedCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+                accelerationCurve = CreateDefaultAccelerationCurve();
             }
         }
     }

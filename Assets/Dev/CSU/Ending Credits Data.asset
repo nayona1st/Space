@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d52d642b722fbc47b8c3f8a6978e6f6, type: 3}
+  m_Name: Ending Credits Data
+  m_EditorClassIdentifier: Assembly-CSharp::PortableEndingSystem.EndingCreditsData
+  gameTitle: "\uAC8C\uC784 \uC81C\uBAA9"
+  developerName: "\uAC1C\uBC1C\uC790 \uC774\uB984"
+  creditsTemplate: "THE END\n\n\n\uBAA8\uB4E0 \uC5EC\uC815\uC774 \uB05D\uB0AC\uC2B5\uB2C8\uB2E4.\n\n\n{GAME_TITLE}\n\n\nA
+    GAME BY\n\n{DEVELOPER_NAME}\n\n\nGAME DESIGN\n\uAC8C\uC784 \uB514\uC790\uC778\n\n{DEVELOPER_NAME}\n\n\nPROGRAMMING\n\uD504\uB85C\uADF8\uB798\uBC0D\n\n{DEVELOPER_NAME}\n\n\nART
+    DIRECTION\n\uC544\uD2B8 \uB514\uB809\uC158\n\n{DEVELOPER_NAME}\n\n\nSPECIAL THANKS\n\uD50C\uB808\uC774\uD574
+    \uC8FC\uC2E0 \uBAA8\uB4E0 \uBD84\uAED8 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4.\n\n\nTHANK
+    YOU FOR PLAYING"
+  photos: []
+  centerTextWidth: 760
+  photoGap: 70
+  nameHighlightColor: {r: 1, g: 0.92, b: 0.25, a: 0.75}
+  highlightedNameTextColor: {r: 0, g: 0, b: 0, a: 1}
+  initialDelay: 2
+  scrollSpeed: 45
+  endHoldDuration: 2
+  endActionsFadeDuration: 1
+  bgmClip: {fileID: 0}
+  bgmVolume: 0.7
+  loopBgm: 1
+  bgmFadeInDuration: 2.5
+  bgmFadeOutDuration: 2.5
+  exitSceneName: MainMenu
+  allowEscapeExit: 1
+  screenFadeInDuration: 2.5
+  screenFadeOutDuration: 2.5

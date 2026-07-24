@@ -15,6 +15,9 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         [Tooltip("Launch sequence that supplies the phase and vertical scroll speed.")]
         [SerializeField] private RocketShootingDirector launchDirector;
 
+        [Tooltip("Background scroller that reports when the Ground has completely exited.")]
+        [SerializeField] private VerticalBackgroundScroller backgroundScroller;
+
         [Tooltip("Camera whose viewport defines cloud spawn and recycle bounds.")]
         [SerializeField] private Camera targetCamera;
 
@@ -86,6 +89,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         private System.Random _random;
         private bool _isInitialized;
+        private bool _cloudsActivated;
         private bool _warnedInvalidConfiguration;
         private bool _warnedRecycleLimit;
 
@@ -111,9 +115,14 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         }
 
         public bool IsInitialized => _isInitialized;
+        public bool AreCloudsActivated => _cloudsActivated;
+        public bool HasGroundExited =>
+            backgroundScroller != null
+            && backgroundScroller.HasGroundExited;
 
         public bool IsConfigured =>
             launchDirector != null
+            && backgroundScroller != null
             && targetCamera != null
             && cloud0Prefab != null
             && cloud1Prefab != null
@@ -134,6 +143,17 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         {
             if (!_isInitialized)
             {
+                return;
+            }
+
+            if (!_cloudsActivated)
+            {
+                if (!backgroundScroller.HasGroundExited)
+                {
+                    return;
+                }
+
+                ActivateCloudsAboveViewport();
                 return;
             }
 
@@ -159,12 +179,14 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         public void ConfigureReferences(
             RocketShootingDirector director,
+            VerticalBackgroundScroller scroller,
             Camera camera,
             GameObject firstCloudPrefab,
             GameObject secondCloudPrefab,
             Transform instancesRoot)
         {
             launchDirector = director;
+            backgroundScroller = scroller;
             targetCamera = camera;
             cloud0Prefab = firstCloudPrefab;
             cloud1Prefab = secondCloudPrefab;
@@ -173,9 +195,17 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         public void RepositionAllClouds()
         {
-            if (_isInitialized)
+            if (!_isInitialized)
             {
-                PlaceInitialClouds();
+                return;
+            }
+
+            SetCloudPoolActive(false);
+            _cloudsActivated = false;
+
+            if (backgroundScroller.HasGroundExited)
+            {
+                ActivateCloudsAboveViewport();
             }
         }
 
@@ -184,9 +214,10 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             if (!IsConfigured)
             {
                 WarnInvalidConfigurationOnce(
-                    "assign Launch Director, Target Camera, both cloud "
-                    + "prefabs, and Cloud Instances Root. Each prefab must "
-                    + "contain an enabled SpriteRenderer with a Sprite.");
+                    "assign Launch Director, Background Scroller, Target "
+                    + "Camera, both cloud prefabs, and Cloud Instances Root. "
+                    + "Each prefab must contain an enabled SpriteRenderer "
+                    + "with a Sprite.");
                 return false;
             }
 
@@ -197,7 +228,8 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                 return false;
             }
 
-            PlaceInitialClouds();
+            SetCloudPoolActive(false);
+            _cloudsActivated = false;
             _warnedInvalidConfiguration = false;
             return true;
         }
@@ -232,34 +264,54 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                     instance.transform,
                     renderer,
                     instance.transform.localScale));
+                instance.SetActive(false);
             }
 
             return _clouds.Count == cloudCount;
         }
 
-        private void PlaceInitialClouds()
+        private void ActivateCloudsAboveViewport()
         {
-            if (_clouds.Count == 0)
+            if (_cloudsActivated || _clouds.Count == 0)
             {
                 return;
             }
 
-            CloudRuntime firstCloud = _clouds[0];
-            ViewportBounds viewport =
-                GetViewportBounds(firstCloud.Renderer);
-            float nextBottom = viewport.Bottom
-                - Mathf.Min(recycleMargin * 0.25f, 1f);
+            float nextBottom = 0f;
 
             for (int index = 0; index < _clouds.Count; index++)
             {
                 CloudRuntime cloud = _clouds[index];
+                cloud.Root.gameObject.SetActive(true);
                 RandomizePresentation(cloud);
+
+                if (index == 0)
+                {
+                    nextBottom =
+                        GetCameraTop(cloud.Renderer) + spawnMargin;
+                }
+
                 PlaceAtBottom(cloud, nextBottom);
 
                 nextBottom = cloud.Renderer.bounds.max.y
                     + NextFloat(
                         minimumVerticalSpacing,
                         maximumVerticalSpacing);
+            }
+
+            _cloudsActivated = true;
+        }
+
+        private void SetCloudPoolActive(bool isActive)
+        {
+            for (int index = 0; index < _clouds.Count; index++)
+            {
+                GameObject cloudObject =
+                    _clouds[index].Root.gameObject;
+                if (cloudObject.activeSelf != isActive)
+                {
+                    cloudObject.SetActive(isActive);
+                }
             }
         }
 

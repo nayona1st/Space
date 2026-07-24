@@ -433,6 +433,119 @@ Transform:
   - {fileID: 1151062824}
   m_Father: {fileID: 1673556047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &468543038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 468543039}
+  - component: {fileID: 468543040}
+  m_Layer: 0
+  m_Name: WindField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &468543039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468543038}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1760341019}
+  m_Father: {fileID: 786190608}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &468543040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468543038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bea1dfd1aacf794d894f504fc2fa3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.RocketShooting.RocketWindStreakController
+  launchDirector: {fileID: 1673556046}
+  backgroundScroller: {fileID: 786190607}
+  targetCamera: {fileID: 1205657248}
+  streakSprites:
+  - {fileID: 8371938986527376862, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -172499247755040552, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -8140093697600284203, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 3633252413776573961, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 6103521314016889180, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 6199326700038869260, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -6680489296809234488, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 2664539089079412371, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 2986716631898656650, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 2382756871514235335, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -1855141304922281364, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -3541532814589174966, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -4684735564757345661, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -316266325813103833, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 677713049830509135, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 183223414660576445, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: -3034268019633045711, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  - {fileID: 2590950064830438054, guid: 60e3bb013d86a1047a9746103a7476cf, type: 3}
+  streakPrefab: {fileID: 74537384663914305, guid: ac22b46082db04b448c21d324fe3c02d, type: 3}
+  instancesRoot: {fileID: 1760341019}
+  poolSize: 28
+  minimumActiveCount: 4
+  maximumActiveCount: 20
+  activationRateRange: {x: 4, y: 14}
+  horizontalMargin: 1.25
+  spawnMargin: 3.5
+  recycleMargin: 3.5
+  minimumHorizontalSpacing: 1.5
+  placementAttempts: 10
+  scaleRange: {x: 0.65, y: 1.15}
+  speedMultiplierRange: {x: 1.3, y: 2.2}
+  minimumAssistSpeed: 0
+  horizontalDriftRange: {x: -0.06, y: 0.06}
+  rotationRange: {x: -2, y: 2}
+  alphaRange: {x: 0.12, y: 0.38}
+  intensityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomizeSeed: 1
+  randomSeed: 20260725
+  sortingLayerName: Default
+  sortingOrder: 1
+  maxRecyclesPerFrame: 28
 --- !u!114 &578199575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,17 +927,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.RocketShooting.RocketCloudFieldController
   launchDirector: {fileID: 1673556046}
+  backgroundScroller: {fileID: 786190607}
   targetCamera: {fileID: 1205657248}
   cloud0Prefab: {fileID: 545045102308625300, guid: e94ddf56cc7d237419df7aa2773d7073, type: 3}
   cloud1Prefab: {fileID: 5595584398807522725, guid: b741e5c5993638844933bec89bcf8b6e, type: 3}
   cloudInstancesRoot: {fileID: 1297753919}
-  cloudCount: 14
+  cloudCount: 20
   minimumVerticalSpacing: 2
   maximumVerticalSpacing: 5.5
   horizontalMargin: 1.5
   spawnMargin: 3
   recycleMargin: 4
-  scaleRange: {x: 0.8, y: 1.35}
+  scaleRange: {x: 2.8, y: 5.7}
   speedMultiplierRange: {x: 0.72, y: 1.08}
   alphaRange: {x: 0.72, y: 1}
   allowHorizontalFlip: 1
@@ -885,6 +999,7 @@ Transform:
   - {fileID: 1790340503}
   - {fileID: 1745056189}
   - {fileID: 764852628}
+  - {fileID: 468543039}
   m_Father: {fileID: 1673556047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &804685771
@@ -3946,10 +4061,12 @@ MonoBehaviour:
   rocketView: {fileID: 1395490846}
   backgroundScroller: {fileID: 786190607}
   autoStart: 1
-  ignitionDuration: 0.75
+  ignitionDuration: 1.56
   liftOffDuration: 2
-  cruiseSpeed: 10
-  liftCurve:
+  startScrollSpeed: 6
+  maximumScrollSpeed: 100.6
+  accelerationDuration: 14
+  accelerationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -3957,6 +4074,24 @@ MonoBehaviour:
       value: 0
       inSlope: 0
       outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3
+      value: 0.05
+      inSlope: 0.35
+      outSlope: 0.35
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 0.62
+      inSlope: 1.55
+      outSlope: 1.55
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -3973,7 +4108,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  speedCurve:
+  resetAccelerationOnPhaseChange: 0
+  liftCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -4192,6 +4328,37 @@ Transform:
   - {fileID: 187758172}
   m_Father: {fileID: 786190608}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1760341018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1760341019}
+  m_Layer: 0
+  m_Name: WindInstances
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1760341019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760341018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 468543039}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1790340502
 GameObject:
   m_ObjectHideFlags: 0
@@ -4392,8 +4559,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.RocketShooting.RocketBackgroundPassTransitionTrigger
   transitionEnabled: 1
-  requiredBackgroundPasses: 3
-  targetSceneName: Seong Uk
+  requiredBackgroundPasses: 18
+  targetSceneName: InGame
   backgroundScroller: {fileID: 786190607}
   launchDirector: {fileID: 1673556046}
 --- !u!1660057539 &9223372036854775807

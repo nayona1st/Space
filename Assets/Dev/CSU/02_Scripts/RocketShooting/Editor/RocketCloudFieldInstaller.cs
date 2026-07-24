@@ -95,28 +95,50 @@ namespace Dev.CSU._02_Scripts.RocketShooting.Editor
             }
 
             if (controller.PoolCount
-                    != controller.ConfiguredCloudCount
-                || controller.ActiveCloudCount
-                    != controller.ConfiguredCloudCount)
+                != controller.ConfiguredCloudCount)
             {
                 Debug.LogError(
                     "[Rocket Cloud Field Runtime Verifier] Pool count "
                     + $"mismatch. Configured={controller.ConfiguredCloudCount}, "
-                    + $"Pool={controller.PoolCount}, "
-                    + $"Active={controller.ActiveCloudCount}.");
+                    + $"Pool={controller.PoolCount}.");
                 return;
             }
 
-            if (controller.RecycledCloudCount <= 0)
+            if (!controller.HasGroundExited)
+            {
+                if (controller.AreCloudsActivated
+                    || controller.ActiveCloudCount != 0
+                    || controller.RecycledCloudCount != 0)
+                {
+                    Debug.LogError(
+                        "[Rocket Cloud Field Runtime Verifier] Clouds must "
+                        + "remain inactive and unrecycled while Ground is "
+                        + "visible.");
+                    return;
+                }
+
+                Debug.Log(
+                    "[Rocket Cloud Field Runtime Verifier] PASS before "
+                    + $"Ground exit: {controller.PoolCount} pooled, "
+                    + "0 active, and 0 recycled clouds.");
+                return;
+            }
+
+            if (!controller.AreCloudsActivated
+                || controller.ActiveCloudCount
+                    != controller.ConfiguredCloudCount)
             {
                 Debug.LogError(
-                    "[Rocket Cloud Field Runtime Verifier] No cloud has "
-                    + "recycled yet. Let Play Mode run longer and retry.");
+                    "[Rocket Cloud Field Runtime Verifier] The fixed cloud "
+                    + "pool did not activate after Ground exited. "
+                    + $"Active={controller.ActiveCloudCount}, "
+                    + $"Configured={controller.ConfiguredCloudCount}.");
                 return;
             }
 
             Debug.Log(
-                "[Rocket Cloud Field Runtime Verifier] PASS: "
+                "[Rocket Cloud Field Runtime Verifier] PASS after Ground "
+                + "exit: "
                 + $"{controller.PoolCount} active pooled clouds, "
                 + $"{controller.RecycledCloudCount} recycle operation(s), "
                 + "and no pool growth.");
@@ -212,6 +234,10 @@ namespace Dev.CSU._02_Scripts.RocketShooting.Editor
                 director);
             AssignIfNull(
                 serializedController,
+                "backgroundScroller",
+                scroller);
+            AssignIfNull(
+                serializedController,
                 "targetCamera",
                 targetCamera);
             AssignIfNull(
@@ -305,6 +331,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting.Editor
             string[] requiredReferenceNames =
             {
                 "launchDirector",
+                "backgroundScroller",
                 "targetCamera",
                 "cloud0Prefab",
                 "cloud1Prefab",
@@ -340,7 +367,8 @@ namespace Dev.CSU._02_Scripts.RocketShooting.Editor
 
             Debug.Log(
                 "[Rocket Cloud Field Verifier] PASS: one controller, "
-                + "explicit Director/Camera/prefab/root references, and "
+                + "explicit Director/Scroller/Camera/prefab/root "
+                + "references, and "
                 + "the expected scene hierarchy are connected.");
         }
 

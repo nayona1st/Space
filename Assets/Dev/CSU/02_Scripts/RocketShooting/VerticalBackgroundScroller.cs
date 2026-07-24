@@ -16,7 +16,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         [Tooltip("Exactly two sky tiles that recycle vertically.")]
         [SerializeField] private Transform[] skyTiles;
 
-        [Tooltip("Camera used to determine the lower recycle edge. Camera.main is used when empty.")]
+        [Tooltip("Camera used to determine the lower recycle edge.")]
         [SerializeField] private Camera targetCamera;
 
         [Header("Recycling")]
@@ -46,6 +46,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         public float ScrollSpeed => _scrollSpeed;
         public int PassedBackgroundCount { get; private set; }
+        public bool HasGroundExited { get; private set; }
 
         public event Action<int> BackgroundPassed;
 
@@ -58,7 +59,10 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                     return false;
                 }
 
-                return TryGetUsableRenderer(ground, out _)
+                return TryGetRenderer(
+                        ground,
+                        false,
+                        out _)
                     && TryGetUsableRenderer(skyTiles[0], out _)
                     && TryGetUsableRenderer(skyTiles[1], out _);
             }
@@ -143,13 +147,18 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                 return false;
             }
 
-            if (!TryGetUsableRenderer(ground, out _groundRenderer))
+            if (!TryGetRenderer(
+                    ground,
+                    false,
+                    out _groundRenderer))
             {
                 WarnInvalidConfigurationOnce(
-                    "Ground must be active and contain an enabled "
-                    + "SpriteRenderer with a Sprite.");
+                    "Ground must contain an enabled SpriteRenderer "
+                    + "with a Sprite.");
                 return false;
             }
+
+            HasGroundExited = !ground.gameObject.activeSelf;
 
             for (int index = 0; index < RequiredSkyTileCount; index++)
             {
@@ -199,9 +208,19 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             Transform root,
             out SpriteRenderer renderer)
         {
+            return TryGetRenderer(root, true, out renderer);
+        }
+
+        private static bool TryGetRenderer(
+            Transform root,
+            bool requireActiveInHierarchy,
+            out SpriteRenderer renderer)
+        {
             renderer = null;
 
-            if (root == null || !root.gameObject.activeInHierarchy)
+            if (root == null
+                || (requireActiveInHierarchy
+                    && !root.gameObject.activeInHierarchy))
             {
                 return false;
             }
@@ -213,7 +232,8 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             {
                 SpriteRenderer candidate = renderers[index];
                 if (candidate == null
-                    || !candidate.gameObject.activeInHierarchy
+                    || (requireActiveInHierarchy
+                        && !candidate.gameObject.activeInHierarchy)
                     || !candidate.enabled
                     || candidate.sprite == null)
                 {
@@ -290,12 +310,14 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         {
             if (!ground.gameObject.activeSelf)
             {
+                HasGroundExited = true;
                 return;
             }
 
             if (_groundRenderer.bounds.max.y < recycleThreshold)
             {
                 ground.gameObject.SetActive(false);
+                HasGroundExited = true;
             }
         }
 
@@ -359,11 +381,6 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         private bool TryResolveCamera()
         {
-            if (targetCamera == null)
-            {
-                targetCamera = Camera.main;
-            }
-
             if (targetCamera != null)
             {
                 _warnedMissingCamera = false;
@@ -374,7 +391,7 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             {
                 Debug.LogWarning(
                     $"{nameof(VerticalBackgroundScroller)} on '{name}' could "
-                    + "not find a camera.",
+                    + "not resolve its explicitly assigned Target Camera.",
                     this);
                 _warnedMissingCamera = true;
             }
