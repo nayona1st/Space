@@ -1,16 +1,21 @@
+using Dev.NKY.Scripts;
 using UnityEngine;
 
 namespace Dev.CSU._02_Scripts.SpaceShip
 {
     public class RocketMovement : MonoBehaviour
     {
-        [Header("Rocket Movement")]
         [SerializeField] private float rocketSpeed;
 
-        [SerializeField] private Vector2 moveDir;
+        private Vector2 moveDir;
         
         [Header("References")]
         private Rigidbody2D _rigidbody;
+
+        public void ChangeSpeed(float speed)
+        {
+            rocketSpeed = speed;
+        }
 
         private void Awake()
         {

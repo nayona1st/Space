@@ -1,10 +1,14 @@
+using System;
+using Dev.NKY.Scripts.Health;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Dev.CSU._02_Scripts.Meteor
 {
     [DisallowMultipleComponent]
     public sealed class MeteorMover : MonoBehaviour
     {
+        [SerializeField] private float meteorDamage;
         private Rigidbody2D _rigidbody2D;
         private Vector2 _direction = Vector2.left;
         private float _speed;
@@ -152,6 +156,15 @@ namespace Dev.CSU._02_Scripts.Meteor
             Vector3 eulerAngles = transform.eulerAngles;
             eulerAngles.z = zRotation;
             transform.rotation = Quaternion.Euler(eulerAngles);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Health health))
+            {
+                health.TakeDamage(meteorDamage);
+                ReturnToPool();
+            }
         }
     }
 }
