@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Map
+namespace Dev.CSU._02_Scripts.Map
 {
     [DefaultExecutionOrder(2000)]
     [DisallowMultipleComponent]

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a1fb50efeb24bf2a55959a1681bf3ff, type: 3}
+  m_Name: UfoAuraBackgroundSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.Stage.UfoAuraBackgroundSettings
+  backgroundPrefab: {fileID: 161306422810468114, guid: c9d19a4433febba43bc76132fae5dc45, type: 3}
+  positionOffset: {x: 0, y: 0.5}
+  cameraDepth: 9.8
+  localScale: {x: 1.6, y: 1.6}
+  moveSpeed: 1.08
+  spawnRightPadding: 1
+  despawnLeftPadding: 1
+  sortingLayerName: Default
+  sortingOrder: -1
+  opacity: 1

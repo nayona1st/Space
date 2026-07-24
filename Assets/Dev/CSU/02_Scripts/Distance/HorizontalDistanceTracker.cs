@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Distance
+namespace Dev.CSU._02_Scripts.Distance
 {
     [DisallowMultipleComponent]
     public sealed class HorizontalDistanceTracker : MonoBehaviour

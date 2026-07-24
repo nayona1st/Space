@@ -1,8 +1,8 @@
 using System;
-using Dev.CSU.Scripts.Planet;
+using Dev.CSU._02_Scripts.Planet;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Stage
+namespace Dev.CSU._02_Scripts.Stage
 {
     [DefaultExecutionOrder(1100)]
     [DisallowMultipleComponent]
@@ -30,9 +30,7 @@ namespace Dev.CSU.Scripts.Stage
                 return;
             }
 
-            CurrentStageNumber = Mathf.Max(
-                1,
-                planetController.CurrentStageNumber);
+            CurrentStageNumber = Mathf.Max(1, planetController.CurrentStageNumber);
         }
 
         private void OnDisable()
@@ -60,17 +58,15 @@ namespace Dev.CSU.Scripts.Stage
 
         private void HandleStageCompleted(int completedStageNumber)
         {
-            if (planetController == null
-                || completedStageNumber != CurrentStageNumber)
+            if (planetController == null || completedStageNumber != CurrentStageNumber)
             {
                 return;
             }
 
             int nextStageNumber = completedStageNumber + 1;
-            if (!planetController.HasStage(nextStageNumber))
-            {
-                return;
-            }
+            
+            if (!planetController.HasStage(nextStageNumber)) return;
+            
 
             CurrentStageNumber = nextStageNumber;
             StageBackgroundReady?.Invoke(nextStageNumber);
@@ -79,15 +75,10 @@ namespace Dev.CSU.Scripts.Stage
 
         private void WarnMissingControllerOnce()
         {
-            if (_warnedMissingController)
-            {
-                return;
-            }
+            if (_warnedMissingController) return;
+            
 
-            Debug.LogWarning(
-                $"{nameof(StageThemeController)} on '{name}' is inactive: "
-                + "Planet Parallax Controller is not assigned.",
-                this);
+            Debug.LogWarning($"{nameof(StageThemeController)} on '{name}' is inactive: " + "Planet Parallax Controller is not assigned.", this);
             _warnedMissingController = true;
         }
     }

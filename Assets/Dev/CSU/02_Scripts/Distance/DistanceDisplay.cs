@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.LowLevel;
 
-namespace Dev.CSU.Scripts.Distance
+namespace Dev.CSU._02_Scripts.Distance
 {
     [ExecuteAlways]
     [DisallowMultipleComponent]

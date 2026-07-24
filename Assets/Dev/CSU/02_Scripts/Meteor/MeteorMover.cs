@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Meteor
+namespace Dev.CSU._02_Scripts.Meteor
 {
     [DisallowMultipleComponent]
     public sealed class MeteorMover : MonoBehaviour

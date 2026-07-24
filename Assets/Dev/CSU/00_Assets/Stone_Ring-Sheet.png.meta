@@ -1,0 +1,1495 @@
+fileFormatVersion: 2
+guid: 9f05cb1cff5e2e341acb18223d13dc94
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7803007294780185286
+    second: Stone_Ring-Sheet_0
+  - first:
+      213: 5060540322213625917
+    second: Stone_Ring-Sheet_1
+  - first:
+      213: 7489516717639817219
+    second: Stone_Ring-Sheet_2
+  - first:
+      213: 5926619811589497838
+    second: Stone_Ring-Sheet_3
+  - first:
+      213: 4367249682832129944
+    second: Stone_Ring-Sheet_4
+  - first:
+      213: -3009953957861190128
+    second: Stone_Ring-Sheet_5
+  - first:
+      213: 3496879885724334232
+    second: Stone_Ring-Sheet_6
+  - first:
+      213: 8442659540680752105
+    second: Stone_Ring-Sheet_7
+  - first:
+      213: 4822298901608002207
+    second: Stone_Ring-Sheet_8
+  - first:
+      213: 5597287056531363435
+    second: Stone_Ring-Sheet_9
+  - first:
+      213: 4489551968510800332
+    second: Stone_Ring-Sheet_10
+  - first:
+      213: -2424892990389881697
+    second: Stone_Ring-Sheet_11
+  - first:
+      213: -9062183989858758371
+    second: Stone_Ring-Sheet_12
+  - first:
+      213: 6758979399599673686
+    second: Stone_Ring-Sheet_13
+  - first:
+      213: -4574497024909591640
+    second: Stone_Ring-Sheet_14
+  - first:
+      213: -8472799782447627164
+    second: Stone_Ring-Sheet_15
+  - first:
+      213: 8032314091474003311
+    second: Stone_Ring-Sheet_16
+  - first:
+      213: -5689697317728440170
+    second: Stone_Ring-Sheet_17
+  - first:
+      213: -7472083577638681323
+    second: Stone_Ring-Sheet_18
+  - first:
+      213: -2870800059744556271
+    second: Stone_Ring-Sheet_19
+  - first:
+      213: -2973849512983563767
+    second: Stone_Ring-Sheet_20
+  - first:
+      213: -8623438490598615133
+    second: Stone_Ring-Sheet_21
+  - first:
+      213: -3280251676458213614
+    second: Stone_Ring-Sheet_22
+  - first:
+      213: 8947740220243065647
+    second: Stone_Ring-Sheet_23
+  - first:
+      213: 4714368816863624542
+    second: Stone_Ring-Sheet_24
+  - first:
+      213: -925205376938545597
+    second: Stone_Ring-Sheet_25
+  - first:
+      213: -1246234379268801737
+    second: Stone_Ring-Sheet_26
+  - first:
+      213: -4147747988112985889
+    second: Stone_Ring-Sheet_27
+  - first:
+      213: -9146885851802754666
+    second: Stone_Ring-Sheet_28
+  - first:
+      213: -7190115734572456307
+    second: Stone_Ring-Sheet_29
+  - first:
+      213: 7865603850193385342
+    second: Stone_Ring-Sheet_30
+  - first:
+      213: -6016867536115319762
+    second: Stone_Ring-Sheet_31
+  - first:
+      213: 6369309393336923776
+    second: Stone_Ring-Sheet_32
+  - first:
+      213: -4297854812980549201
+    second: Stone_Ring-Sheet_33
+  - first:
+      213: 2634361183669264399
+    second: Stone_Ring-Sheet_34
+  - first:
+      213: 7643726314859040566
+    second: Stone_Ring-Sheet_35
+  - first:
+      213: 6664184575122837737
+    second: Stone_Ring-Sheet_36
+  - first:
+      213: -7549876846958083387
+    second: Stone_Ring-Sheet_37
+  - first:
+      213: 2059093111539159811
+    second: Stone_Ring-Sheet_38
+  - first:
+      213: 5586845105682383459
+    second: Stone_Ring-Sheet_39
+  - first:
+      213: -3495036696495094869
+    second: Stone_Ring-Sheet_40
+  - first:
+      213: 6602914596742470312
+    second: Stone_Ring-Sheet_41
+  - first:
+      213: -396255079445527022
+    second: Stone_Ring-Sheet_42
+  - first:
+      213: 5912002395778395171
+    second: Stone_Ring-Sheet_43
+  - first:
+      213: -3211387044209928493
+    second: Stone_Ring-Sheet_44
+  - first:
+      213: -1041368969239824112
+    second: Stone_Ring-Sheet_45
+  - first:
+      213: 2828502556121462728
+    second: Stone_Ring-Sheet_46
+  - first:
+      213: 8055419042576396840
+    second: Stone_Ring-Sheet_47
+  - first:
+      213: 2441952914283303033
+    second: Stone_Ring-Sheet_48
+  - first:
+      213: -1651452973898860172
+    second: Stone_Ring-Sheet_49
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 39
+        width: 842
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ca9721eac9d94c60800000000000000
+      internalID: 7803007294780185286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 919
+        y: 519
+        width: 32
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3085157c96aa3640800000000000000
+      internalID: 5060540322213625917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 39
+        width: 842
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 308554606cb10f760800000000000000
+      internalID: 7489516717639817219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 1879
+        y: 529
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee3a59c61559f3250800000000000000
+      internalID: 5926619811589497838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 1969
+        y: 39
+        width: 882
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89f75a6a2769b9c30800000000000000
+      internalID: 4367249682832129944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 2819
+        y: 559
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 016176f92de7a36d0800000000000000
+      internalID: -3009953957861190128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 2949
+        y: 39
+        width: 852
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 898bec29ab9678030800000000000000
+      internalID: 3496879885724334232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 3789
+        y: 529
+        width: 22
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ebb6d10f1a5a2570800000000000000
+      internalID: 8442659540680752105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 3909
+        y: 39
+        width: 862
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f92f9172d4f3ce240800000000000000
+      internalID: 4822298901608002207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 4879
+        y: 39
+        width: 842
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6691761cee8dad40800000000000000
+      internalID: 5597287056531363435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 5809
+        y: 39
+        width: 892
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc1fdbb8ab71e4e30800000000000000
+      internalID: 4489551968510800332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 6799
+        y: 39
+        width: 852
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f94f9714cac095ed0800000000000000
+      internalID: -2424892990389881697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 7719
+        y: 39
+        width: 902
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d119c3bbca7ac3280800000000000000
+      internalID: -9062183989858758371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 8689
+        y: 39
+        width: 892
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 651525d04f7bccd50800000000000000
+      internalID: 6758979399599673686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 9669
+        y: 39
+        width: 832
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8abbe2c413f1480c0800000000000000
+      internalID: -4574497024909591640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 10499
+        y: 569
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 464c33a1d719a6a80800000000000000
+      internalID: -8472799782447627164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 10629
+        y: 39
+        width: 872
+        height: 822
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f652ca2fb13887f60800000000000000
+      internalID: 8032314091474003311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 5719
+        y: 509
+        width: 22
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 690bd415f622a01b0800000000000000
+      internalID: -5689697317728440170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 7629
+        y: 519
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51501de2393dd4890800000000000000
+      internalID: -7472083577638681323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 8599
+        y: 499
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11b61c94e8ed828d0800000000000000
+      internalID: -2870800059744556271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 10509
+        y: 509
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9027523cf93cab6d0800000000000000
+      internalID: -2973849512983563767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 10509
+        y: 469
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a75079b164635880800000000000000
+      internalID: -8623438490598615133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 359
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21f14d2da743a72d0800000000000000
+      internalID: -3280251676458213614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 379
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2b301ab252cc2c70800000000000000
+      internalID: 8947740220243065647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 1959
+        y: 359
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5db55d067dcc6140800000000000000
+      internalID: 4714368816863624542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 2899
+        y: 319
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34eeb439c920923f0800000000000000
+      internalID: -925205376938545597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 3849
+        y: 309
+        width: 62
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73bbdc45f6c74bee0800000000000000
+      internalID: -1246234379268801737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 9649
+        y: 339
+        width: 32
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd03fa63e2d3076c0800000000000000
+      internalID: -4147747988112985889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 10599
+        y: 349
+        width: 32
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6912042b7cbbf0180800000000000000
+      internalID: -9146885851802754666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 349
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d86acd295d3973c90800000000000000
+      internalID: -7190115734572456307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 1939
+        y: 339
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e77b8ba270d382d60800000000000000
+      internalID: 7865603850193385342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 4829
+        y: 339
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2c3449cadacf7ca0800000000000000
+      internalID: -6016867536115319762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 5779
+        y: 329
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 086f76ea525546850800000000000000
+      internalID: 6369309393336923776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 6779
+        y: 349
+        width: 12
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa9671091d3fa54c0800000000000000
+      internalID: -4297854812980549201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 319
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f002fa20a812f8420800000000000000
+      internalID: 2634361183669264399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 309
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63f8a7dc598f31a60800000000000000
+      internalID: 7643726314859040566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 299
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e095dd0090fb7c50800000000000000
+      internalID: 6664184575122837737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 4809
+        y: 279
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c20e173203793790800000000000000
+      internalID: -7549876846958083387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 6739
+        y: 319
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303deb0864e539c10800000000000000
+      internalID: 2059093111539159811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 7699
+        y: 309
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3620453f506788d40800000000000000
+      internalID: 5586845105682383459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 8669
+        y: 299
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba3847c54a22f7fc0800000000000000
+      internalID: -3495036696495094869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 279
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aa931d87d342ab50800000000000000
+      internalID: 6602914596742470312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 279
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 216843dca18308af0800000000000000
+      internalID: -396255079445527022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 2889
+        y: 259
+        width: 32
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32c21a71bd6ab0250800000000000000
+      internalID: 5912002395778395171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 3849
+        y: 259
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d653997f7cde63d0800000000000000
+      internalID: -3211387044209928493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_45
+      rect:
+        serializedVersion: 2
+        x: 5769
+        y: 269
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 019785c90705c81f0800000000000000
+      internalID: -1041368969239824112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_46
+      rect:
+        serializedVersion: 2
+        x: 6739
+        y: 259
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c777e7b61cd04720800000000000000
+      internalID: 2828502556121462728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_47
+      rect:
+        serializedVersion: 2
+        x: 9629
+        y: 289
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 822fea590f89acf60800000000000000
+      internalID: 8055419042576396840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_48
+      rect:
+        serializedVersion: 2
+        x: 10579
+        y: 289
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 970161ecc3f83e120800000000000000
+      internalID: 2441952914283303033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Ring-Sheet_49
+      rect:
+        serializedVersion: 2
+        x: 4839
+        y: 239
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 479fe7f154cd419e0800000000000000
+      internalID: -1651452973898860172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Stone_Ring-Sheet_0: 7803007294780185286
+      Stone_Ring-Sheet_1: 5060540322213625917
+      Stone_Ring-Sheet_10: 4489551968510800332
+      Stone_Ring-Sheet_11: -2424892990389881697
+      Stone_Ring-Sheet_12: -9062183989858758371
+      Stone_Ring-Sheet_13: 6758979399599673686
+      Stone_Ring-Sheet_14: -4574497024909591640
+      Stone_Ring-Sheet_15: -8472799782447627164
+      Stone_Ring-Sheet_16: 8032314091474003311
+      Stone_Ring-Sheet_17: -5689697317728440170
+      Stone_Ring-Sheet_18: -7472083577638681323
+      Stone_Ring-Sheet_19: -2870800059744556271
+      Stone_Ring-Sheet_2: 7489516717639817219
+      Stone_Ring-Sheet_20: -2973849512983563767
+      Stone_Ring-Sheet_21: -8623438490598615133
+      Stone_Ring-Sheet_22: -3280251676458213614
+      Stone_Ring-Sheet_23: 8947740220243065647
+      Stone_Ring-Sheet_24: 4714368816863624542
+      Stone_Ring-Sheet_25: -925205376938545597
+      Stone_Ring-Sheet_26: -1246234379268801737
+      Stone_Ring-Sheet_27: -4147747988112985889
+      Stone_Ring-Sheet_28: -9146885851802754666
+      Stone_Ring-Sheet_29: -7190115734572456307
+      Stone_Ring-Sheet_3: 5926619811589497838
+      Stone_Ring-Sheet_30: 7865603850193385342
+      Stone_Ring-Sheet_31: -6016867536115319762
+      Stone_Ring-Sheet_32: 6369309393336923776
+      Stone_Ring-Sheet_33: -4297854812980549201
+      Stone_Ring-Sheet_34: 2634361183669264399
+      Stone_Ring-Sheet_35: 7643726314859040566
+      Stone_Ring-Sheet_36: 6664184575122837737
+      Stone_Ring-Sheet_37: -7549876846958083387
+      Stone_Ring-Sheet_38: 2059093111539159811
+      Stone_Ring-Sheet_39: 5586845105682383459
+      Stone_Ring-Sheet_4: 4367249682832129944
+      Stone_Ring-Sheet_40: -3495036696495094869
+      Stone_Ring-Sheet_41: 6602914596742470312
+      Stone_Ring-Sheet_42: -396255079445527022
+      Stone_Ring-Sheet_43: 5912002395778395171
+      Stone_Ring-Sheet_44: -3211387044209928493
+      Stone_Ring-Sheet_45: -1041368969239824112
+      Stone_Ring-Sheet_46: 2828502556121462728
+      Stone_Ring-Sheet_47: 8055419042576396840
+      Stone_Ring-Sheet_48: 2441952914283303033
+      Stone_Ring-Sheet_49: -1651452973898860172
+      Stone_Ring-Sheet_5: -3009953957861190128
+      Stone_Ring-Sheet_6: 3496879885724334232
+      Stone_Ring-Sheet_7: 8442659540680752105
+      Stone_Ring-Sheet_8: 4822298901608002207
+      Stone_Ring-Sheet_9: 5597287056531363435
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

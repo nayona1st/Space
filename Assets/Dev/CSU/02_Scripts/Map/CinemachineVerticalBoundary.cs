@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Map
+namespace Dev.CSU._02_Scripts.Map
 {
     [AddComponentMenu(
         "Cinemachine/Procedural/Extensions/Cinemachine Vertical Boundary")]

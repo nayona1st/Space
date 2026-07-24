@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts
+namespace Dev.CSU._02_Scripts.SpaceShip
 {
     public class RocketMovement : MonoBehaviour
     {

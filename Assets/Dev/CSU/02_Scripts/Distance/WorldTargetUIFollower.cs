@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Dev.CSU.Scripts.Distance
+namespace Dev.CSU._02_Scripts.Distance
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]

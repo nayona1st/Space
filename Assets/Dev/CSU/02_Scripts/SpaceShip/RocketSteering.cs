@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Dev.CSU.Scripts
+namespace Dev.CSU._02_Scripts.SpaceShip
 {
     [DefaultExecutionOrder(100)]
     [DisallowMultipleComponent]

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Meteor
+namespace Dev.CSU._02_Scripts.Meteor
 {
     public enum MeteorRotationDirection
     {

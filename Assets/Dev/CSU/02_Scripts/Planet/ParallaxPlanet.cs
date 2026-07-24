@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dev.CSU.Scripts.Planet
+namespace Dev.CSU._02_Scripts.Planet
 {
     [DisallowMultipleComponent]
     public sealed class ParallaxPlanet : MonoBehaviour
