@@ -804,7 +804,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1179503536}
-        m_TargetAssemblyTypeName: Dev.CSU._02_Scripts.MainMenu.MainMenuRocketLaunchButton, Assembly-CSharp
+        m_TargetAssemblyTypeName: Dev.CSU._02_Scripts.MainMenu.MainMenuRocketLaunchButton,
+          Assembly-CSharp
         m_MethodName: Launch
         m_Mode: 1
         m_Arguments:
@@ -812,7 +813,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1179503533
@@ -884,7 +885,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 442e734c4f57418eaa5f6e697fc5c15b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU._02_Scripts.MainMenu.MainMenuRocketLaunchButton
   launchButton: {fileID: 1179503532}
   launchSceneName: Rocket Shooting

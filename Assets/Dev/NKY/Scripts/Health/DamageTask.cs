@@ -40,6 +40,11 @@ namespace Dev.NKY.Scripts.Health
         public void ResetHealth()
         {
             CurrentHealth = MaxHealth;
+            OnHealthReset();
+        }
+
+        protected virtual void OnHealthReset()
+        {
         }
 
         public void TakeDamage(float damage)
@@ -58,12 +63,23 @@ namespace Dev.NKY.Scripts.Health
 
         public void SetUi(float maxHealth, float currentHealth)
         {
-            healthText.text =  $"{maxHealth} / {currentHealth}";
-            Sequence seq = DOTween.Sequence();
-            seq.Append(healthSlider.DOValue(currentHealth / maxHealth, 0.1f).SetEase(Ease.OutCubic));
-            seq.AppendInterval(0.15f);
-            seq.Append(bgHealthSlider.DOValue(currentHealth / maxHealth, 0.1f).SetEase(Ease.OutCubic));
+            if (healthText != null)
+            {
+                healthText.text = $"{maxHealth} / {currentHealth}";
+            }
 
+            Sequence seq = DOTween.Sequence();
+
+            if (healthSlider != null)
+            {
+                seq.Append(healthSlider.DOValue(currentHealth / maxHealth, 0.1f).SetEase(Ease.OutCubic));
+            }
+
+            if (bgHealthSlider != null)
+            {
+                seq.AppendInterval(0.15f);
+                seq.Append(bgHealthSlider.DOValue(currentHealth / maxHealth, 0.1f).SetEase(Ease.OutCubic));
+            }
         }
 
         public virtual void Dead()

@@ -18,6 +18,8 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
     {
         private const string InGameScenePath =
             "Assets/Dev/CSU/01_Scenes/InGame.unity";
+        private const string RocketShootingScenePath =
+            "Assets/Dev/CSU/01_Scenes/Rocket Shooting.unity";
         private const string MainMenuScenePath =
             "Assets/Dev/CSU/01_Scenes/MainMenu.unity";
         private const string PrefabFolder =
@@ -48,13 +50,27 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
             "Tools/CSU/Pause Menu/Install InGame Pause Menu",
             false,
             210)]
-        private static void Install()
+        private static void InstallInGame()
+        {
+            Install(InGameScenePath);
+        }
+
+        [MenuItem(
+            "Tools/CSU/Pause Menu/Install Rocket Shooting Pause Menu",
+            false,
+            211)]
+        private static void InstallRocketShooting()
+        {
+            Install(RocketShootingScenePath);
+        }
+
+        private static void Install(string scenePath)
         {
             if (!AssetDatabase.LoadAssetAtPath<SceneAsset>(
-                    InGameScenePath))
+                    scenePath))
             {
                 Debug.LogError(
-                    $"Pause menu installer could not find {InGameScenePath}.");
+                    $"Pause menu installer could not find {scenePath}.");
                 return;
             }
 
@@ -64,7 +80,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
                 return;
             }
 
-            Scene scene = OpenInGameScene();
+            Scene scene = OpenScene(scenePath);
             if (!scene.IsValid())
             {
                 return;
@@ -76,7 +92,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
             {
                 Debug.LogError(
                     "Pause menu installer requires the existing "
-                    + "CommonUIRoot in InGame.",
+                    + $"CommonUIRoot in {scene.name}.",
                     scene.GetRootGameObjects().FirstOrDefault());
                 return;
             }
@@ -92,7 +108,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
                         commonUIRoot.transform);
                 Undo.RegisterCreatedObjectUndo(
                     instance,
-                    "Install InGame Pause Menu");
+                    $"Install {scene.name} Pause Menu");
                 instance.name = "PauseMenuWindow";
                 SetStretch(
                     instance.GetComponent<RectTransform>());
@@ -111,6 +127,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
                 }
             }
 
+            pauseMenu.ConfigureSceneRouting(scene.name);
             pauseMenu.transform.SetAsLastSibling();
             commonUIRoot.transform.SetAsLastSibling();
             EnsureMainMenuBuildScene();
@@ -121,7 +138,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
             AssetDatabase.Refresh();
 
             Debug.Log(
-                "[Pause Menu] Installed one InGame pause menu and ensured "
+                $"[Pause Menu] Installed one {scene.name} pause menu and ensured "
                 + "MainMenu is available in Build Settings.",
                 pauseMenu);
         }
@@ -129,14 +146,28 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
         [MenuItem(
             "Tools/CSU/Pause Menu/Validate InGame Pause Menu",
             false,
-            211)]
-        private static void Validate()
+            212)]
+        private static void ValidateInGame()
+        {
+            Validate(InGameScenePath);
+        }
+
+        [MenuItem(
+            "Tools/CSU/Pause Menu/Validate Rocket Shooting Pause Menu",
+            false,
+            213)]
+        private static void ValidateRocketShooting()
+        {
+            Validate(RocketShootingScenePath);
+        }
+
+        private static void Validate(string expectedScenePath)
         {
             Scene scene = SceneManager.GetActiveScene();
-            if (scene.path != InGameScenePath)
+            if (scene.path != expectedScenePath)
             {
                 Debug.LogError(
-                    "Open InGame.unity before validating the pause menu.");
+                    $"Open {expectedScenePath} before validating the pause menu.");
                 return;
             }
 
@@ -221,10 +252,10 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
             }
         }
 
-        private static Scene OpenInGameScene()
+        private static Scene OpenScene(string scenePath)
         {
             Scene activeScene = SceneManager.GetActiveScene();
-            if (activeScene.path == InGameScenePath)
+            if (activeScene.path == scenePath)
             {
                 return activeScene;
             }
@@ -235,7 +266,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu.Editor
             }
 
             return EditorSceneManager.OpenScene(
-                InGameScenePath,
+                scenePath,
                 OpenSceneMode.Single);
         }
 

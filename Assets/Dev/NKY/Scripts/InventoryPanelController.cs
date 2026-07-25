@@ -14,9 +14,14 @@ namespace Dev.NKY.Scripts
         [SerializeField] private Ease openEase = Ease.OutCubic;
         [SerializeField] private Ease closeEase = Ease.InCubic;
 
+        [Header("Initial State")]
+        [SerializeField] private bool startOpen = true;
+
         private Tween activeTween;
-        private bool isOpen = true;
+        private bool isOpen;
         private float originalWidth; // 인스펙터에 설정된 원래 너비 저장용
+
+        public bool IsOpen => isOpen;
 
         private void Awake()
         {
@@ -29,7 +34,13 @@ namespace Dev.NKY.Scripts
 
         private void Start()
         {
-            InitState(isOpen);
+            InitState(startOpen);
+        }
+
+        private void OnDisable()
+        {
+            activeTween?.Kill();
+            activeTween = null;
         }
 
         private void InitState(bool show)

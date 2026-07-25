@@ -1,4 +1,5 @@
 using System;
+using Dev.NKY.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,6 +26,12 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         [Tooltip("Vertical world scroller driven by the launch speed.")]
         [SerializeField] private VerticalBackgroundScroller backgroundScroller;
+
+        [Tooltip("Existing upgrade/inventory panel closed when a launch begins.")]
+        [SerializeField] private InventoryPanelController upgradePanel;
+
+        [Tooltip("Upgrade/inventory visual root hidden immediately when a launch begins.")]
+        [SerializeField] private GameObject upgradePanelRoot;
 
         [Header("Sequence")]
         [Tooltip("Starts the launch automatically when the scene begins.")]
@@ -102,6 +109,8 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         private void Awake()
         {
+            ResolveUpgradePanel();
+
             Phase = LaunchPhase.Idle;
             Altitude = 0d;
             _phaseElapsed = 0f;
@@ -170,6 +179,8 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                 WarnInvalidConfigurationOnce();
                 return;
             }
+
+            CloseUpgradePanel();
 
             _warnedInvalidConfiguration = false;
             _launchStarted = true;
@@ -405,6 +416,28 @@ namespace Dev.CSU._02_Scripts.RocketShooting
                 && backgroundScroller != null
                 && backgroundScroller.isActiveAndEnabled
                 && backgroundScroller.IsConfigured;
+        }
+
+        private InventoryPanelController ResolveUpgradePanel()
+        {
+            if (upgradePanel == null)
+            {
+                upgradePanel =
+                    FindFirstObjectByType<InventoryPanelController>(
+                        FindObjectsInactive.Include);
+            }
+
+            return upgradePanel;
+        }
+
+        private void CloseUpgradePanel()
+        {
+            ResolveUpgradePanel()?.HideUI();
+
+            if (upgradePanelRoot != null)
+            {
+                upgradePanelRoot.SetActive(false);
+            }
         }
 
         private void WarnInvalidConfigurationOnce()

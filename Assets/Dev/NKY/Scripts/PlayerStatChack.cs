@@ -16,10 +16,9 @@ namespace Dev.NKY.Scripts
 
         public void Update()
         {
-            if (Keyboard.current.kKey.wasPressedThisFrame)
-            {
+           
                 ChackStats();
-            }
+            
         }
 
         private void ChackStats()

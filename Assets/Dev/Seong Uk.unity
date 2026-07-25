@@ -2544,6 +2544,8 @@ MonoBehaviour:
   healthSlider: {fileID: 1433659476}
   bgHealthSlider: {fileID: 1053697228}
   healthText: {fileID: 335430052}
+  resourceManager: {fileID: 1377915700}
+  distanceTracker: {fileID: 545395293}
 --- !u!114 &545395296
 MonoBehaviour:
   m_ObjectHideFlags: 0

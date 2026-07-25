@@ -25,6 +25,9 @@ namespace Dev.CSU._02_Scripts.RocketShooting
         [Tooltip("Root object containing the exhaust SpriteRenderer and Animator.")]
         [SerializeField] private GameObject exhaustRoot;
 
+        [Tooltip("Additional exhaust objects that follow the primary exhaust active state.")]
+        [SerializeField] private GameObject[] additionalExhaustRoots;
+
         [Header("Ignition Motion")]
         [Tooltip("Maximum local-space shake distance during ignition.")]
         [Min(0f)]
@@ -134,10 +137,21 @@ namespace Dev.CSU._02_Scripts.RocketShooting
 
         public void SetExhaustActive(bool isActive)
         {
-            if (exhaustRoot != null
-                && exhaustRoot.activeSelf != isActive)
+            SetActiveIfNeeded(exhaustRoot, isActive);
+
+            if (additionalExhaustRoots == null)
             {
-                exhaustRoot.SetActive(isActive);
+                return;
+            }
+
+            foreach (GameObject additionalRoot in additionalExhaustRoots)
+            {
+                if (additionalRoot == exhaustRoot)
+                {
+                    continue;
+                }
+
+                SetActiveIfNeeded(additionalRoot, isActive);
             }
         }
 
@@ -182,6 +196,16 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             position.y = worldY;
             position.z = _fixedMotionZ;
             motionRoot.position = position;
+        }
+
+        private static void SetActiveIfNeeded(
+            GameObject target,
+            bool isActive)
+        {
+            if (target != null && target.activeSelf != isActive)
+            {
+                target.SetActive(isActive);
+            }
         }
 
         private Vector3 CalculatePresentationOffset()

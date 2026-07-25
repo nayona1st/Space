@@ -101,6 +101,18 @@ namespace Dev.CSU._02_Scripts.PauseMenu
             panelFadeDuration = Mathf.Max(0f, transitionDuration);
         }
 
+        public void ConfigureSceneRouting(
+            string gameplayScene,
+            string mainMenuScene = DefaultMainMenuSceneName)
+        {
+            gameplaySceneName = string.IsNullOrWhiteSpace(gameplayScene)
+                ? DefaultGameplaySceneName
+                : gameplayScene;
+            mainMenuSceneName = string.IsNullOrWhiteSpace(mainMenuScene)
+                ? DefaultMainMenuSceneName
+                : mainMenuScene;
+        }
+
         public void SetQuitServiceForTests(IGameQuitService quitService)
         {
             _quitService = quitService;
