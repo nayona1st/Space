@@ -10,6 +10,10 @@ namespace Dev.NKY.Scripts
         [SerializeField] private RectTransform panelRect;
         [SerializeField] private CanvasGroup canvasGroup;
 
+        [Header("sound")] 
+        [SerializeField] private SoundDataSO onSound;
+        [SerializeField] private SoundDataSO offSound;
+
         [Header("Animation Settings")]
         [SerializeField] private float duration = 0.35f;
         [SerializeField] private Ease openEase = Ease.OutCubic;
@@ -83,6 +87,8 @@ namespace Dev.NKY.Scripts
                 canvasGroup.interactable = true;
                 canvasGroup.blocksRaycasts = true;
             }
+            
+            SoundManager.Instance.PlaySFX(onSound);
 
             // 너비(Width)를 0 -> 원래 너비로 늘려서 커튼 열리듯 가림 해제
             activeTween = panelRect.DOSizeDelta(new Vector2(originalWidth, panelRect.sizeDelta.y), duration)
@@ -104,6 +110,8 @@ namespace Dev.NKY.Scripts
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
             }
+            
+            SoundManager.Instance.PlaySFX(offSound);
 
             // 너비(Width)를 원래 너비 -> 0으로 줄여서 커튼 닫히듯 가리기
             activeTween = panelRect.DOSizeDelta(new Vector2(0f, panelRect.sizeDelta.y), duration)
