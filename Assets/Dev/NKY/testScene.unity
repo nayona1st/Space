@@ -173,6 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.InventoryPanelController
   panelRect: {fileID: 1525933154}
   canvasGroup: {fileID: 1525933156}
+  onSound: {fileID: 11400000, guid: 75d76a738c6e29e48a65278163723e8a, type: 2}
+  offSound: {fileID: 11400000, guid: daa0f510562f60d40a86ccd37b112e90, type: 2}
   duration: 0.7
   openEase: 20
   closeEase: 20
@@ -1255,6 +1257,7 @@ MonoBehaviour:
   slot: {fileID: 1540244087}
   resourceManager: {fileID: 599848910}
   price: 300
+  buySound: {fileID: 11400000, guid: 52ac30565a661214e80546307f9af8fc, type: 2}
 --- !u!1 &495431127
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,6 +1664,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590220587}
   m_CullTransparentMesh: 1
+--- !u!1 &596099184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 596099186}
+  - component: {fileID: 596099185}
+  m_Layer: 0
+  m_Name: soundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &596099185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596099184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe05c19bfd04c89af16fc4b99c5ed3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.SoundManager
+  audioMixer: {fileID: 24100000, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  bgmGroup: {fileID: -8611472376954738040, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  sfxGroup: {fileID: -4924062092064455926, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  bgmSource: {fileID: 0}
+  initialPoolSize: 10
+--- !u!4 &596099186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596099184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 548.7743, y: 307.15826, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &599848909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,6 +2124,8 @@ MonoBehaviour:
   nameText: {fileID: 1212511130}
   descriptionText: {fileID: 887339695}
   statText: {fileID: 303372343}
+  popUpOnSound: {fileID: 0}
+  popUpOffSound: {fileID: 0}
 --- !u!225 &844868513
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3886,6 +3940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e791ef0ac5b4c708e7a7f81d7160527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.BaseStatController
+  statUpSound: {fileID: 11400000, guid: b9c33386bc94a9c40bbb11cbbbb90090, type: 2}
   playerStats: {fileID: 1477213234}
   resourceManager: {fileID: 599848910}
   engineUpgrade:
@@ -6367,3 +6422,4 @@ SceneRoots:
   - {fileID: 2095984265}
   - {fileID: 989527276}
   - {fileID: 599848911}
+  - {fileID: 596099186}

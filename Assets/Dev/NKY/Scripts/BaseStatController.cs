@@ -18,6 +18,8 @@ namespace Dev.NKY.Scripts
             public TextMeshProUGUI costText;          // ★ 버튼 안의 소모 자원 표시 텍스트
         }
 
+        [SerializeField] private SoundDataSO statUpSound;
+
         [Header("References")]
         [SerializeField] private PlayerStats playerStats;
         [SerializeField] private ResourceManager resourceManager;
@@ -60,6 +62,7 @@ namespace Dev.NKY.Scripts
             {
                 int spentCost = info.currentCost;
 
+                SoundManager.Instance.PlaySFX(statUpSound);
                 // 스탯 증가 처리
                 playerStats.UpgradeBaseStat(info.statType, info.increaseAmount);
 
