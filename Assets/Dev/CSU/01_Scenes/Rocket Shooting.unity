@@ -346,12 +346,12 @@ PrefabInstance:
       value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
       propertyPath: m_Name
       value: CommonUIButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9066438232563377769, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -462,7 +462,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &133461024
@@ -756,6 +756,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.InventoryPanelController
   panelRect: {fileID: 1588319382}
   canvasGroup: {fileID: 1588319384}
+  onSound: {fileID: 0}
+  offSound: {fileID: 0}
   duration: 0.7
   openEase: 20
   closeEase: 20
@@ -3331,12 +3333,12 @@ PrefabInstance:
       value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
       propertyPath: m_Name
       value: CommonUIButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988733982911379405, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9066438232563377769, guid: 7c33faeb0b857bb419e88c97eaf209f0, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -4269,6 +4271,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_ActionId: 3c7022bf-7922-4f7c-a998-c437916075ad
+--- !u!1 &1054280138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1054280140}
+  - component: {fileID: 1054280139}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1054280139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054280138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe05c19bfd04c89af16fc4b99c5ed3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.SoundManager
+  audioMixer: {fileID: 24100000, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  bgmGroup: {fileID: -8611472376954738040, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  sfxGroup: {fileID: -4924062092064455926, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  bgmSource: {fileID: 0}
+  initialPoolSize: 10
+--- !u!4 &1054280140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054280138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 548.7743, y: 307.15826, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1140902159
 GameObject:
   m_ObjectHideFlags: 0
@@ -8196,6 +8247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e791ef0ac5b4c708e7a7f81d7160527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.BaseStatController
+  statUpSound: {fileID: 0}
   playerStats: {fileID: 1405452806}
   resourceManager: {fileID: 921437519}
   engineUpgrade:
@@ -8296,6 +8348,7 @@ MonoBehaviour:
   slot: {fileID: 1168984036}
   resourceManager: {fileID: 921437519}
   price: 300
+  buySound: {fileID: 0}
 --- !u!114 &1440221653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9723,6 +9776,8 @@ MonoBehaviour:
   nameText: {fileID: 1140902161}
   descriptionText: {fileID: 502663849}
   statText: {fileID: 1594385702}
+  popUpOnSound: {fileID: 0}
+  popUpOffSound: {fileID: 0}
 --- !u!1 &1703643510
 GameObject:
   m_ObjectHideFlags: 0
@@ -11077,3 +11132,4 @@ SceneRoots:
   - {fileID: 701395729}
   - {fileID: 815484211}
   - {fileID: 235501616}
+  - {fileID: 1054280140}
