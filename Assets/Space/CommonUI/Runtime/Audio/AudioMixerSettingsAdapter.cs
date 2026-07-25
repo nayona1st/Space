@@ -8,11 +8,11 @@ namespace SpaceGame.CommonUI.Audio
     public sealed class AudioMixerSettingsAdapter : MonoBehaviour, IAudioSettingsAdapter
     {
         [SerializeField] private AudioMixer mixer;
-        [SerializeField] private string masterParameter = "MasterVolume";
-        [SerializeField] private string bgmParameter = "BGMVolume";
-        [SerializeField] private string sfxParameter = "SFXVolume";
-        [SerializeField] private string uiParameter = "UIVolume";
-        [SerializeField] private string ambienceParameter = "AmbienceVolume";
+        [SerializeField] private string masterParameter = "Master";
+        [SerializeField] private string bgmParameter = "BGM";
+        [SerializeField] private string sfxParameter = "SFX";
+        [SerializeField] private string uiParameter = "UI";
+        [SerializeField] private string ambienceParameter = "Ambience";
 
         public AudioMixer Mixer => mixer;
 
@@ -20,11 +20,9 @@ namespace SpaceGame.CommonUI.Audio
         {
             if (mixer == null)
             {
-                AudioListener.volume = settings.masterVolume;
                 return;
             }
 
-            AudioListener.volume = 1f;
             SetVolume(masterParameter, settings.masterVolume);
             SetVolume(bgmParameter, settings.bgmVolume);
             SetVolume(sfxParameter, settings.sfxVolume);

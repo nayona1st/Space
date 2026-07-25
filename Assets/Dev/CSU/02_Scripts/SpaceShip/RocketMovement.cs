@@ -8,13 +8,15 @@ namespace Dev.CSU._02_Scripts.SpaceShip
         [SerializeField] private float rocketSpeed;
 
         private Vector2 moveDir;
+
+        public float Speed => rocketSpeed;
         
         [Header("References")]
         private Rigidbody2D _rigidbody;
 
         public void ChangeSpeed(float speed)
         {
-            rocketSpeed = speed;
+            rocketSpeed = Mathf.Max(0f, speed);
         }
 
         private void Awake()

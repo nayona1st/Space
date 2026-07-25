@@ -15,110 +15,14 @@ MonoBehaviour:
   actionAsset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   cancelAction: {fileID: 7727032971491509709, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   bindings:
-  - displayName: "Move \xB7 Gamepad"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 978bfe49-cc26-4a3d-ab7b-7d7a29327403
-    controlScheme: Gamepad
-  - displayName: "Move Up \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: e2062cb9-1b15-46a2-838c-2f8d72a0bdd9
-    controlScheme: Keyboard&Mouse
-  - displayName: "Move Up \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 8180e8bd-4097-4f4e-ab88-4523101a6ce9
-    controlScheme: Keyboard&Mouse
-  - displayName: "Move Down \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 320bffee-a40b-4347-ac70-c210eb8bc73a
-    controlScheme: Keyboard&Mouse
-  - displayName: "Move Down \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 1c5327b5-f71c-4f60-99c7-4e737386f1d1
-    controlScheme: Keyboard&Mouse
-  - displayName: "Move Left \xB7 Keyboard&Mouse"
+  - displayName: "\uC67C\uCABD \uC774\uB3D9"
     action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     bindingId: d2581a9b-1d11-4566-b27d-b92aff5fabbc
     controlScheme: Keyboard&Mouse
-  - displayName: "Move Left \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 2e46982e-44cc-431b-9f0b-c11910bf467a
-    controlScheme: Keyboard&Mouse
-  - displayName: "Move Right \xB7 Keyboard&Mouse"
+  - displayName: "\uC624\uB978\uCABD \uC774\uB3D9"
     action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     bindingId: fcfe95b8-67b9-4526-84b5-5d0bc98d6400
     controlScheme: Keyboard&Mouse
-  - displayName: "Move Right \xB7 Keyboard&Mouse"
-    action: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 77bff152-3580-4b21-b6de-dcd0c7e41164
-    controlScheme: Keyboard&Mouse
-  - displayName: "Look \xB7 Gamepad"
-    action: {fileID: -5630151704836100654, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: c1f7a91b-d0fd-4a62-997e-7fb9b69bf235
-    controlScheme: Gamepad
-  - displayName: "Look \xB7 Keyboard&Mouse"
-    action: {fileID: -5630151704836100654, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 8c8e490b-c610-4785-884f-f04217b23ca4
-    controlScheme: Keyboard&Mouse
-  - displayName: "Attack \xB7 Gamepad"
-    action: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 143bb1cd-cc10-4eca-a2f0-a3664166fe91
-    controlScheme: Gamepad
-  - displayName: "Attack \xB7 Keyboard&Mouse"
-    action: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 05f6913d-c316-48b2-a6bb-e225f14c7960
-    controlScheme: Keyboard&Mouse
-  - displayName: "Attack \xB7 Keyboard&Mouse"
-    action: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: b3c1c7f0-bd20-4ee7-a0f1-899b24bca6d7
-    controlScheme: Keyboard&Mouse
-  - displayName: "Interact \xB7 Keyboard&Mouse"
-    action: {fileID: 1781555164194001046, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 1c04ea5f-b012-41d1-a6f7-02e963b52893
-    controlScheme: Keyboard&Mouse
-  - displayName: "Interact \xB7 Gamepad"
-    action: {fileID: 1781555164194001046, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: b3f66d0b-7751-423f-908b-a11c5bd95930
-    controlScheme: Gamepad
-  - displayName: "Crouch \xB7 Gamepad"
-    action: {fileID: 7040659881675835329, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 4f4649ac-64a8-4a73-af11-b3faef356a4d
-    controlScheme: Gamepad
-  - displayName: "Crouch \xB7 Keyboard&Mouse"
-    action: {fileID: 7040659881675835329, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 36e52cba-0905-478e-a818-f4bfcb9f3b9a
-    controlScheme: Keyboard&Mouse
-  - displayName: "Jump \xB7 Keyboard&Mouse"
-    action: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: eb40bb66-4559-4dfa-9a2f-820438abb426
-    controlScheme: Keyboard&Mouse
-  - displayName: "Jump \xB7 Gamepad"
-    action: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: daba33a1-ad0c-4742-a909-43ad1cdfbeb6
-    controlScheme: Gamepad
-  - displayName: "Previous \xB7 Keyboard&Mouse"
-    action: {fileID: 2411907206095950430, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 1534dc16-a6aa-499d-9c3a-22b47347b52a
-    controlScheme: Keyboard&Mouse
-  - displayName: "Previous \xB7 Gamepad"
-    action: {fileID: 2411907206095950430, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 25060bbd-a3a6-476e-8fba-45ae484aad05
-    controlScheme: Gamepad
-  - displayName: "Next \xB7 Keyboard&Mouse"
-    action: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: cbac6039-9c09-46a1-b5f2-4e5124ccb5ed
-    controlScheme: Keyboard&Mouse
-  - displayName: "Next \xB7 Gamepad"
-    action: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: e15ca19d-e649-4852-97d5-7fe8ccc44e94
-    controlScheme: Gamepad
-  - displayName: "Sprint \xB7 Keyboard&Mouse"
-    action: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: f2e9ba44-c423-42a7-ad56-f20975884794
-    controlScheme: Keyboard&Mouse
-  - displayName: "Sprint \xB7 Gamepad"
-    action: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    bindingId: 8cbb2f4b-a784-49cc-8d5e-c010b8c7f4e6
-    controlScheme: Gamepad
   forbiddenControlPaths:
   - <Keyboard>/escape
   - <Keyboard>/printScreen

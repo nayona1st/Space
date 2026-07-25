@@ -4102,7 +4102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD0A4 \uC124\uC815"
+  m_text: "\uC774\uB3D9 \uD0A4 \uC124\uC815 (A / D)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c7714d3c64639cd4786ad2f491ef7747, type: 2}
   m_sharedMaterial: {fileID: -3514581017222194554, guid: c7714d3c64639cd4786ad2f491ef7747, type: 2}
@@ -4189,7 +4189,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 180
+  m_PreferredWidth: 260
   m_PreferredHeight: 52
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1

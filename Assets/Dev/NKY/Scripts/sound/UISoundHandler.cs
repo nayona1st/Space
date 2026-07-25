@@ -22,7 +22,7 @@ namespace Dev.NKY.Scripts
         {
             if (pointerEnterSound != null && SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlaySFX(pointerEnterSound);
+                SoundManager.Instance.PlayUI(pointerEnterSound);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Dev.NKY.Scripts
         {
             if (pointerExitSound != null && SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlaySFX(pointerExitSound);
+                SoundManager.Instance.PlayUI(pointerExitSound);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Dev.NKY.Scripts
         {
             if (clickSound != null && SoundManager.Instance != null)
             {
-                SoundManager.Instance.PlaySFX(clickSound);
+                SoundManager.Instance.PlayUI(clickSound);
             }
         }
     }

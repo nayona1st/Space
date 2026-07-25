@@ -147,7 +147,7 @@ namespace Dev.CSU._02_Scripts.PauseMenu
             }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
             DisposeGlobalCancelHandler();
             StopManagedCoroutines();
@@ -155,6 +155,8 @@ namespace Dev.CSU._02_Scripts.PauseMenu
             {
                 CloseDirect();
             }
+
+            base.OnDisable();
         }
 
         public override void Open()

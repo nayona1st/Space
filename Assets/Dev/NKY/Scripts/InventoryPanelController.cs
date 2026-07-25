@@ -1,3 +1,4 @@
+using Dev.CSU._02_Scripts.RocketShooting;
 using UnityEngine;
 using DG.Tweening;
 
@@ -69,10 +70,12 @@ namespace Dev.NKY.Scripts
 
         public void ShowUI()
         {
-            if (isOpen && activeTween != null && activeTween.IsActive()) return;
+            if (isOpen) return;
 
             isOpen = true;
             activeTween?.Kill();
+            RocketShootingSoundPlayer.Play(
+                RocketShootingSoundCue.UpgradePopupOpen);
 
             if (canvasGroup != null)
             {
@@ -89,10 +92,12 @@ namespace Dev.NKY.Scripts
 
         public void HideUI()
         {
-            if (!isOpen && activeTween != null && activeTween.IsActive()) return;
+            if (!isOpen) return;
 
             isOpen = false;
             activeTween?.Kill();
+            RocketShootingSoundPlayer.Play(
+                RocketShootingSoundCue.UpgradePopupClose);
 
             if (canvasGroup != null)
             {

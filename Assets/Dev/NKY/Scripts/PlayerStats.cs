@@ -12,6 +12,10 @@ namespace Dev.NKY.Scripts
     }
     public class PlayerStats : MonoBehaviour
     {
+        private const string SavedStatsPrefix = "SpaceGame.PlayerStats.";
+        private const string SavedStatsInitializedKey = SavedStatsPrefix + "Initialized";
+        public const float DefaultStatValue = 100f;
+
         [SerializeField] private InventoryGrid grid; // ★ 그리드 자동 연동용 참조
         [SerializeField] private List<BaseStats> baseStats; // 인스펙터 기본값 목록
         [SerializeField] private List<BaseStats> minValues;
@@ -30,6 +34,7 @@ namespace Dev.NKY.Scripts
         private void Awake()
         {
             InitializeBaseValues();
+            LoadSavedValues();
         }
 
         /// <summary>
@@ -42,7 +47,7 @@ namespace Dev.NKY.Scripts
             // 1. 모든 StatType의 기본값을 먼저 100f로 안전하게 초기화
             foreach (StatType type in Enum.GetValues(typeof(StatType)))
             {
-                baseValues[type] = 100f;
+                baseValues[type] = DefaultStatValue;
             }
 
             // 2. 인스펙터의 baseStats 리스트에 설정된 데이터가 있다면 덮어쓰기
@@ -55,6 +60,24 @@ namespace Dev.NKY.Scripts
             }
         }
  
+        private void LoadSavedValues()
+        {
+            if (PlayerPrefs.GetInt(SavedStatsInitializedKey, 0) == 0)
+            {
+                SaveCurrentStats();
+                return;
+            }
+
+            foreach (StatType type in Enum.GetValues(typeof(StatType)))
+            {
+                float fallback = baseValues.TryGetValue(type, out float value)
+                    ? value
+                    : DefaultStatValue;
+                float savedValue = PlayerPrefs.GetFloat(GetSavedStatKey(type), fallback);
+                baseValues[type] = IsValidStat(savedValue) ? savedValue : fallback;
+            }
+        }
+
         public float GetStat(StatType type)
         {
             float baseVal = baseValues.TryGetValue(type, out var bv) ? bv : 0f;
@@ -62,6 +85,11 @@ namespace Dev.NKY.Scripts
             float percent = percentSum.TryGetValue(type, out var p) ? p : 0f;
 
             float finalVal = (baseVal + flat) * (1f + percent);
+
+            if (minValues == null)
+            {
+                return finalVal;
+            }
 
             foreach (var minValue in minValues)
             {
@@ -121,6 +149,7 @@ namespace Dev.NKY.Scripts
             // 개별 및 전체 스탯 변경 이벤트 발송
             OnStatChanged?.Invoke(mod.type, GetStat(mod.type));
             OnAllStatsUpdated?.Invoke(GetAllFinalStats()); // ★ 전체 스탯 업데이트 이벤트 추가
+            SaveCurrentStats();
         }
         
         public void UpgradeBaseStat(StatType type, float amount)
@@ -137,6 +166,46 @@ namespace Dev.NKY.Scripts
             // ★ 스탯 변경 이벤트 발송 (UI 및 타 시스템 자동 갱신)
             OnStatChanged?.Invoke(type, GetStat(type));
             OnAllStatsUpdated?.Invoke(GetAllFinalStats());
+            SaveCurrentStats();
+        }
+
+        public static Dictionary<StatType, float> GetSavedStats()
+        {
+            var savedStats = new Dictionary<StatType, float>();
+
+            foreach (StatType type in Enum.GetValues(typeof(StatType)))
+            {
+                float value = PlayerPrefs.GetInt(SavedStatsInitializedKey, 0) != 0
+                    ? PlayerPrefs.GetFloat(GetSavedStatKey(type), DefaultStatValue)
+                    : DefaultStatValue;
+                savedStats[type] = IsValidStat(value) ? value : DefaultStatValue;
+            }
+
+            return savedStats;
+        }
+
+        private void SaveCurrentStats()
+        {
+            foreach (StatType type in Enum.GetValues(typeof(StatType)))
+            {
+                float value = GetStat(type);
+                PlayerPrefs.SetFloat(
+                    GetSavedStatKey(type),
+                    IsValidStat(value) ? value : DefaultStatValue);
+            }
+
+            PlayerPrefs.SetInt(SavedStatsInitializedKey, 1);
+            PlayerPrefs.Save();
+        }
+
+        private static string GetSavedStatKey(StatType type)
+        {
+            return SavedStatsPrefix + type;
+        }
+
+        private static bool IsValidStat(float value)
+        {
+            return !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
         }
     }
 }

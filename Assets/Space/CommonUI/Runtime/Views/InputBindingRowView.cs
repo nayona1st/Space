@@ -59,7 +59,8 @@ namespace SpaceGame.CommonUI.Views
             if (definition != null && operation == null)
             {
                 displayNameText.SetText(definition.DisplayName);
-                bindingText.SetText(definition.GetDisplayString());
+                bindingText.SetText(
+                    $"현재 키: {definition.GetDisplayString()}");
                 displayNameText.SetLayoutDirty();
                 displayNameText.SetVerticesDirty();
                 bindingText.SetLayoutDirty();
@@ -97,7 +98,7 @@ namespace SpaceGame.CommonUI.Views
 
             bindingText.text = "입력을 기다리는 중…";
             statusChanged?.Invoke(
-                $"{definition.DisplayName}: 새 입력을 누르세요. 취소는 Cancel 입력입니다.");
+                $"{definition.DisplayName}: 새 키를 누르세요. ESC로 취소합니다.");
 
             cancelRegistration = cancelRouter.Push(CancelRebind, 1000);
             operation = action.PerformInteractiveRebinding(bindingIndex);
@@ -144,7 +145,7 @@ namespace SpaceGame.CommonUI.Views
                     out InputBindingDefinition duplicate))
             {
                 statusChanged?.Invoke(
-                    $"중복 입력입니다: {duplicate.DisplayName}");
+                    $"이미 사용 중인 키입니다: {duplicate.DisplayName}");
                 currentOperation.Cancel();
             }
         }
@@ -201,6 +202,11 @@ namespace SpaceGame.CommonUI.Views
             CancelRebind();
             rebindButton?.onClick.RemoveListener(BeginRebind);
             resetButton?.onClick.RemoveListener(ResetBinding);
+        }
+
+        private void OnDisable()
+        {
+            CancelRebind();
         }
     }
 }

@@ -13,6 +13,7 @@ using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -37,6 +38,8 @@ namespace SpaceGame.CommonUI.Editor
             FontFolder + "/NotoSansKR CommonUI SDF.asset";
         private const string BindingRowPath =
             PrefabFolder + "/InputBindingRow.prefab";
+        private const string AudioMixerPath =
+            "Assets/Resources/Audio.mixer";
         private const string KeyInfoRowPath =
             PrefabFolder + "/KeyInfoRow.prefab";
         private const string SettingsWindowPath =
@@ -352,67 +355,35 @@ namespace SpaceGame.CommonUI.Editor
                     "The InputActionAsset has no persistent Cancel action reference.");
             }
 
-            HashSet<string> rebindableSchemes =
-                new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (InputControlScheme scheme in actionAsset.controlSchemes)
+            var definitions = new List<InputBindingDefinition>();
+            InputAction moveAction = actionAsset.FindAction("Player/Move");
+            InputActionReference moveReference =
+                references.FirstOrDefault(reference =>
+                    reference.action != null &&
+                    reference.action.id == moveAction?.id);
+            if (moveAction == null || moveReference == null)
             {
-                bool isKeyboardOrGamepad = scheme.deviceRequirements.Any(
-                    requirement =>
-                        requirement.controlPath.Contains("<Keyboard>") ||
-                        requirement.controlPath.Contains("<Gamepad>"));
-                if (isKeyboardOrGamepad)
-                {
-                    rebindableSchemes.Add(scheme.bindingGroup);
-                }
+                throw new InvalidOperationException(
+                    "Player/Move Input Action 또는 영구 Action Reference가 없습니다.");
             }
 
-            var definitions = new List<InputBindingDefinition>();
-            foreach (InputActionMap map in actionAsset.actionMaps)
+            AddMoveBinding(
+                definitions,
+                moveAction,
+                moveReference,
+                "<Keyboard>/a",
+                "왼쪽 이동");
+            AddMoveBinding(
+                definitions,
+                moveAction,
+                moveReference,
+                "<Keyboard>/d",
+                "오른쪽 이동");
+
+            if (definitions.Count != 2)
             {
-                if (map.id == cancelAction.actionMap.id)
-                {
-                    continue;
-                }
-
-                foreach (InputAction action in map.actions)
-                {
-                    InputActionReference reference =
-                        references.FirstOrDefault(candidate =>
-                            candidate.action != null &&
-                            candidate.action.id == action.id);
-                    if (reference == null)
-                    {
-                        continue;
-                    }
-
-                    foreach (InputBinding binding in action.bindings)
-                    {
-                        if (binding.isComposite)
-                        {
-                            continue;
-                        }
-
-                        string[] groups = (binding.groups ?? string.Empty)
-                            .Split(new[] {';'},
-                                StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string group in groups.Where(
-                                     rebindableSchemes.Contains))
-                        {
-                            string part = string.IsNullOrWhiteSpace(binding.name)
-                                ? string.Empty
-                                : " " + ObjectNames.NicifyVariableName(
-                                    binding.name);
-                            var definition = new InputBindingDefinition();
-                            definition.Configure(
-                                ObjectNames.NicifyVariableName(action.name) +
-                                part + " · " + group,
-                                reference,
-                                binding.id.ToString(),
-                                group);
-                            definitions.Add(definition);
-                        }
-                    }
-                }
+                throw new InvalidOperationException(
+                    "Player/Move의 A/D Composite Binding을 찾지 못했습니다.");
             }
 
             string[] gameplayMapIds = actionAsset.actionMaps
@@ -437,6 +408,34 @@ namespace SpaceGame.CommonUI.Editor
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
             return catalog;
+        }
+
+        private static void AddMoveBinding(
+            ICollection<InputBindingDefinition> definitions,
+            InputAction moveAction,
+            InputActionReference moveReference,
+            string defaultPath,
+            string displayName)
+        {
+            int bindingIndex = moveAction.bindings.IndexOf(binding =>
+                binding.isPartOfComposite &&
+                string.Equals(
+                    binding.path,
+                    defaultPath,
+                    StringComparison.OrdinalIgnoreCase));
+            if (bindingIndex < 0)
+            {
+                return;
+            }
+
+            InputBinding binding = moveAction.bindings[bindingIndex];
+            var definition = new InputBindingDefinition();
+            definition.Configure(
+                displayName,
+                moveReference,
+                binding.id.ToString(),
+                "Keyboard&Mouse");
+            definitions.Add(definition);
         }
 
         private static TutorialSequenceData GetOrCreateTutorialSequence()
@@ -534,7 +533,7 @@ namespace SpaceGame.CommonUI.Editor
                 "ChangeButton",
                 root.transform,
                 font,
-                "변경",
+                "키 설정",
                 SurfaceColor);
             AddLayoutElement(change.gameObject, 44f, 88f);
 
@@ -693,14 +692,14 @@ namespace SpaceGame.CommonUI.Editor
                 "BindingTitle",
                 bindingHeader,
                 font,
-                "키 설정",
+                "이동 키 설정 (A / D)",
                 22,
                 TextAlignmentOptions.MidlineLeft,
                 TextColor);
             AddLayoutElement(
                 bindingTitle.gameObject,
                 52f,
-                180f,
+                260f,
                 1f);
             Button resetBindings = CreateButton(
                 "ResetAllBindingsButton",
@@ -1039,13 +1038,15 @@ namespace SpaceGame.CommonUI.Editor
             CommonUIRoot commonRoot = root.AddComponent<CommonUIRoot>();
             AudioMixerSettingsAdapter audio =
                 root.AddComponent<AudioMixerSettingsAdapter>();
+            AudioMixer mixer =
+                AssetDatabase.LoadAssetAtPath<AudioMixer>(AudioMixerPath);
             audio.Configure(
-                null,
-                "MasterVolume",
-                "BGMVolume",
-                "SFXVolume",
-                "UIVolume",
-                "AmbienceVolume");
+                mixer,
+                "Master",
+                "BGM",
+                "SFX",
+                "UI",
+                "Ambience");
             ScreenSettingsApplier screen =
                 root.AddComponent<ScreenSettingsApplier>();
             screen.Configure(

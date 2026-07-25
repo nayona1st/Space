@@ -1,4 +1,5 @@
 using System;
+using Dev.CSU._02_Scripts.RocketShooting;
 using Dev.NKY.Scripts.Dev.NKY.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -210,6 +211,8 @@ namespace Dev.NKY.Scripts
                     rect.anchoredPosition = gridView.GridCellToAnchoredPosition(topLeftCell);
                     rect.localScale = Vector3.one;
 
+                    RocketShootingSoundPlayer.Play(
+                        RocketShootingSoundCue.PartEquip);
                     OnPlaced?.Invoke(this);
                     return;
                 }
@@ -225,6 +228,8 @@ namespace Dev.NKY.Scripts
             }
 
             // 3. 실패 시 슬롯으로 복귀
+            RocketShootingSoundPlayer.Play(
+                RocketShootingSoundCue.PartEquipFailed);
             ReturnToTray();
         }
 
@@ -292,6 +297,8 @@ namespace Dev.NKY.Scripts
             if (present != null)
             {
                 present.Show(transform.position);
+                RocketShootingSoundPlayer.Play(
+                    RocketShootingSoundCue.PartStatsOpen);
             }
         }
 
@@ -300,6 +307,8 @@ namespace Dev.NKY.Scripts
             if (_present != null)
             {
                 _present.Hide();
+                RocketShootingSoundPlayer.Play(
+                    RocketShootingSoundCue.PartStatsClose);
             }
         }
         
@@ -315,6 +324,9 @@ namespace Dev.NKY.Scripts
 // ★ 블록 삭제 및 완전히 파괴하는 처리
         public void DiscardBlock()
         {
+            RocketShootingSoundPlayer.Play(
+                RocketShootingSoundCue.PartDelete);
+
             // 그리드에 장착되어 있던 블록이면 그리드에서 제거 (스탯 차감도 자동 동작)
             if (instance != null)
             {

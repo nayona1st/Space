@@ -11,6 +11,7 @@ namespace Dev.NKY.Scripts.Health
         [Header("Death Reward")]
         [SerializeField] private ResourceManager resourceManager;
         [SerializeField] private HorizontalDistanceTracker distanceTracker;
+        [SerializeField, Min(1f)] private float deathRewardMultiplier = 1f;
 
         private bool _deathRewardGranted;
 
@@ -43,7 +44,8 @@ namespace Dev.NKY.Scripts.Health
 
         private void Update()
         {
-            if (Keyboard.current.eKey.wasPressedThisFrame)
+            if (Keyboard.current != null
+                && Keyboard.current.eKey.wasPressedThisFrame)
             {
                 TakeDamage(2);
             }
@@ -56,9 +58,21 @@ namespace Dev.NKY.Scripts.Health
                 return 0;
             }
 
-            return Mathf.FloorToInt(
+            int distanceReward = Mathf.FloorToInt(
                 Mathf.Max(0f, distanceTracker.DistanceMeters)
                 / MetersPerResource);
+            return Mathf.FloorToInt(distanceReward * deathRewardMultiplier);
+        }
+
+        public void SetDeathRewardMultiplier(float multiplier)
+        {
+            if (float.IsNaN(multiplier) || float.IsInfinity(multiplier))
+            {
+                deathRewardMultiplier = 1f;
+                return;
+            }
+
+            deathRewardMultiplier = Mathf.Max(1f, multiplier);
         }
 
         protected override void OnHealthReset()
@@ -89,6 +103,7 @@ namespace Dev.NKY.Scripts.Health
             Debug.Log(
                 $"[Health] Death reward granted once: {LastDeathReward} "
                 + $"(distance: {distanceTracker?.DistanceMeters ?? 0f:F1} m, "
+                + $"drill multiplier: x{deathRewardMultiplier:F2}, "
                 + $"balance: {resourceManager.CurrentResource}).",
                 this);
         }

@@ -27,7 +27,10 @@ namespace Dev.NKY.Scripts
             statText.text = "";
             foreach (KeyValuePair<StatType, float> finalStat in _finalStats)
             {
-                statText.text += $"{finalStat.Key}: {(int)finalStat.Value}\n";
+                string displayName =
+                    finalStat.Key.ToKoreanDescription();
+                statText.text +=
+                    $"{displayName}: {(int)finalStat.Value}\n";
             }
         }
     }

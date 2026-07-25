@@ -1,80 +1,217 @@
+using System;
 using System.Collections.Generic;
+using Dev.CSU._02_Scripts.SceneTransition;
 using Dev.CSU._02_Scripts.SpaceShip;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Dev.NKY.Scripts
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerStats stats;
+        private const float BaseStatScale = 100f;
 
+        [SerializeField] private PlayerStats stats;
         [SerializeField] private RocketMovement movement;
         [SerializeField] private Health.Health health;
+        [SerializeField] private Slider fuelSlider;
+        [SerializeField] private TextMeshProUGUI fuelText;
 
-        [Header("현재 적용된 플레이어 스탯")]
-        [field: SerializeField] public float EnginePower { get; private set; } // Engine -> 이동 속도 / 추진력
-        [field: SerializeField] public float MaxFuel { get; private set; }    // Fuel   -> 최대 연료
-        [field: SerializeField] public float Armor { get; private set; }       // Armor  -> 방어력 / 내구도
-        [field: SerializeField] public float DrillPower { get; private set; }  // Drill  -> 채굴력 / 드릴 속도
+        [Header("Fuel Consumption")]
+        [SerializeField, Min(0f)]
+        private float fuelConsumptionPerSecond = 1f;
+
+        [Header("Applied Rocket Stats")]
+        [field: SerializeField] public float EnginePower { get; private set; }
+        [field: SerializeField] public float MaxFuel { get; private set; }
+        [field: SerializeField] public float Armor { get; private set; }
+        [field: SerializeField] public float DrillPower { get; private set; }
+
+        public float CurrentFuel { get; private set; }
+        public float DrillRewardMultiplier { get; private set; } = 1f;
+
+        public event Action<float, float> OnFuelChanged;
+        public event Action FuelDepleted;
+
+        private float _baseMovementSpeed;
+        private bool _fuelDepletionHandled;
 
         private void Awake()
         {
+            if (movement == null)
+            {
+                movement = GetComponent<RocketMovement>();
+            }
+
+            if (health == null)
+            {
+                health = GetComponent<Health.Health>();
+            }
+
+            _baseMovementSpeed = movement != null ? movement.Speed : 0f;
+
             if (stats != null)
             {
-                // 스탯 전체 변경 이벤트 구독
-                stats.OnAllStatsUpdated += HandleStatApply;
+                stats.OnAllStatsUpdated += ApplyStats;
             }
+        }
+
+        private void Start()
+        {
+            Dictionary<StatType, float> initialStats = stats != null
+                ? stats.GetAllFinalStats()
+                : PlayerStats.GetSavedStats();
+            ApplyStats(initialStats);
+        }
+
+        private void Update()
+        {
+            if (fuelConsumptionPerSecond <= 0f
+                || CurrentFuel <= 0f
+                || Time.deltaTime <= 0f
+                || SceneTransitions.IsTransitioning
+                || (health != null && health.IsDead))
+            {
+                return;
+            }
+
+            TryConsumeFuel(
+                fuelConsumptionPerSecond * Time.deltaTime);
         }
 
         private void OnDestroy()
         {
             if (stats != null)
             {
-                // 메모리 누수 방지를 위한 이벤트 해제
-                stats.OnAllStatsUpdated -= HandleStatApply;
+                stats.OnAllStatsUpdated -= ApplyStats;
             }
         }
 
-        /// <summary>
-        /// PlayerStats에서 전체 스탯 변경 이벤트가 터질 때 실행됩니다.
-        /// </summary>
-        private void HandleStatApply(Dictionary<StatType, float> updatedStats)
+        private void ApplyStats(Dictionary<StatType, float> updatedStats)
         {
-            if (updatedStats == null) return;
-
-            // 1. Engine (이동 속도 / 추진력)
-            if (updatedStats.TryGetValue(StatType.Engine, out float engineVal))
+            if (updatedStats == null)
             {
-                EnginePower = engineVal;
-                
-                movement.ChangeSpeed(EnginePower);
-                // TODO: 이동 스크립트나 Rigidbody의 이동 속도 변수에 적용
+                return;
             }
 
-            // 2. Fuel (최대 연료량)
-            if (updatedStats.TryGetValue(StatType.Fuel, out float fuelVal))
+            if (updatedStats.TryGetValue(StatType.Engine, out float engineValue))
             {
-                MaxFuel = fuelVal;
-                // TODO: 현재 연료 UI 최댓값 갱신 및 연료 탱크 용량 업데이트
+                EnginePower = engineValue;
+
+                if (movement != null)
+                {
+                    float engineScale = Mathf.Max(0f, EnginePower) / BaseStatScale;
+                    movement.ChangeSpeed(_baseMovementSpeed * engineScale);
+                }
             }
 
-            // 3. Armor (방어력 / 내구도)
-            if (updatedStats.TryGetValue(StatType.Armor, out float armorVal))
+            if (updatedStats.TryGetValue(StatType.Fuel, out float fuelValue))
             {
-                Armor = armorVal;
-                
-                health.SetHealth(Armor);
-                // TODO: 데미지 계산식이나 체력 시스템에 적용
+                SetMaxFuel(fuelValue, true);
             }
 
-            // 4. Drill (채굴 속도 / 드릴 데미지)
-            if (updatedStats.TryGetValue(StatType.Drill, out float drillVal))
+            if (updatedStats.TryGetValue(StatType.Armor, out float armorValue))
             {
-                DrillPower = drillVal;
-                // TODO: 광물 채굴 속도 애니메이션 및 데미지 계산식에 적용
+                Armor = armorValue;
+
+                if (health != null)
+                {
+                    health.SetHealth(Armor);
+                }
             }
 
-            Debug.Log($"[PlayerController] 스탯 반영 완료 | 엔진: {EnginePower} | 연료: {MaxFuel} | 장갑: {Armor} | 드릴: {DrillPower}");
+            if (updatedStats.TryGetValue(StatType.Drill, out float drillValue))
+            {
+                DrillPower = drillValue;
+                DrillRewardMultiplier = Mathf.Max(1f, DrillPower / BaseStatScale);
+
+                if (health != null)
+                {
+                    health.SetDeathRewardMultiplier(DrillRewardMultiplier);
+                }
+            }
+
+            Debug.Log(
+                $"[PlayerController] Stats applied | Engine: {EnginePower:F1} "
+                + $"(speed: {movement?.Speed ?? 0f:F2}) | Fuel: {MaxFuel:F1} "
+                + $"| Armor: {Armor:F1} | Drill: {DrillPower:F1} "
+                + $"(reward x{DrillRewardMultiplier:F2})",
+                this);
+        }
+
+        public bool TryConsumeFuel(float amount)
+        {
+            if (amount <= 0f)
+            {
+                return true;
+            }
+
+            bool consumedFullAmount = CurrentFuel >= amount;
+            float previousFuel = CurrentFuel;
+            CurrentFuel = Mathf.Max(0f, CurrentFuel - amount);
+
+            if (!Mathf.Approximately(previousFuel, CurrentFuel))
+            {
+                RefreshFuelUi();
+            }
+
+            if (CurrentFuel <= 0f)
+            {
+                HandleFuelDepleted();
+            }
+
+            return consumedFullAmount;
+        }
+
+        public void RefillFuel()
+        {
+            CurrentFuel = MaxFuel;
+            _fuelDepletionHandled = false;
+            RefreshFuelUi();
+        }
+
+        private void SetMaxFuel(float value, bool refill)
+        {
+            MaxFuel = Mathf.Max(1f, value);
+            CurrentFuel = refill ? MaxFuel : Mathf.Min(CurrentFuel, MaxFuel);
+            _fuelDepletionHandled = false;
+            RefreshFuelUi();
+        }
+
+        private void HandleFuelDepleted()
+        {
+            if (_fuelDepletionHandled)
+            {
+                return;
+            }
+
+            _fuelDepletionHandled = true;
+            FuelDepleted?.Invoke();
+
+            if (health != null && !health.IsDead)
+            {
+                health.TakeDamage(
+                    Mathf.Max(1f, health.CurrentHealth));
+            }
+        }
+
+        private void RefreshFuelUi()
+        {
+            if (fuelSlider != null)
+            {
+                fuelSlider.minValue = 0f;
+                fuelSlider.maxValue = Mathf.Max(1f, MaxFuel);
+                fuelSlider.value = CurrentFuel;
+            }
+
+            if (fuelText != null)
+            {
+                fuelText.text =
+                    $"{Mathf.CeilToInt(CurrentFuel)} / {Mathf.CeilToInt(MaxFuel)}";
+            }
+
+            OnFuelChanged?.Invoke(CurrentFuel, MaxFuel);
         }
     }
 }

@@ -214,11 +214,19 @@ namespace SpaceGame.CommonUI.Views
             canvasGroup.blocksRaycasts = visible;
         }
 
+        protected virtual void OnDisable()
+        {
+            if (IsOpen)
+            {
+                RequestClose();
+            }
+        }
+
         protected virtual void OnDestroy()
         {
             if (IsOpen)
             {
-                CloseDirect();
+                RequestClose();
             }
         }
     }

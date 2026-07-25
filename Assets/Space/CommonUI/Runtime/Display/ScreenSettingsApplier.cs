@@ -46,17 +46,12 @@ namespace SpaceGame.CommonUI.Display
             }
 
             List<ResolutionOption> distinct = cached
-                .GroupBy(option => new
-                {
-                    option.width,
-                    option.height,
-                    option.refreshRateNumerator,
-                    option.refreshRateDenominator
-                })
-                .Select(group => group.First())
+                .GroupBy(option => new { option.width, option.height })
+                .Select(group => group
+                    .OrderByDescending(GetRefreshRate)
+                    .First())
                 .OrderBy(option => option.width)
                 .ThenBy(option => option.height)
-                .ThenBy(option => option.refreshRateNumerator)
                 .ToList();
 
             cached.Clear();
@@ -66,6 +61,15 @@ namespace SpaceGame.CommonUI.Display
 
         public void Apply(GameSettingsData settings)
         {
+            ResolutionOption safeResolution =
+                FindSupportedOrCurrentResolution(settings);
+            settings.resolutionWidth = safeResolution.width;
+            settings.resolutionHeight = safeResolution.height;
+            settings.refreshRateNumerator =
+                safeResolution.refreshRateNumerator;
+            settings.refreshRateDenominator =
+                safeResolution.refreshRateDenominator;
+
             FullScreenMode mode = settings.fullscreen
                 ? FullScreenMode.FullScreenWindow
                 : FullScreenMode.Windowed;
@@ -90,6 +94,49 @@ namespace SpaceGame.CommonUI.Display
                 settings.resolutionHeight,
                 mode,
                 refreshRate);
+        }
+
+        private ResolutionOption FindSupportedOrCurrentResolution(
+            GameSettingsData settings)
+        {
+            IReadOnlyList<ResolutionOption> available =
+                GetAvailableResolutions();
+            ResolutionOption exact = available.FirstOrDefault(option =>
+                option.width == settings.resolutionWidth &&
+                option.height == settings.resolutionHeight);
+            if (exact.width > 0 && exact.height > 0)
+            {
+                return exact;
+            }
+
+            Resolution current = Screen.currentResolution;
+            ResolutionOption currentOption = available.FirstOrDefault(option =>
+                option.width == current.width &&
+                option.height == current.height);
+            if (currentOption.width > 0 && currentOption.height > 0)
+            {
+                return currentOption;
+            }
+
+            return available
+                .OrderBy(option =>
+                {
+                    long widthDelta =
+                        (long)option.width - settings.resolutionWidth;
+                    long heightDelta =
+                        (long)option.height - settings.resolutionHeight;
+                    return widthDelta * widthDelta +
+                           heightDelta * heightDelta;
+                })
+                .First();
+        }
+
+        private static double GetRefreshRate(ResolutionOption option)
+        {
+            return option.refreshRateNumerator <= 0
+                ? 0d
+                : (double)option.refreshRateNumerator /
+                  Mathf.Max(1, option.refreshRateDenominator);
         }
 
         public void Configure(

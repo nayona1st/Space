@@ -405,7 +405,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 456857462}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2147000002}
+        m_TargetAssemblyTypeName: SpaceGame.CommonUI.CommonUIRoot, Space.CommonUI.Runtime
+        m_MethodName: OpenSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &456857462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +647,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 397453970}
+  - {fileID: 2147000003}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1731,6 +1744,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145274272}
   m_CullTransparentMesh: 1
+--- !u!1001 &2147000001
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 585694822}
+    m_Modifications:
+    - target: {fileID: 3367195085026140699, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+      propertyPath: m_Name
+      value: CommonUIRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5773371246068142492, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5773371246068142492, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5773371246068142492, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5773371246068142492, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+--- !u!114 &2147000002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4461181979190381699, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+  m_PrefabInstance: {fileID: 2147000001}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873ef3bd2d32cb6448cf8c3a3a56295c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Space.CommonUI.Runtime::SpaceGame.CommonUI.CommonUIRoot
+--- !u!224 &2147000003 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5773371246068142492, guid: cc3d0eb71d6cb2e4996dfa1d345ce81e, type: 3}
+  m_PrefabInstance: {fileID: 2147000001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

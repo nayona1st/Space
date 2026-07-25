@@ -1,4 +1,5 @@
 using System;
+using Dev.CSU._02_Scripts.RocketShooting;
 using TMPro;
 using UnityEngine;
 
@@ -25,6 +26,8 @@ namespace Dev.NKY.Scripts.Health
             resourceManager.ConsumeResource(price);
             
             slot.SpawnNewBlock();
+            RocketShootingSoundPlayer.Play(
+                RocketShootingSoundCue.PartDraw);
         }
     }
 }

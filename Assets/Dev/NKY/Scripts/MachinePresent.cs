@@ -46,19 +46,23 @@ namespace Dev.NKY.Scripts
             foreach (var stat in _statModifier)
             {
                 string pn = stat.value >= 0 ? "+" : "";
+                string displayName =
+                    stat.type.ToKoreanDescription();
                 if (stat.modifierType == ModifierType.Flat)
                 {
-                    statText.text += $"타입:{stat.type.ToString()}\n" +
-                                    $"스텟:{pn}{(int)stat.value}\n";
+                    statText.text +=
+                        $"{displayName}\n" +
+                        $"증가량: {pn}{(int)stat.value}\n";
                 }
                 else
                 {
                     double percent = Math.Round(stat.value * 100, 1);
-                    statText.text += $"타입:{stat.type.ToString()}\n" +
-                                    $"스텟:{pn}{percent}%\n";
+                    statText.text +=
+                        $"{displayName}\n" +
+                        $"증가량: {pn}{percent}%\n";
                 }
 
-                statText.text += $"\n";
+                statText.text += "\n";
             }
         }
         

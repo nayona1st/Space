@@ -1,3 +1,4 @@
+using Dev.CSU._02_Scripts.RocketShooting;
 using UnityEngine;
 using TMPro; // TextMeshPro 사용 시 (기본 Text 사용 시 UnityEngine.UI로 변경)
 
@@ -68,6 +69,8 @@ namespace Dev.NKY.Scripts
 
                 // ★ 4. 버튼 텍스트 UI 자동 갱신
                 UpdateCostUI(info);
+                RocketShootingSoundPlayer.Play(
+                    RocketShootingSoundCue.PartUpgrade);
 
                 Debug.Log($"[Stat] {info.statType} 강화 성공! (소모 자원: {spentCost} -> 다음 필요 자원: {info.currentCost})");
                 return true;

@@ -37,6 +37,7 @@ RectTransform:
   - {fileID: 6669186193929141977}
   - {fileID: 5715726203479201031}
   - {fileID: 649273203221411697}
+  - {fileID: 910000000000000002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -44,6 +45,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &910000000000000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 910000000000000002}
+  - component: {fileID: 910000000000000003}
+  m_Layer: 0
+  m_Name: SoundManagerBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &910000000000000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910000000000000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5773371246068142492}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &910000000000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cd4a58d78d4bb588f4c2dc5c5a6023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dev.NKY.Scripts.SoundManagerSceneBootstrap
 --- !u!114 &4461181979190381699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,12 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f6222f520976a44b2d38a5fe3ec7ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Space.CommonUI.Runtime::SpaceGame.CommonUI.Audio.AudioMixerSettingsAdapter
-  mixer: {fileID: 0}
-  masterParameter: MasterVolume
-  bgmParameter: BGMVolume
-  sfxParameter: SFXVolume
-  uiParameter: UIVolume
-  ambienceParameter: AmbienceVolume
+  mixer: {fileID: 24100000, guid: 98b25e9d999a6194ea5f88ea99b64cca, type: 2}
+  masterParameter: Master
+  bgmParameter: BGM
+  sfxParameter: SFX
+  uiParameter: UI
+  ambienceParameter: Ambience
 --- !u!114 &8071729932120269132
 MonoBehaviour:
   m_ObjectHideFlags: 0

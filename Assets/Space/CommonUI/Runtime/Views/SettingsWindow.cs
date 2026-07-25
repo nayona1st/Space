@@ -14,6 +14,8 @@ namespace SpaceGame.CommonUI.Views
     [DisallowMultipleComponent]
     public sealed class SettingsWindow : ModalWindowBase
     {
+        private const int TopmostSortingOrder = 32000;
+
         [Header("Audio")]
         [SerializeField] private Slider masterSlider;
         [SerializeField] private Slider bgmSlider;
@@ -83,6 +85,7 @@ namespace SpaceGame.CommonUI.Views
 
         protected override void OnInitialized()
         {
+            EnsureTopmostLayer();
             masterSlider.onValueChanged.AddListener(OnAudioChanged);
             bgmSlider.onValueChanged.AddListener(OnAudioChanged);
             sfxSlider.onValueChanged.AddListener(OnAudioChanged);
@@ -100,7 +103,9 @@ namespace SpaceGame.CommonUI.Views
 
         protected override void OnOpened()
         {
+            EnsureTopmostLayer();
             snapshot = Context.Settings.BeginEdit();
+            CaptureCurrentDisplay(snapshot);
             workingCopy = snapshot.Clone();
             bindingSnapshotJson =
                 Context.BindingCatalog.ActionAsset.SaveBindingOverridesAsJson();
@@ -108,6 +113,25 @@ namespace SpaceGame.CommonUI.Views
             PushDataToControls();
             RefreshBindingRows();
             SetStatus(string.Empty);
+        }
+
+        private void EnsureTopmostLayer()
+        {
+            transform.SetAsLastSibling();
+
+            Canvas topmostCanvas = GetComponent<Canvas>();
+            if (topmostCanvas == null)
+            {
+                topmostCanvas = gameObject.AddComponent<Canvas>();
+            }
+
+            topmostCanvas.overrideSorting = true;
+            topmostCanvas.sortingOrder = TopmostSortingOrder;
+
+            if (!TryGetComponent<GraphicRaycaster>(out _))
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
         }
 
         protected override void OnCloseRequested()
@@ -139,6 +163,7 @@ namespace SpaceGame.CommonUI.Views
         private void RestoreDefaults()
         {
             workingCopy = GameSettingsData.CreateDefault();
+            CaptureCurrentResolution(workingCopy);
             PushDataToControls();
             Context.Settings.PreviewAudio(workingCopy);
             SetStatus("기본 설정을 미리 적용했습니다. 적용을 눌러 저장하세요.");
@@ -147,8 +172,13 @@ namespace SpaceGame.CommonUI.Views
         private void RestoreAllBindings()
         {
             CancelRebindIfNeeded();
+            workingCopy = GameSettingsData.CreateDefault();
+            CaptureCurrentResolution(workingCopy);
+            PushDataToControls();
+            Context.Settings.PreviewAudio(workingCopy);
             Context.BindingCatalog.RemoveAllOverrides();
-            SetStatus("모든 키를 기본값으로 복원했습니다. 아직 저장되지 않았습니다.");
+            RefreshBindingRows();
+            SetStatus("화면, 사운드와 좌우 이동 키를 모두 초기화했습니다. 적용을 눌러 저장하세요.");
         }
 
         private void BuildBindingRows()
@@ -358,6 +388,55 @@ namespace SpaceGame.CommonUI.Views
             {
                 statusText.text = message ?? string.Empty;
             }
+        }
+
+        private static void CaptureCurrentDisplay(GameSettingsData settings)
+        {
+            settings.fullscreen = Screen.fullScreen;
+            CaptureCurrentResolution(settings);
+        }
+
+        private static void CaptureCurrentResolution(GameSettingsData settings)
+        {
+            settings.resolutionWidth = Mathf.Max(320, Screen.width);
+            settings.resolutionHeight = Mathf.Max(200, Screen.height);
+            Resolution current = Screen.currentResolution;
+            settings.refreshRateNumerator =
+                (int)current.refreshRateRatio.numerator;
+            settings.refreshRateDenominator =
+                Mathf.Max(1, (int)current.refreshRateRatio.denominator);
+        }
+
+        protected override void OnDisable()
+        {
+            if (bindingRefreshRoutine != null)
+            {
+                StopCoroutine(bindingRefreshRoutine);
+                bindingRefreshRoutine = null;
+            }
+
+            CancelRebindIfNeeded();
+            base.OnDisable();
+        }
+
+        protected override void OnDestroy()
+        {
+            masterSlider?.onValueChanged.RemoveListener(OnAudioChanged);
+            bgmSlider?.onValueChanged.RemoveListener(OnAudioChanged);
+            sfxSlider?.onValueChanged.RemoveListener(OnAudioChanged);
+            uiSlider?.onValueChanged.RemoveListener(OnAudioChanged);
+            ambienceSlider?.onValueChanged.RemoveListener(OnAudioChanged);
+            fullscreenToggle?.onValueChanged.RemoveListener(
+                OnFullscreenChanged);
+            resolutionDropdown?.onValueChanged.RemoveListener(
+                OnResolutionChanged);
+            applyButton?.onClick.RemoveListener(ApplyAndClose);
+            cancelButton?.onClick.RemoveListener(RequestClose);
+            closeButton?.onClick.RemoveListener(RequestClose);
+            restoreDefaultsButton?.onClick.RemoveListener(RestoreDefaults);
+            resetAllBindingsButton?.onClick.RemoveListener(
+                RestoreAllBindings);
+            base.OnDestroy();
         }
     }
 

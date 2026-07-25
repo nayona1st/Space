@@ -2416,6 +2416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6846fe6959793694284c9a68a2046f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dev.CSU.Scripts.RocketTurnInput
+  moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!114 &545395293
 MonoBehaviour:
   m_ObjectHideFlags: 0

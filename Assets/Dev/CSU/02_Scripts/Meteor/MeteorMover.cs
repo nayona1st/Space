@@ -8,7 +8,8 @@ namespace Dev.CSU._02_Scripts.Meteor
     [DisallowMultipleComponent]
     public sealed class MeteorMover : MonoBehaviour
     {
-        [SerializeField] private float meteorDamage;
+        [Header("Collision Damage")]
+        [SerializeField, Min(0f)] private float meteorDamage = 10f;
         private Rigidbody2D _rigidbody2D;
         private Vector2 _direction = Vector2.left;
         private float _speed;
@@ -158,13 +159,19 @@ namespace Dev.CSU._02_Scripts.Meteor
             transform.rotation = Quaternion.Euler(eulerAngles);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Health health))
+            Health health = other.GetComponentInParent<Health>();
+            if (health != null && !health.IsDead)
             {
                 health.TakeDamage(meteorDamage);
                 ReturnToPool();
             }
+        }
+
+        private void OnValidate()
+        {
+            meteorDamage = Mathf.Max(0f, meteorDamage);
         }
     }
 }

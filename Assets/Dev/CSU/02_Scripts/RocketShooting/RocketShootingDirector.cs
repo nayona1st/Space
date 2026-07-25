@@ -399,7 +399,23 @@ namespace Dev.CSU._02_Scripts.RocketShooting
             }
 
             rocketView.SetPresentationPhase(nextPhase);
+            PlayPhaseSound(nextPhase);
             PhaseChanged?.Invoke(nextPhase);
+        }
+
+        private static void PlayPhaseSound(LaunchPhase phase)
+        {
+            switch (phase)
+            {
+                case LaunchPhase.Ignition:
+                    RocketShootingSoundPlayer.Play(
+                        RocketShootingSoundCue.RocketPreLaunch);
+                    break;
+                case LaunchPhase.LiftOff:
+                    RocketShootingSoundPlayer.Play(
+                        RocketShootingSoundCue.RocketLaunch);
+                    break;
+            }
         }
 
         private static bool IsScrollingPhase(LaunchPhase phase)
