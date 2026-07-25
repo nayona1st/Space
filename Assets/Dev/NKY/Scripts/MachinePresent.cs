@@ -18,6 +18,8 @@ namespace Dev.NKY.Scripts
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI statText;
+        [SerializeField] private SoundDataSO popUpOnSound;
+        [SerializeField] private SoundDataSO popUpOffSound;
 
         public void Initialize(MachinePartsDataSo data)
         {
@@ -66,10 +68,12 @@ namespace Dev.NKY.Scripts
         {
             transform.position = position;
             gameObject.SetActive(true);
+            SoundManager.Instance.PlaySFX(popUpOnSound);
         }
 
         public void Hide()
         {
+            SoundManager.Instance.PlaySFX(popUpOffSound);
             gameObject.SetActive(false);
         }
         

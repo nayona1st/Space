@@ -13,6 +13,9 @@ namespace Dev.NKY.Scripts
     {
         [SerializeField] private RectTransform dragLayer;
         [SerializeField] private MachinePresent presentPrefab;
+        [SerializeField] private SoundDataSO equipSound;
+        [SerializeField] private SoundDataSO unEquipSound;
+        [SerializeField] private SoundDataSO trashSound;
 
         private InventoryGrid grid;
         private InventoryGridView gridView;
@@ -209,6 +212,8 @@ namespace Dev.NKY.Scripts
                     Vector2Int topLeftCell = BlockLayoutCalculator.GetTopLeftGridCell(cell, BlockShapeUtility.GetRotatedCells(data.cells, rotation));
                     rect.anchoredPosition = gridView.GridCellToAnchoredPosition(topLeftCell);
                     rect.localScale = Vector3.one;
+                    
+                    SoundManager.Instance.PlaySFX(equipSound);
 
                     OnPlaced?.Invoke(this);
                     return;
@@ -219,12 +224,14 @@ namespace Dev.NKY.Scripts
             TrashCanUI trashCan = GetTrashCanUnderPointer(eventData);
             if (trashCan != null)
             {
+                SoundManager.Instance.PlaySFX(trashSound);
                 trashCan.ResetVisual();
                 DiscardBlock();
                 return;
             }
 
             // 3. 실패 시 슬롯으로 복귀
+            SoundManager.Instance.PlaySFX(unEquipSound);
             ReturnToTray();
         }
 

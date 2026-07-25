@@ -9,6 +9,7 @@ namespace Dev.NKY.Scripts.Health
         [SerializeField] private InventorySlot slot;
         [SerializeField] private ResourceManager resourceManager;
         [SerializeField] private int price;
+        [SerializeField] private SoundDataSO buySound;
 
         private TextMeshProUGUI _text;
         private void Start()
@@ -22,6 +23,8 @@ namespace Dev.NKY.Scripts.Health
         {
             if(resourceManager.CurrentResource < price) return;
 
+            SoundManager.Instance.PlaySFX(buySound);
+            
             resourceManager.ConsumeResource(price);
             
             slot.SpawnNewBlock();
